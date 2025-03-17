@@ -3,9 +3,32 @@ import "./css/Login.css"
 import { Link } from "react-router-dom";
 
 const Login = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
     const checkAccount = (event) => {
-        console.log("hi");
+        event.preventDefault();
+        
+        fetch("http://localhost:8000/api/login", {
+            method:"POST",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                email,
+                password
+            })
+        }) .then( (res) => res.json() )
+        .then ( (result) => {
+            if (result.token) {
+                localStorage.setItem("token", result.token);
+                window.location.reload();
+                console.log("Login successful!");
+            } else {
+                console.log("Login failed:", result.error);
+            }
+        })
+        .catch(error => console.error("Error:", error));
     }
 
     return (
@@ -20,13 +43,13 @@ const Login = () => {
                     <div className="login-box">
 
                         <div className="login-input">
-                            <h4> Username </h4>
-                            <input type="text" placeholder="type here..." />
+                            <h4> Email </h4>
+                            <input type="email" onChange = {(e) => setEmail(e.target.value)} placeholder="type here..." />
                         </div>
 
                         <div className="login-input">
                             <h4> Password </h4>
-                            <input type="password" placeholder="type here..." />
+                            <input type="password" onChange = {(e) => setPassword(e.target.value)} placeholder="type here..." />
                         </div>
 
                         <h6> Don't have an account? <Link to="/register"> Register</Link></h6>

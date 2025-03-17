@@ -39,8 +39,7 @@ const Signup = () => {
         .then((result) => {
             console.log(result);
         })
-
-        console.log(email);
+        .catch(error => console.error("Error:", error));
     }
 
     return (
