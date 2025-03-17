@@ -5,10 +5,15 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const app = express();
-const PORT = 8000;
 
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:3000",
+    methods: "GET,POST,PUT,DELETE",
+    allowedHeaders: "Content-Type,Authorization"
+}));
+
 app.use(express.json());
+app.options("*", cors());
 
 const accounts = mongoose.createConnection("mongodb+srv://justinhnguyen1:Lambda19891989!@lambda-phinance.4ilv4.mongodb.net/?retryWrites=true&w=majority&appName=lambda-phinance/accounts", {
     dbName:"accounts",
@@ -70,6 +75,10 @@ app.post("/api/login", async (req,res) => {
     res.json({ message: "Login successful!", token });
 });
 
+const PORT = process.env.PORT || 8000;
+const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:8000";
+
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on ${API_BASE_URL}`);
 });
+
