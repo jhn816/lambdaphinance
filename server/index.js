@@ -51,7 +51,8 @@ app.post("/api/register", async (req, res) => {
     res.json({ message: "User registered successfully!" });
 });
 
-const SECRET_KEY=process.env.SECRET_KEY;
+require("dotenv").config();
+const SECRET_KEY = process.env.SECRET_KEY || "failsafe";
 app.post("/api/login", async (req,res) => {
     const {email, password} = req.body;
 
@@ -72,7 +73,11 @@ app.post("/api/login", async (req,res) => {
         { expiresIn: "1h" }
     );
     
-    res.setHeader("Access-Control-Allow-Origin", origin);
+    const requestOrigin = req.headers.origin;
+    if (allowedOrigins.includes(requestOrigin)) {
+        res.setHeader("Access-Control-Allow-Origin", requestOrigin);
+    }
+
     res.json({ message: "Login successful!", token });
 });
 
