@@ -11,34 +11,46 @@ const allowedOrigins = [
     "https://lambdaphinance.netlify.app"
 ];
 
-app.use(cors({
-    origin: allowedOrigins,
-    methods: "GET,POST,PUT,DELETE",
-    allowedHeaders: "Content-Type,Authorization"
-}));
+app.use((req, res, next) => {
+    const allowedOrigins = [
+        "http://localhost:3000",
+        "https://lambdaphinance.netlify.app"
+    ];
+    
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader("Access-Control-Allow-Origin", origin);
+    }
+    
+    res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    
+    if (req.method === "OPTIONS") {
+        return res.status(200).end();
+    }
+    
+    next();
+});
+
 
 app.use(express.json());
 app.options("*", cors());
 
-const accounts = mongoose.createConnection("mongodb+srv://justinhnguyen1:Lambda19891989!@lambda-phinance.4ilv4.mongodb.net/?retryWrites=true&w=majority&appName=lambda-phinance/accounts", {
+const accounts = mongoose.connect("mongodb+srv://justinhnguyen1:Lambda19891989!@lambda-phinance.4ilv4.mongodb.net/?retryWrites=true&w=majority&appName=lambda-phinance", {
     dbName:"accounts",
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
-accounts.on("connected", () => {
-    console.log("Connected to MongoDB (accounts)");
-});
-
-accounts.on("error", (err) => {
-    console.error("MongoDB connection error:", err);
-});
+.then(() => console.log("Connected to MongoDB"))
+.catch(err => console.error("MongoDB connection error:", err));
 
 const userSchema = new mongoose.Schema({
     username: String,
     email: String,
     password: String
 });
-const User = accounts.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
 
 app.post("/api/register", async (req, res) => {
     const { username, email, password } = req.body;
