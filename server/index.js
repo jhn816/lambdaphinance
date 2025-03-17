@@ -75,4 +75,13 @@ app.post("/api/login", async (req,res) => {
     res.json({ message: "Login successful!", token });
 });
 
+
+app.get("/", (req, res) => {
+    res.json({ message: "Backend is working!" });
+});
+
+app.post("/api/register", (req, res) => {
+    res.json({ message: "User registered page successful!" });
+});
+
 module.exports = app;
