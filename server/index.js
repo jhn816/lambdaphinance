@@ -11,31 +11,14 @@ const allowedOrigins = [
     "https://lambdaphinance.netlify.app"
 ];
 
-app.use((req, res, next) => {
-    const allowedOrigins = [
-        "http://localhost:3000",
-        "https://lambdaphinance.netlify.app"
-    ];
-    
-    const origin = req.headers.origin;
-    if (allowedOrigins.includes(origin)) {
-        res.setHeader("Access-Control-Allow-Origin", origin);
-    }
-    
-    res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    
-    if (req.method === "OPTIONS") {
-        return res.status(200).end();
-    }
-    
-    next();
-});
-
+app.use(cors({
+    origin: allowedOrigins,
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
+    credentials: true,
+    allowedHeaders: "Content-Type,Authorization"
+}));
 
 app.use(express.json());
-app.options("*", cors());
 
 const accounts = mongoose.connect("mongodb+srv://justinhnguyen1:Lambda19891989!@lambda-phinance.4ilv4.mongodb.net/?retryWrites=true&w=majority&appName=lambda-phinance", {
     dbName:"accounts",
@@ -88,7 +71,8 @@ app.post("/api/login", async (req,res) => {
         SECRET_KEY, 
         { expiresIn: "1h" }
     );
-
+    
+    res.setHeader("Access-Control-Allow-Origin", origin);
     res.json({ message: "Login successful!", token });
 });
 
@@ -101,8 +85,5 @@ app.get("/api/register", (req, res) => {
     res.json({ message: "Register page successful!" });
 });
 
-app.get("/api/login", (req, res) => {
-    res.json({ message: "Login page successful!" });
-});
 
 module.exports = app;
