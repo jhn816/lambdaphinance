@@ -51,7 +51,7 @@ app.post("/api/register", async (req, res) => {
     res.json({ message: "User registered successfully!" });
 });
 
-const SECRET_KEY="4bfa5f8c2bcdcb4e98a6a8eb2a2a8e2e5a3a4d6b8c7d4f6e9f7a9e8b2b7c6d5f";
+const SECRET_KEY=process.env.SECRET_KEY;
 app.post("/api/login", async (req,res) => {
     const {email, password} = req.body;
 
@@ -75,10 +75,4 @@ app.post("/api/login", async (req,res) => {
     res.json({ message: "Login successful!", token });
 });
 
-const PORT = process.env.PORT || 8000;
-const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:8000";
-
-app.listen(PORT, () => {
-    console.log(`Server running on ${API_BASE_URL}`);
-});
-
+module.exports = app;
