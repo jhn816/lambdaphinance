@@ -1,6 +1,8 @@
-This application is made with the intentions of simplyinging the project creator's fraternity's finances within its treasury. Features will include expense tracking and visualization, account login/registration and more.
-
 # Getting Started with Create React App
+
+## Project Information
+This project is made with the intentions of simplyinging the project creator's fraternity's finances within its treasury. Features will include expense tracking and visualization, account login/registration and more.
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
