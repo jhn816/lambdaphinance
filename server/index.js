@@ -97,8 +97,12 @@ app.get("/", (req, res) => {
     res.json({ message: "Backend is working!" });
 });
 
-app.post("/api/register", (req, res) => {
-    res.json({ message: "User registered page successful!" });
+app.get("/api/register", (req, res) => {
+    res.json({ message: "Register page successful!" });
+});
+
+app.get("/api/login", (req, res) => {
+    res.json({ message: "Login page successful!" });
 });
 
 module.exports = app;
