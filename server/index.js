@@ -6,8 +6,13 @@ const jwt = require("jsonwebtoken");
 
 const app = express();
 
+const allowedOrigins = [
+    "http://localhost:3000",
+    "https://lambdaphinance.netlify.app"
+];
+
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: allowedOrigins,
     methods: "GET,POST,PUT,DELETE",
     allowedHeaders: "Content-Type,Authorization"
 }));
