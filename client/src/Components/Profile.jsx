@@ -16,12 +16,12 @@ const Profile = () => {
             }
         }) .then( (res) => res.json() )
         .then( (result) => {
-            if (!result.email) {
+            if (!result.user) {
                 console.log("Profile not found");
                 return;
             }
-            setEmail(result.email)
-            setUsername(result.username)
+            setEmail(result.user.email)
+            setUsername(result.user.username)
         })
     });
 

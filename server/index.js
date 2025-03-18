@@ -96,7 +96,7 @@ app.get("/api/profile", (req,res) => {
         return res.status(400).json({ error: "Invalid or expired token"});
     }
     
-    res.json(user)
+    res.json({ message: "User verified", user });
 });
 
 
