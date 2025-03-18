@@ -1,0 +1,51 @@
+.profile-container {
+    display: flex;
+    justify-content: center;
+    background-color: white;
+    color:black;
+    width: 100%;
+    height: 90vh;
+}
+
+.account-information {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 80%;
+    border-radius: 20px;
+    gap: 20px;
+}
+
+.information-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60%;
+    height: 50%;
+    border-radius: 20px;
+}
+
+.account-information p {
+    margin: 0px;
+}
+
+.information-container .logout{
+    width: 150px;
+    height: 50px;
+    font-size: 20px;
+    font-weight: 1000;
+    border-radius: 20px;
+    transition: .3s;
+    background-color: #458fff;
+}
+
+.information-container .logout:hover {
+    cursor: pointer;
+    transform: scale(1.04);
+    background-color: #2e80fb;
+}
+
+.information-container .logout:active {
+    transform: scale(1);
+}    

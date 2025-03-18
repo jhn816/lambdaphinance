@@ -47,7 +47,7 @@ const Signup = () => {
     return (
         <div className="signup-containers">
             <div className="signup-titles">
-                <img src={Money} alt="money" class="money"/>
+                <img src={Money} alt="money" className="money"/>
                 <h1> Lambda Phinance</h1>
                 <h3>a nu chapter</h3>
             </div>

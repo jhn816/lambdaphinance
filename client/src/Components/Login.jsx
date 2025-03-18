@@ -46,7 +46,7 @@ const Login = () => {
     return (
         <div className="login-containers">
             <div className="login-titles">
-                <img src={Money} alt="money" class="money"/>
+                <img src={Money} alt="money" className="money"/>
                 <h1> Lambda Phinance</h1>
                 <h3> track all your expenses</h3>
             </div>

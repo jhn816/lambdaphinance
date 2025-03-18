@@ -5,20 +5,11 @@ import "./css/Home.css";
 
 const Home = ({loggedIn}) => {
 
-    const logOut = (event) => {
-        event.preventDefault();
-        localStorage.removeItem("token");
-        window.location.reload();
-    }
-
     const token = localStorage.getItem("token")
 
     return (
     (!token ? (<Login /> ) : (
         <div className="home-container">
-            <form onSubmit={logOut}>
-                    <button type="submit" > logout </button>
-            </form>
         </div>
         
         )

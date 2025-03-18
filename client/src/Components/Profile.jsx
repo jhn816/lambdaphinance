@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from "react";
-// import "./css/Profile.css"
-import { Link } from "react-router-dom";
+import "./css/Profile.css"
+import { Link, useNavigate } from "react-router-dom";
 
 const Profile = () => {
     const [email,setEmail] = useState("");
     const [username,setUsername] = useState("");
+    const navigate = useNavigate();
 
+    const logOut = (event) => {
+        event.preventDefault();
+        localStorage.removeItem("token");
+        navigate("/");
+        window.location.reload();
+    }
 
     useEffect( () => {
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/profile`, {
@@ -26,9 +33,15 @@ const Profile = () => {
     }, []);
 
     return (
-        <div>
-            <p>{email}</p>
-            <p>{username}</p>
+        <div className="profile-container">
+            <div className="information-container">
+                <div className="account-information">
+                    <h1> Profile Information</h1>
+                    <p>Email: {email}</p>
+                    <p>Username: {username}</p>
+                </div>
+                <button className="logout" onClick={logOut}> Log Out </button>
+            </div>
         </div>
         
     )
