@@ -89,15 +89,33 @@ app.post("/api/login", async (req,res) => {
     res.json({ message: "Login successful!", "token": token, "user": email });
 });
 
-app.get("/api/profile", (req,res) => {
-    const user = jwt.verify(req.header("Authorization").split(" ")[1], SECRET_KEY);
+app.get("/api/profile", (req, res) => {
+    try {
+        console.log("Request received at /api/profile");
 
-    if (!user) {
-        return res.status(400).json({ error: "Invalid or expired token"});
+        const authHeader = req.header("Authorization");
+        if (!authHeader) {
+            console.error("No Authorization header provided");
+            return res.status(401).json({ error: "Access denied. No token provided." });
+        }
+
+        const token = authHeader.split(" ")[1];
+        if (!token) {
+            console.error("Token missing from Authorization header");
+            return res.status(401).json({ error: "Access denied. Invalid token format." });
+        }
+
+        const user = jwt.verify(token, SECRET_KEY);
+        console.log("Token verified successfully:", user);
+
+        res.json({ message: "User verified", user });
+
+    } catch (error) {
+        console.error("JWT Verification Error:", error.message);
+        return res.status(403).json({ error: "Invalid or expired token" });
     }
-    
-    res.json({ message: "User verified", user });
 });
+
 
 
 app.get("/", (req, res) => {
