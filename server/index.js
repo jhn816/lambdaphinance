@@ -93,7 +93,7 @@ app.get("/api/profile", (req, res) => {
     try {
         console.log("Request received at /api/profile");
 
-        const authHeader = req.header["Authorization"];
+        const authHeader = req.header("Authorization");
         if (!authHeader) {
             console.error("No Authorization header provided");
             return res.status(401).json({ error: "Access denied. No token provided." });

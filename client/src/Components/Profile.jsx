@@ -10,7 +10,7 @@ const Profile = () => {
     useEffect( () => {
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/profile`, {
             method:"GET",
-            header: {
+            headers: {
                 "Authorization": `Bearer ${localStorage.getItem("token")}`,
                 "Content-Type":"application/json"
             }
@@ -24,7 +24,7 @@ const Profile = () => {
             setEmail(result.user.email)
             setUsername(result.user.username)
         })
-    });
+    }, []);
 
     return (
         <div>
