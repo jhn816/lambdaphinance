@@ -30,7 +30,6 @@ const Login = () => {
                 window.location.reload();
                 console.log("Login successful!");
             } else {
-                console.log(result);
                 if (result.error){
                     console.log("Login failed:", result.error);
                     error.match = result.error;

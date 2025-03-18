@@ -16,6 +16,7 @@ const Profile = () => {
             }
         }) .then( (res) => res.json() )
         .then( (result) => {
+            console.log(result);
             if (!result.user) {
                 console.log("Profile not found");
                 return;
