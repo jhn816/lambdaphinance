@@ -20,20 +20,28 @@ app.use(cors({
 
 app.use(express.json());
 
-const accounts = mongoose.connect("mongodb+srv://justinhnguyen1:Lambda19891989!@lambda-phinance.4ilv4.mongodb.net/?retryWrites=true&w=majority&appName=lambda-phinance", {
+const accounts = mongoose.createConnection("mongodb+srv://justinhnguyen1:Lambda19891989!@lambda-phinance.4ilv4.mongodb.net/?retryWrites=true&w=majority&appName=lambda-phinance", {
     dbName:"accounts",
     useNewUrlParser: true,
     useUnifiedTopology: true
-})
-.then(() => console.log("Connected to MongoDB"))
-.catch(err => console.error("MongoDB connection error:", err));
+});
+accounts.on("error", (err) => console.error("accounts connection error:", err));
+accounts.once("open", () => console.log("Connected to accounts"));
+
+const finances = mongoose.createConnection("mongodb+srv://justinhnguyen1:Lambda19891989!@lambda-phinance.4ilv4.mongodb.net/?retryWrites=true&w=majority&appName=lambda-phinance", {
+    dbName:"finances",
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+finances.on("error", (err) => console.error("finances connection error:", err));
+finances.once("open", () => console.log("Connected to finances"));
 
 const userSchema = new mongoose.Schema({
     username: String,
     email: String,
     password: String
 });
-const User = mongoose.model("User", userSchema);
+const User = accounts.model("User", userSchema);
 
 app.post("/api/register", async (req, res) => {
     const { username, email, password } = req.body;
@@ -78,7 +86,17 @@ app.post("/api/login", async (req,res) => {
         res.setHeader("Access-Control-Allow-Origin", requestOrigin);
     }
 
-    res.json({ message: "Login successful!", token });
+    res.json({ message: "Login successful!", "token": token, "user": email });
+});
+
+app.get("/api/profile", (req,res) => {
+    const user = jwt.verify(req.header("Authorization").split(" ")[1], SECRET_KEY);
+
+    if (!user) {
+        return res.status(400).json({ error: "Invalid or expired token"});
+    }
+    
+    res.json(user)
 });
 
 

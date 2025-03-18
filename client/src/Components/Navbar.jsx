@@ -15,7 +15,7 @@ const Navbar = () => {
                 {/* debts owed to or form, accounts can request from each other */}
                 <a href="records">Records</a>
                 {/* financials goals you wanna set */}
-                <a href="goals">Goals</a>
+                <a href="plan">Plan</a>
 
                 <a className="profile-nav" href="profile">Profile</a>
             </ul>
