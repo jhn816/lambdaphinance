@@ -31,6 +31,7 @@
     height: 60%;
     gap: 15px;
 }
+
 .signup-box {
     display: flex;
     flex-direction: column;
@@ -41,6 +42,7 @@
     height: 100%;
     background-color: white;
     color: black;
+    gap: 25px;
 }
 
 .signup-input {
@@ -49,6 +51,7 @@
     width: 80%;
     padding: 20px;
     padding-bottom: 0px;
+    padding-top: 0px;
 }
 
 .signup-input input {
@@ -64,6 +67,7 @@
 .signup-input h4 {
     margin-top: 0px;
     margin-bottom: 5px;
+    font-size: 20px;
     align-self: flex-start;
 }
 
