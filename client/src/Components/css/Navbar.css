@@ -1,0 +1,32 @@
+.navigation-bar {
+    background-color: #1a6be3;
+    width: 100%;
+    height:10vh;
+    z-index: 99;
+    padding: 0px;
+    margin: 0px;
+}
+
+.navigation-bar ul a {
+    color:white;
+    text-decoration: none;
+    transition: .3s;
+}
+
+.navigation-bar ul a:hover {
+    color:rgb(211, 211, 211);
+    text-decoration: underline;
+}
+
+.nav-links {
+    display: flex;
+    flex-direction: row;
+    padding: 30px;
+    padding-top: 3px;
+    gap: 30px
+}
+
+.navigation-bar .nav-links .profile-nav {
+    margin-left: auto;
+
+}

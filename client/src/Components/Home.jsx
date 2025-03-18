@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Login from "./Login.jsx";
 import userEvent from "@testing-library/user-event";
-
-
+import "./css/Home.css";
 
 const Home = ({loggedIn}) => {
 
@@ -16,11 +15,9 @@ const Home = ({loggedIn}) => {
 
     return (
     (!token ? (<Login /> ) : (
-
-        <div>
-            <h1>Home Page</h1>
+        <div className="home-container">
             <form onSubmit={logOut}>
-                <button type="submit" > logout </button>
+                    <button type="submit" > logout </button>
             </form>
         </div>
         

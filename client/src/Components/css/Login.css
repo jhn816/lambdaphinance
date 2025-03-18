@@ -15,14 +15,16 @@
     gap: 15px
 }
 
-form {
+.login-containers form {
+    filter: drop-shadow(20px 2px 19px black);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     background-color: #2776FF;
     width: 50%;
-    gap: 15px
+    gap: 15px;
+    z-index: 2;
 }
 
 .login-information h2 {
@@ -77,13 +79,9 @@ form {
     line-height: .1;
 }
 
-.login-titles h3 {
-    font-weight: 100;
-}
-
 .login-information button {
-    width: 200px;
-    height: 40px;
+    width: 300px;
+    height: 70px;
     border: 1px solid transparent;
     font-size: 15px;
     font-weight: 100;
@@ -101,17 +99,46 @@ form {
     transform: scale(1);
 }
 
-.login-box h6 {
-    color: rgb(91, 91, 91);
+form h6 {
+    color: rgb(255, 255, 255);
     margin-top: 0px;
     margin-bottom: 0px;
 }
 
-.login-box h6 a{
-    color: #2776FF;
+form h6 a{
+    color: #002c7f;
     transition: .3s;
+    text-decoration: none;
 }
 
-.login-box h6 a:hover{
-    color: #2776ffc5;
+form h6 a:hover{
+    color: #002c7f84;
+    text-decoration: underline;
+}
+
+.login-input p {
+    color: rgb(255, 20, 20);
+    font-weight: 1000;
+    margin: 0px;
+    margin-top: 5px;
+    font-size: 15px;
+    align-self: center;
+}
+
+.money {
+    max-height: 100vh;
+    width: 1500px;
+    opacity: 20%;
+    z-index: 0;
+}
+
+.login-titles h1 {
+    position:absolute;
+    top: 40%;
+}
+
+.login-titles h3 {
+    font-weight: 100;
+    position:absolute;
+    top: 50%;
 }

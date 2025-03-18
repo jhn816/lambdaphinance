@@ -12,7 +12,9 @@
     flex-direction: column;
     background-color: #2776FF;
     width: 50%;
-    gap: 15px
+    gap: 15px;
+    z-index: 2;
+    filter: drop-shadow(20px 2px 19px black);
 }
 
 .signup-information h2 {
@@ -26,7 +28,7 @@
     align-items: center;
     justify-content: center;
     width: 50%;
-    height: 75%;
+    height: 60%;
     gap: 15px;
 }
 .signup-box {
@@ -36,7 +38,7 @@
     align-items: center;
     border-radius: 10px;
     width: 100%;
-    height: 85%;
+    height: 100%;
     background-color: white;
     color: black;
 }
@@ -46,6 +48,7 @@
     flex-direction: column;
     width: 80%;
     padding: 20px;
+    padding-bottom: 0px;
 }
 
 .signup-input input {
@@ -54,7 +57,7 @@
     background-color:#D9D9D9;
     border: 1px solid transparent;
     border-radius: 5px;
-    padding: 8px;
+    padding: 5px;
     font-size: 20px;
 }
 
@@ -82,7 +85,7 @@
 
 .signup-information button {
     width: 300px;
-    height: 40px;
+    height: 50px;
     border: 1px solid transparent;
     font-size: 15px;
     font-weight: 100;
@@ -113,4 +116,31 @@
 
 .signup-box h6 a:hover{
     color: #2776ffc5;
+}
+
+.signup-input p {
+    color: rgb(255, 20, 20);
+    font-weight: 1000;
+    margin: 0px;
+    margin-top: 5px;
+    font-size: 15px;
+    align-self: flex-end;
+}
+
+.money {
+    max-height: 100vh;
+    width: 1500px;
+    opacity: 20%;
+    z-index: 0;
+}
+
+.signup-titles h1 {
+    position:absolute;
+    top: 40%;
+}
+
+.signup-titles h3 {
+    font-weight: 100;
+    position:absolute;
+    top: 50%;
 }

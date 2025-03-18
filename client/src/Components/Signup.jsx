@@ -1,27 +1,29 @@
 import React, { useState } from "react";
 import "./css/Signup.css"
 import { Link } from "react-router-dom";
+import Money from "../assets/money.jpg"
 
 const Signup = () => {
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [error, setErrors] = useState({});
 
     const submitAccount = (event) => {
         event.preventDefault();
-
+        let error = {};
         if (email === "") {
-            alert("Fill in Email!");
-            return;
+            error.email = "Fill in Email!";
         } else if (username === "") {
-            alert("Fill in username!");
-            return;
+            error.username = "Fill in username!";
         } else if (password === "") {
-            alert("Fill in password!");
-            return;
+            error.password = "Fill in password!";
         } else if (password !== confirmPassword) {
-            alert("Passwords do not match!");
+            error.passwordmatch = "Passwords do not match!";
+        }
+        if (error) {
+            setErrors(error);
             return;
         }
         
@@ -45,6 +47,7 @@ const Signup = () => {
     return (
         <div className="signup-containers">
             <div className="signup-titles">
+                <img src={Money} alt="money" class="money"/>
                 <h1> Lambda Phinance</h1>
                 <h3>a nu chapter</h3>
             </div>
@@ -56,26 +59,32 @@ const Signup = () => {
                         <div className="signup-input">
                             <h4> Email </h4>
                             <input type="email" onChange= {(e) => setEmail(e.target.value)} placeholder="type here..." />
+                            {error.email && <p>{error.email}</p>}
                         </div>
 
                         <div className="signup-input">
                             <h4> Username </h4>
                             <input type="text" onChange={(e)=> setUsername(e.target.value)} placeholder="type here..." />
+                            {error.username && <p>{error.username}</p>}
                         </div>
 
                         <div className="signup-input">
                             <h4> Password </h4>
                             <input type="password" onChange={(e)=> setPassword(e.target.value)} placeholder="type here..." />
+                            {error.password && <p>{error.password}</p>}
                         </div>
 
                         <div className="signup-input">
                             <h4> Confirm Password </h4>
                             <input type="password" onChange={(e)=> setConfirmPassword(e.target.value)}placeholder="type here..." />
+                            {error.passwordmatch && <p>{error.passwordmatch}</p>}
+
                         </div>
 
-                        <h6> Already have an account? <Link to="/"> Login</Link></h6>
-                    </div>      
+                    </div>          
                     <button type="submit"> create</button>  
+                    <h6> Already have an account? <Link to="/"> Login</Link></h6>
+
                 </form>
             </div>
         </div>

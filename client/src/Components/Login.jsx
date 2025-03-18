@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import "./css/Login.css"
 import { Link } from "react-router-dom";
+import Money from "../assets/money.jpg"
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error,setError] = useState({});
 
     const checkAccount = (event) => {
         event.preventDefault();
         
+        let error = {};
+
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/login`, { 
             method:"POST",
             headers: {
@@ -25,7 +29,14 @@ const Login = () => {
                 window.location.reload();
                 console.log("Login successful!");
             } else {
-                console.log("Login failed:", result.error);
+                if (result.error){
+                    console.log("Login failed:", result.error);
+                    error.match = result.error;
+                    setError(error);
+                    return;
+                } else {
+                    console.log("Login failed:", result.error);
+                }
             }
         })
         .catch(error => console.error("Error:", error));
@@ -34,6 +45,7 @@ const Login = () => {
     return (
         <div className="login-containers">
             <div className="login-titles">
+                <img src={Money} alt="money" class="money"/>
                 <h1> Lambda Phinance</h1>
                 <h3> track all your expenses</h3>
             </div>
@@ -50,11 +62,11 @@ const Login = () => {
                         <div className="login-input">
                             <h4> Password </h4>
                             <input type="password" onChange = {(e) => setPassword(e.target.value)} placeholder="type here..." />
+                            {error.match && <p>{error.match}</p>}
                         </div>
-
-                        <h6> Don't have an account? <Link to="/register"> Register</Link></h6>
                     </div>      
-                    <button type="submit" > done</button>  
+                    <button type="submit" > done</button> 
+                    <h6> Don't have an account? <Link to="/register"> Register</Link></h6> 
                 </div>
             </form>
         </div>
