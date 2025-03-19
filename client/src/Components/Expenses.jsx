@@ -3,10 +3,13 @@ import "./css/Expenses.css"
 import { Link, useNavigate } from "react-router-dom";
 
 const Expenses = () => {
+    // expense arguments
     const [value, setValue] = useState("");
     const [category, setCategory] = useState("Category↴");
     const [person, setPerson] = useState("");
     const [gain, setGain] = useState(true);
+
+    // drop down menu
     const [dropCategory, setDropCategory] = useState(false);
     const [expenseSheet, setExpenseSheet] = useState("Choose Expenses ▼");
     const [dropExpense, setDropExpense] = useState(false);
@@ -58,7 +61,29 @@ const Expenses = () => {
         } else if (category === "Category") {
             alert("Please select a category");
         }
-    };
+
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/addexpense`, {
+            method:"POST",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                email,
+                value,
+                category,
+                gain,
+                person,
+            })
+        }).then((res) => res.json() )
+        .then( (result) => {
+            if (result.error) {
+                console.log(result.error);
+                return;
+            }
+            console.log(result.expense);
+        })
+        .catch(error => console.error("Error:", error));
+    }
 
     const handleChange = (e) => {
         let rawValue = e.target.value.replace(/,/g, "");

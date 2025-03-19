@@ -102,6 +102,33 @@ app.get("/api/profile", (req, res) => {
     }
 });
 
+const expenseSchema = new mongoose.Schema({
+    email: String,
+    value: Number,
+    category: String,
+    person: String,
+});
+const Expense = finances.model("Expense", expenseSchema);
+
+app.post("/api/addexpense", async (req, res) => {
+    try {
+        const { email, value, category, gain, person } = req.body;
+
+        let new_value = parseInt(value);
+        if (!gain) {
+            new_value = new_value * -1;
+        }
+
+        const newExpense = new Expense({ email, value: new_value, category, person });
+        await newExpense.save();
+
+        res.status(201).json({ message: "Expense saved successfully", expense: newExpense });
+    } catch (error) {
+        console.error("Error saving expense:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
 
 
 app.get("/", (req, res) => {
