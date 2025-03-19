@@ -487,7 +487,7 @@
     max-width: 25%;
     height: 30px;
     margin: 0px;
-    border: .1px solid black;
+    border: 1px solid rgb(0, 136, 255);
     background-color: #faf5ef;
     padding: 5px;
     padding-bottom: 10px;
@@ -525,6 +525,7 @@
     border: 0px;
     font-size: 15px;
     margin: 0px;
+    transition: .3s;
 }
 
 .save-category-menu {
@@ -534,9 +535,14 @@
     
     z-index: 30;
     width: 100px;
-    top:0%;
+    top:90%;
     position: absolute;
     overflow: hidden;
+}
+
+.saved-category:hover {
+    background-color: rgb(213, 195, 178);
+    cursor: pointer;
 }
 
 .save-category-menu button {

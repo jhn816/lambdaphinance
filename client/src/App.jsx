@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Home from "./Components/Home.jsx";
 import Signup from "./Components/Signup.jsx";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -11,13 +11,31 @@ import Profile from "./Components/Profile.jsx"
 import About from "./Components/About.jsx"
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false)
+  const token = localStorage.getItem("token");
+  
+  useEffect( () => {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/profile`, {
+        method:"GET",
+        headers: {
+            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type":"application/json"
+        }
+    }) .then( (res) => res.json() )
+    .then( (result) => {
+        if (!result.user) {
+            console.log("Profile not found");
+            localStorage.removeItem("token");
+            return;
+        }
+    })
+}, [token]);;
 
   return (
     <Router>
     <div className="App">
       <header className="App-header">
-      {localStorage.getItem("token") && <Navbar />}
+      {token && <Navbar />}
           <Routes>
             <Route path="/" element= {<Home loggedIn={loggedIn} />}/>
             <Route path="/register" element= {<Signup />}/>

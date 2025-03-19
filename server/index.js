@@ -154,6 +154,18 @@ app.post("/api/addexpense", async (req, res) => {
     }
 });
 
+app.put("/api/expense", async (req, res) => {
+    try {
+        const {savedID, savedCategory, savedValue, savedPerson} = req.body;
+
+        const updatedExpense = await Expense.findByIdAndUpdate(savedID, {category:savedCategory, value:savedValue, person:savedPerson}, { new: true });
+        res.status(201).json({ message: "Expense updated successfully", expense: updatedExpense});
+    } catch (error) {
+        console.error("Error saving expense:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+})
+
 app.delete("/api/expense", async(req, res) => {
     try {
         const {_id} = req.body;

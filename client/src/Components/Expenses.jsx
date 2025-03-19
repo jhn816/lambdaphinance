@@ -189,6 +189,29 @@ const Expenses = () => {
         console.log(savedValue);
         console.log(savedPerson);
     };
+
+    const saveExpense = (item) => {
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/expense`, {
+            method:"PUT",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                savedID: item.id,
+                savedCategory,
+                savedValue,
+                savedPerson
+            })
+        }) .then((res) => res.json)
+        .then ((result) => {
+            if (result.error) {
+                console.log(result.error);
+                return;
+            }
+            console.log("Expense updated successfully", result.expense);
+        })
+        console.log(false);
+    }
     
 
     const deleteExpense = (item) => {
@@ -340,7 +363,6 @@ const Expenses = () => {
                         <h4> {username}'s Financial Book</h4>
                         <div className="dropdownmenu">
                             <p>Looking At</p>
-                            <p>{expenseSheet}</p>
                             {expenseSheet !== "Create New +" && 
                             <button type="button" className="expense-button" onClick={dropdownExpense}>{expenseSheet}</button>}
 
@@ -474,7 +496,7 @@ const Expenses = () => {
                             {editingExpense === item._id && (
                                 <div className="edit-menu">  
                                     <button onClick={() => deleteExpense(item)}>Delete </button>
-                                    <button type="button">Save</button>
+                                    <button type="button" onClick={saveExpense(item)}>Save</button>
                                     <button type="button" onClick={() => setEditingExpense(null)}>Cancel</button>
                                 </div>
                             )}
