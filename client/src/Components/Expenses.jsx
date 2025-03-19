@@ -56,7 +56,7 @@ const Expenses = () => {
         }) .then( (res) => res.json() )
         .then( (result) => {
             if (result.error) {
-                console.log("Error", error);
+                console.log("Error", result.error);
                 return;
             }
             setAllCollections(result.collections);
@@ -192,7 +192,6 @@ const Expenses = () => {
                                     <button key="index" type="button" value={item.collectionName} onClick={selectCollection}>{item.collectionName}</button>
                                 ))}
                                 <button type="button" value="Create New +"onClick={selectCollection}>Create New +</button>
-
                                 <p>Shared with You</p>
                                 <button type="button">None</button>
                             </div>}
