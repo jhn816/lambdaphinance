@@ -197,13 +197,6 @@
     position: relative;
 }
 
-.categories button {
-    width: 100%;
-    height: 40px;
-    background-color: rgb(236, 217, 200);
-    border: 0px;
-}
-
 .categories {
     border-radius: 10px;
     display: flex;
@@ -213,6 +206,13 @@
     top: 105%;
     position: absolute;
     overflow: hidden;
+}
+
+.categories button {
+    width: 100%;
+    height: 40px;
+    background-color: rgb(236, 217, 200);
+    border: 0px;
 }
 
 .categories button:hover {
@@ -275,4 +275,34 @@
 .expense-sheets button:hover {
     background-color:rgb(202, 201, 201);
     cursor: pointer;
+}
+
+.collection-sheets {
+    display: flex;
+    flex-direction: row;
+    gap:5px;
+    border-radius: 5px;
+    overflow: hidden;
+    width: 160%;
+    z-index: 20;
+}
+
+.collection-sheets button {
+    border-radius:5px;
+    width: 20%;
+    height: 40px;
+    background-color: rgb(236, 217, 200);
+    border: 0px;
+}
+
+.collection-sheets button:hover {
+    transform: scale(1);
+    background-color: rgb(183, 162, 144);
+    cursor: pointer;
+}
+
+.collection-sheets input {
+    border-radius:5px;
+    border: 0px;
+    padding: 10px;
 }

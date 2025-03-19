@@ -13,6 +13,8 @@ const Expenses = () => {
     const [dropCategory, setDropCategory] = useState(false);
     const [expenseSheet, setExpenseSheet] = useState("Choose Expenses ▼");
     const [dropExpense, setDropExpense] = useState(false);
+    const [collectionName, setCollectionName] = useState("");
+
 
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
@@ -40,7 +42,18 @@ const Expenses = () => {
             setEmail(result.user.email)
             setUsername(result.user.user)
         })
-    }, [token, navigate]);
+
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/expenses`, {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                email
+            })
+        })
+
+        }, [token, navigate]);
 
     const clearExpense = (event) => {
         event.preventDefault();
@@ -80,7 +93,7 @@ const Expenses = () => {
                 console.log(result.error);
                 return;
             }
-            console.log(result.expense);
+            console.log("Expense saved successfully", result.expense);
         })
         .catch(error => console.error("Error:", error));
     }
@@ -92,6 +105,36 @@ const Expenses = () => {
             setValue(Number(rawValue).toLocaleString());
         }
     };
+
+    const makeCollection = (event) => {
+        setExpenseSheet("Create New +");
+        setDropExpense(false);
+    }
+
+    const submitCollection = (event) => {
+        setExpenseSheet(collectionName);
+        setDropExpense(false);
+
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/addcollection`, {
+            method:"POST",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                collectionName,
+                email
+            })
+        }).then((res) => res.json() )
+        .then( (result) => {
+            if (result.error) {
+                console.log(result.error);
+                return;
+            }
+            console.log("Collection saved successfully", result.collection);
+        })
+        .catch(error => console.error("Error:", error));
+
+    }
 
     const dropdownCategory = (e) => {
         if (dropCategory === false) {
@@ -130,10 +173,16 @@ const Expenses = () => {
                     <div className="tracker-headers">
                         <h4> {username}'s Financial Book</h4>
                         <div className="dropdownmenu">
-                            <button type="button" class="expense-button" onClick={dropdownExpense}>{expenseSheet}</button>
+                            {expenseSheet !== "Create New +" && <button type="button" class="expense-button" onClick={dropdownExpense}>{expenseSheet}</button>}
+                            {expenseSheet === "Create New +" && <div className="collection-sheets"> 
+                                <input placeholder="Enter Collection Name..." onChange={(e) => (setCollectionName(e.target.value))}/>
+                                <button type="button" onClick={submitCollection}>Create</button>
+                            </div>}
                             {dropExpense && <div className="expense-sheets">
                                 <p>Your Collections</p>
                                 <button type="button">None</button>
+                                <button type="button" onClick={makeCollection}>Create New +</button>
+
                                 <p>Shared with You</p>
                                 <button type="button">None</button>
                             </div>}
@@ -171,7 +220,6 @@ const Expenses = () => {
                     </div>
                 
                 </form>
-
                 <div className="expense-information">
                     <div className="net-expenses">
                         <div className="expense-card">

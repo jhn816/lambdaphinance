@@ -110,6 +110,27 @@ const expenseSchema = new mongoose.Schema({
 });
 const Expense = finances.model("Expense", expenseSchema);
 
+const collectionSchema = new mongoose.Schema({
+    email: String,
+    collectionName: String,
+});
+const Collection = accounts.model("Collection", collectionSchema);
+
+app.post("/api/addcollection", async (req, res) => {
+    try {
+        const { collectionName, email} = req.body;
+
+        const newCollection = new Collection({collectionName, email});
+        await newCollection.save();
+        
+        res.json({ message: `Collection '${collectionName}' created successfully!`, collection:newCollection});
+    } catch (error) {
+        console.error("Error saving expense:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+
 app.post("/api/addexpense", async (req, res) => {
     try {
         const { email, value, category, gain, person } = req.body;
@@ -128,6 +149,17 @@ app.post("/api/addexpense", async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 });
+
+app.post("/api/expenses", async (req, res) => {
+    try {
+        const {email} = req.body;
+
+        const  
+    } catch (error) {
+        console.error("Error saving expense:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+})
 
 
 
