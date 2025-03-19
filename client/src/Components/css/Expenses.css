@@ -339,23 +339,59 @@
     font-size: 20px;
 }
 
+.sheet-headers .date-expense{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 1000;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: rgb(255, 255, 255);
+    width: 32%;
+    max-width: 25%;
+    height: 40px;
+    margin: 0px;
+    padding: 10px;
+    font-size: 20px;
+}
+
 .expense-row {
     display: flex;
     flex-direction: row;
 }
 
 .expense-row p{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-weight: 100;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     color: black;
-    width: 25%;
+    width: 20%;
     max-width: 25%;
     margin: 0px;
     border: .1px solid black;
-    padding: 10px;
+    padding: 5px;
+    padding-bottom: 10px;
+    padding-top: 10px;
     font-size: 15px;
 }
 
+.expense-row .date-expense {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 100;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: black;
+    width: 40%;
+    max-width: 25%;
+    margin: 0px;
+    border: .1px solid black;
+    padding: 5px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-size: 15px;
+}
 .delete-expense {
     font-weight: 100;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
@@ -428,4 +464,8 @@
     transform: scale(1);
     background-color: #e4e4e4;
     cursor: pointer;
+}
+
+.expense-time {
+    font-size: 50px;
 }

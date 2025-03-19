@@ -127,14 +127,9 @@ const Expenses = () => {
             return;
         }
 
-        const now = new Date();
-        const formattedTimestamp = now.getFullYear() + "-" 
-            + (now.getMonth() + 1).toString().padStart(2, '0') + "-" 
-            + now.getDate().toString().padStart(2, '0') + " " 
-            + now.getHours().toString().padStart(2, '0') + ":" 
-            + now.getMinutes().toString().padStart(2, '0') + ":" 
-            + now.getSeconds().toString().padStart(2, '0');
-
+        const timestamp = Date.now();
+        const date = new Date(timestamp);
+        const formattedTimestamp = date.toLocaleString()
 
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/addexpense`, {
             method:"POST",
@@ -282,7 +277,13 @@ const Expenses = () => {
         } else if (sort === "From/To (A to Z)") {
             const sortExpenses = allExpenses.sort ( (a,b) => a.person.localeCompare(b.person));
             setAllExpenses(sortExpenses);
-        }   
+        }  else if (sort === "Time (Latest)") {
+            const sortExpenses = allExpenses.sort ( (a,b) => new Date(a.date) - new Date(b.date));
+            setAllExpenses(sortExpenses);
+        }  else if (sort === "Time (Oldest)") {
+            const sortExpenses = allExpenses.sort ( (a,b) => new Date(b.date) - new Date(a.date));
+            setAllExpenses(sortExpenses);
+        }    
     }
 
     return (
@@ -325,16 +326,16 @@ const Expenses = () => {
                         <div className="dropdownmenu">
                             <button type="button" onClick={dropdownCategory} className="customize-expense">{category}</button>
 
-                            {dropCategory && <div className="categories">
+                            {dropCategory && <span className="categories">
                                 <button type="button" onClick={dropdownCategory} value="Groceries">Groceries</button>
                                 <button type="button" onClick={dropdownCategory} value="Alcohol">Alcohol</button>
                                 <button type="button" onClick={dropdownCategory} value="Brotherhood">Brotherhood</button>
                                 <button type="button" onClick={dropdownCategory} value="Rush">Rush</button>
-                            </div>}
+                            </span>}
                         </div>
 
                         <button type="button" value="true" className="customize-expense" onClick={() => setGain(!gain)}> + / -</button>
-                        <input type="text" placeholder="Enter amount..." value={value} onChange={handleChange} maxLength={20}
+                        <input type="text" placeholder="Enter amount..." value={value} onChange={handleChange} maxLength={6}
                             onKeyDown={(e) => {
                                 if (["e", "E", "+", "-"].includes(e.key)) {
                                     e.preventDefault();
@@ -376,15 +377,15 @@ const Expenses = () => {
 
             <div className="expense-sheet">
                 <div className="sheet-headers">
-                    <p>Date</p>
+                    <p className="date-expense">Date</p>
                     <p>Category</p>
                     <p>Value</p>
                     <p>From/To</p>
                     <p className="sort-dropdown">
                         <button className="sort-expense" onClick={selectSort} value="Sort By:"> {sortExpense}</button>
                         {dropSort && <div className="sort-dropmenu">
-                            <button type="button" onClick={selectSort} value="Time (H to L)"> Time (High to Low)</button>
-                            <button type="button" onClick={selectSort} value="Time (L to H)"> Time (Low to High)</button>
+                            <button type="button" onClick={selectSort} value="Time (Latest)"> Time (Latest)</button>
+                            <button type="button" onClick={selectSort} value="Time (Oldest)"> Time (Oldest)</button>
                             <button type="button" onClick={selectSort} value="Value (L to H)"> Value (High to Low)</button>
                             <button type="button" onClick={selectSort} value="From/To (A to Z)"> From/To (A to Z)</button>
                             <button type="button" onClick={selectSort} value="Category (A to Z)"> Category (A to Z)</button>
@@ -395,7 +396,7 @@ const Expenses = () => {
                 <div className="scroll-chart">
                     {allExpenses.map((item, index) => (
                         <div key={index} className="expense-row">
-                            <p>{item.date || "none"}</p>
+                            <p className="date-expense">{item.date || "none"}</p>
                             <p>{item.category}</p>
                             {item.value < 0 ? (<p style={{color:"red"}}>${item.value}</p>) : (
                                 <p style={{color:"green"}}>${item.value}</p>
