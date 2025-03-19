@@ -286,7 +286,11 @@ const Expenses = () => {
             </div>
 
             <div className="expense-sheet">
+                {allExpenses.map((item, index) => (
+                    <p>hi</p>
+                ))}
 
+                
                 <p>sheet</p>
             </div>
         </div>

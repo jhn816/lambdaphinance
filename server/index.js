@@ -167,7 +167,7 @@ app.post("/api/expenses", async (req, res) => {
     try {
         const {email, collection} = req.body;
 
-        const allExpenses = await Expense.find({email, collection})
+        const allExpenses = await Expense.find({email, collection});
         res.status(201).json({ message: "Collections found successfully", expenses: allExpenses });
     } catch (error) {
         console.error("Error saving expense:", error);
