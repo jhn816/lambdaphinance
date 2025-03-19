@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import "./css/Expenses.css"
 import { Link, useNavigate } from "react-router-dom";
 import { clear } from "@testing-library/user-event/dist/clear";
@@ -14,9 +14,13 @@ const Expenses = () => {
     const [dropCategory, setDropCategory] = useState(false);
     const [expenseSheet, setExpenseSheet] = useState("Choose Expenses ▼");
     const [dropExpense, setDropExpense] = useState(false);
+
+    const [netGain, setNetGain] = useState(0);
+    const [netLoss, setNetLoss] = useState(0);
     
     const [addedExpense, setAddedExpense] = useState(false);
     const [allExpenses, setAllExpenses] = useState([]);
+
     const [allCollections, setAllCollections] = useState([]);
     const [collectionName, setCollectionName] = useState("");
 
@@ -47,7 +51,9 @@ const Expenses = () => {
             setEmail(result.user.email)
             setUsername(result.user.user)
         })
+    }, [token, navigate]);
 
+    useEffect( () => {
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/collections`, {
             method:"POST",
             headers:{
@@ -63,8 +69,10 @@ const Expenses = () => {
                 return;
             }
             setAllCollections(result.collections);
-        })
+        })  
+    }, [expenseSheet, email])
 
+    useEffect( () => {
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/expenses`, {
             method:"POST",
             headers:{
@@ -80,20 +88,39 @@ const Expenses = () => {
                 console.log("Error", result.error);
                 return;
             }
+            setNetLoss(0);
+            setNetGain(0);
             setAllExpenses(result.expenses);
         })
+    }, [addedExpense, expenseSheet])
 
-        }, [token, navigate, email, expenseSheet, addedExpense]);
+    useEffect ( () => {
+        for (let expense of allExpenses) {
+            if (expense.collection === expenseSheet) {
+                if (expense.value < 0) {
+                    setNetLoss(prevLoss => prevLoss - expense.value);
+                } else {
+                    setNetGain(prevGain => prevGain + expense.value);
+                }
+            }
+        }
+    }, [allExpenses])
 
     const addExpense = (event) => {
         event.preventDefault();
 
-        if (value === "0" || value === "") {
+        if (expenseSheet === "Choose Expenses ▼") {
+            alert("Please select a collection");
+            return;
+        } else if (value === "0" || value === "") {
             alert("Please enter a valid amount");
+            return;
         } else if (gain === null) {
             alert("Please indicate if the expense is positive or negative")
+            return;
         } else if (category === "Category") {
             alert("Please select a category");
+            return;
         }
 
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/addexpense`, {
@@ -140,6 +167,7 @@ const Expenses = () => {
                 console.log(result.error);
                 return;
             }
+            setAddedExpense(!addedExpense);
             console.log("message",result.message);
             console.log("deletedExpense",result.expense);
         })
@@ -232,8 +260,10 @@ const Expenses = () => {
                     <div className="tracker-headers">
                         <h4> {username}'s Financial Book</h4>
                         <div className="dropdownmenu">
+                            <p>Looking At</p>
+                            {expenseSheet !== "Create New +" && 
+                            <button type="button" className="expense-button" onClick={dropdownExpense}>{expenseSheet}</button>}
 
-                            {expenseSheet !== "Create New +" && <button type="button" className="expense-button" onClick={dropdownExpense}>{expenseSheet}</button>}
                             {expenseSheet === "Create New +" && <div className="collection-sheets"> 
                                 <input placeholder="Enter Collection Name..." onChange={(e) => (setCollectionName(e.target.value))}/>
                                 <button type="button" onClick={submitCollection}>Create</button>
@@ -292,14 +322,14 @@ const Expenses = () => {
                             <header>
                                 <h3>Net Gain</h3>
                             </header>
-                            <p style={{ color: "green" }}>$0</p>
+                            <p style={{ color: "green" }}>${netGain}</p>
                         </div>
 
                         <div className="expense-card">
                             <header>
                                 <h3>Net Loss</h3>
                             </header>
-                            <p style={{ color: "red" }}>$0</p>
+                            <p style={{ color: "red" }}>${netLoss}</p>
                         </div>
                     </div>
 
@@ -314,7 +344,7 @@ const Expenses = () => {
 
             <div className="expense-sheet">
                 {allExpenses.map((item, index) => (
-                    <div className="expense-row">
+                    <div key={index} className="expense-row">
                         <p>{item.category}</p>
                         <p>{item.value}</p>
                         <p>{item.person}</p>

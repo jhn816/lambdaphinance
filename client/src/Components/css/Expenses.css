@@ -197,6 +197,12 @@
     position: relative;
 }
 
+.dropdownmenu p {
+    font-size: 20px;
+    margin: 0px;
+    margin-bottom: 5px;
+}
+
 .categories {
     border-radius: 10px;
     display: flex;

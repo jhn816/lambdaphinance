@@ -135,8 +135,10 @@ app.post("/api/addcollection", async (req, res) => {
 app.post("/api/addexpense", async (req, res) => {
     try {
         const { email, collection, value, category, gain, person } = req.body;
+        
 
-        let new_value = parseInt(value);
+        let new_value = value.replace(/,/g, "");
+        new_value = parseInt(new_value);
         if (!gain) {
             new_value = new_value * -1;
         }
