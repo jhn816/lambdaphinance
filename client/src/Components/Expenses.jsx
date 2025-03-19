@@ -13,6 +13,8 @@ const Expenses = () => {
     const [dropCategory, setDropCategory] = useState(false);
     const [expenseSheet, setExpenseSheet] = useState("Choose Expenses ▼");
     const [dropExpense, setDropExpense] = useState(false);
+    
+    const [allCollections, setAllCollections] = useState([]);
     const [collectionName, setCollectionName] = useState("");
 
 
@@ -43,7 +45,7 @@ const Expenses = () => {
             setUsername(result.user.user)
         })
 
-        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/expenses`, {
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/collections`, {
             method:"POST",
             headers:{
                 "Content-Type":"application/json"
@@ -51,9 +53,16 @@ const Expenses = () => {
             body: JSON.stringify({
                 email
             })
+        }) .then( (res) => res.json() )
+        .then( (result) => {
+            if (result.error) {
+                console.log("Error", error);
+                return;
+            }
+            setAllCollections(result.collections);
         })
 
-        }, [token, navigate]);
+        }, [token, navigate, email]);
 
     const clearExpense = (event) => {
         event.preventDefault();
@@ -106,8 +115,8 @@ const Expenses = () => {
         }
     };
 
-    const makeCollection = (event) => {
-        setExpenseSheet("Create New +");
+    const selectCollection = (e) => {
+        setExpenseSheet(e.target.value);
         setDropExpense(false);
     }
 
@@ -172,15 +181,17 @@ const Expenses = () => {
                     <div className="tracker-headers">
                         <h4> {username}'s Financial Book</h4>
                         <div className="dropdownmenu">
-                            {expenseSheet !== "Create New +" && <button type="button" class="expense-button" onClick={dropdownExpense}>{expenseSheet}</button>}
+                            {expenseSheet !== "Create New +" && <button type="button" className="expense-button" onClick={dropdownExpense}>{expenseSheet}</button>}
                             {expenseSheet === "Create New +" && <div className="collection-sheets"> 
                                 <input placeholder="Enter Collection Name..." onChange={(e) => (setCollectionName(e.target.value))}/>
                                 <button type="button" onClick={submitCollection}>Create</button>
                             </div>}
                             {dropExpense && <div className="expense-sheets">
                                 <p>Your Collections</p>
-                                <button type="button">None</button>
-                                <button type="button" onClick={makeCollection}>Create New +</button>
+                                {allCollections.map((item ,index) => (
+                                    <button key="index" type="button" value={item.collectionName} onClick={selectCollection}>{item.collectionName}</button>
+                                ))}
+                                <button type="button" value="Create New +"onClick={selectCollection}>Create New +</button>
 
                                 <p>Shared with You</p>
                                 <button type="button">None</button>
