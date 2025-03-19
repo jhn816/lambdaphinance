@@ -31,6 +31,8 @@ const Profile = () => {
         .then( (result) => {
             if (!result.user) {
                 console.log("Profile not found");
+                localStorage.removeItem("token");
+                navigate("/");
                 return;
             }
             setEmail(result.user.email)

@@ -108,6 +108,7 @@ const expenseSchema = new mongoose.Schema({
     value: Number,
     category: String,
     person: String,
+    date: String,
 });
 const Expense = finances.model("Expense", expenseSchema);
 
@@ -134,7 +135,7 @@ app.post("/api/addcollection", async (req, res) => {
 
 app.post("/api/addexpense", async (req, res) => {
     try {
-        const { email, collection, value, category, gain, person } = req.body;
+        const { email, collection, value, category, gain, person, formattedTimestamp } = req.body;
         
 
         let new_value = value.replace(/,/g, "");
@@ -143,7 +144,7 @@ app.post("/api/addexpense", async (req, res) => {
             new_value = new_value * -1;
         }
 
-        const newExpense = new Expense({ email, collection, value: new_value, category, person });
+        const newExpense = new Expense({ email, collection, value: new_value, category, person, date:formattedTimestamp});
         await newExpense.save();
 
         res.status(201).json({ message: "Expense saved successfully", expense: newExpense });

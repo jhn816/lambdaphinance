@@ -24,7 +24,11 @@
 .expense-sheet {
     display: flex;
     flex-direction: column;
-    border: 1px solid black;
+    border-radius: 20px;
+    overflow:hidden;
+    background-color: #fdf3e5;
+    filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.376));
+    border: 5px solid rgb(234, 234, 234);
     width: 40%;
     height: 90%;
 }
@@ -219,6 +223,7 @@
     height: 40px;
     background-color: rgb(236, 217, 200);
     border: 0px;
+    transition: .3s;
 }
 
 .categories button:hover {
@@ -313,8 +318,114 @@
     padding: 10px;
 }
 
-.expense-row {
-    gap: 30px;
+.sheet-headers {
     display: flex;
     flex-direction: row;
+    background-color: rgb(137, 107, 78);
+}
+
+.sheet-headers p{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 1000;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: rgb(255, 255, 255);
+    width: 20%;
+    max-width: 25%;
+    height: 40px;
+    margin: 0px;
+    padding: 10px;
+    font-size: 20px;
+}
+
+.expense-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.expense-row p{
+    font-weight: 100;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: black;
+    width: 25%;
+    max-width: 25%;
+    margin: 0px;
+    border: .1px solid black;
+    padding: 10px;
+    font-size: 15px;
+}
+
+.delete-expense {
+    font-weight: 100;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: black;
+    background-color: #e3e3e3;
+    width: 25%;
+    max-width: 25%;
+    margin: 0px;
+    border: .1px solid black;
+    padding: 10px;
+    font-size: 15px;
+    transition: .3s;
+}
+
+.delete-expense:hover{
+    cursor: pointer;
+    background-color: #d1cfcf;
+}
+
+.scroll-chart {
+    overflow: scroll;
+}
+
+.sort-expense {
+    background-color: #f6f6f6;
+    border: 1px solid black;
+    width: 100%;
+    font-size: 12px;
+    border-radius: 20px;
+    padding: 10px;
+    transition: .3s;
+}
+
+.sort-expense:hover {
+    transform: scale(1.05);
+    background-color: #e4e4e4;
+    cursor: pointer;
+}
+
+.sort-expense:active{
+    transform: scale(1);
+}
+
+.sort-dropdown {
+    width: 20%;
+    position: relative;
+}
+
+.sort-dropmenu {
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+    width: 200px;
+    border: 1px solid black;
+    top: 90%;
+    right: 10%;
+    overflow: hidden;
+    position: absolute;
+}
+
+.sort-dropmenu button {
+    transition: .3s;
+    width: 100%;
+    height: 40px;
+    background-color: rgb(246, 245, 245);
+    border: 0px;
+}
+.sort-dropmenu button:hover {
+    transform: scale(1);
+    background-color: #e4e4e4;
+    cursor: pointer;
 }

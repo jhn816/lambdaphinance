@@ -15,6 +15,9 @@ const Expenses = () => {
     const [expenseSheet, setExpenseSheet] = useState("Choose Expenses ▼");
     const [dropExpense, setDropExpense] = useState(false);
 
+    const [sortExpense, setSortExpense] = useState("Sort By:");
+    const [dropSort, setDropSort] = useState(false);
+
     const [netGain, setNetGain] = useState(0);
     const [netLoss, setNetLoss] = useState(0);
     
@@ -46,6 +49,8 @@ const Expenses = () => {
         .then( (result) => {
             if (!result.user) {
                 console.log("Profile not found");
+                localStorage.removeItem("token");
+                navigate("/");
                 return;
             }
             setEmail(result.user.email)
@@ -69,7 +74,9 @@ const Expenses = () => {
                 return;
             }
             setAllCollections(result.collections);
-        })  
+        }) .catch((error) => {
+            console.error("Error:", error);
+        });
     }, [expenseSheet, email])
 
     useEffect( () => {
@@ -120,6 +127,15 @@ const Expenses = () => {
             return;
         }
 
+        const now = new Date();
+        const formattedTimestamp = now.getFullYear() + "-" 
+            + (now.getMonth() + 1).toString().padStart(2, '0') + "-" 
+            + now.getDate().toString().padStart(2, '0') + " " 
+            + now.getHours().toString().padStart(2, '0') + ":" 
+            + now.getMinutes().toString().padStart(2, '0') + ":" 
+            + now.getSeconds().toString().padStart(2, '0');
+
+
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/addexpense`, {
             method:"POST",
             headers: {
@@ -132,6 +148,7 @@ const Expenses = () => {
                 category,
                 gain,
                 person,
+                formattedTimestamp,
             })
         }).then((res) => res.json() )
         .then( (result) => {
@@ -251,6 +268,23 @@ const Expenses = () => {
         }
     }
 
+    const selectSort = (e) => {
+        let sort = e.target.value;
+        setDropSort(!dropSort);
+        setSortExpense(sort);
+
+        if (sort === "Category (A to Z)") {
+            const sortExpenses = allExpenses.sort ( (a,b) => a.category.localeCompare(b.category));
+            setAllExpenses(sortExpenses);
+        } else if (sort === "Value (L to H)") {
+            const sortExpenses = allExpenses.sort ( (a,b) => a.value - b.value);
+            setAllExpenses(sortExpenses);
+        } else if (sort === "From/To (A to Z)") {
+            const sortExpenses = allExpenses.sort ( (a,b) => a.person.localeCompare(b.person));
+            setAllExpenses(sortExpenses);
+        }   
+    }
+
     return (
         <div className="expense-page">
             <div className="add-container">
@@ -341,14 +375,36 @@ const Expenses = () => {
             </div>
 
             <div className="expense-sheet">
-                {allExpenses.map((item, index) => (
-                    <div key={index} className="expense-row">
-                        <p>{item.category}</p>
-                        <p>{item.value}</p>
-                        <p>{item.person}</p>
-                        <button onClick={(e) => deleteExpense(item)}>delete</button>
-                    </div>
-                ))}
+                <div className="sheet-headers">
+                    <p>Date</p>
+                    <p>Category</p>
+                    <p>Value</p>
+                    <p>From/To</p>
+                    <p className="sort-dropdown">
+                        <button className="sort-expense" onClick={selectSort} value="Sort By:"> {sortExpense}</button>
+                        {dropSort && <div className="sort-dropmenu">
+                            <button type="button" onClick={selectSort} value="Time (H to L)"> Time (High to Low)</button>
+                            <button type="button" onClick={selectSort} value="Time (L to H)"> Time (Low to High)</button>
+                            <button type="button" onClick={selectSort} value="Value (L to H)"> Value (High to Low)</button>
+                            <button type="button" onClick={selectSort} value="From/To (A to Z)"> From/To (A to Z)</button>
+                            <button type="button" onClick={selectSort} value="Category (A to Z)"> Category (A to Z)</button>
+                        </div>
+                        }
+                    </p>
+                </div>
+                <div className="scroll-chart">
+                    {allExpenses.map((item, index) => (
+                        <div key={index} className="expense-row">
+                            <p>{item.date || "none"}</p>
+                            <p>{item.category}</p>
+                            {item.value < 0 ? (<p style={{color:"red"}}>${item.value}</p>) : (
+                                <p style={{color:"green"}}>${item.value}</p>
+                            ) }
+                            <p>{item.person}</p>
+                            <p onClick={(e) => deleteExpense(item)} className="delete-expense">Edit</p>
+                        </div>
+                    ))}
+                </div>
             </div>
 
         </div>
