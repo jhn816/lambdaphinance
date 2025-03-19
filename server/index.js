@@ -155,9 +155,9 @@ app.post("/api/addexpense", async (req, res) => {
 
 app.delete("/api/expense", async(req, res) => {
     try {
-        const {id} = req.body;
+        const {_id} = req.body;
          
-        const deletedExpense = await Expense.deleteOne({id});
+        const deletedExpense = await Expense.deleteOne({_id});
         res.status(201).json({ message: "Expense deleted successfully", expense: deletedExpense});
     } catch (error) {
         console.error("Error saving expense:", error);

@@ -159,7 +159,7 @@ const Expenses = () => {
                 "Content-Type":"application/json"
             },
             body: JSON.stringify({
-                id:item.id,
+                id:item._id,
             })
         }) .then((res) => res.json() )
         .then( (result) => {
@@ -337,7 +337,7 @@ const Expenses = () => {
                         <header>
                             <h3>Total Balance</h3>
                         </header>
-                        <p>$0</p>
+                        <p>${netGain - netLoss}</p>
                     </div>
                 </div>
             </div>
