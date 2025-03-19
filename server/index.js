@@ -154,7 +154,6 @@ app.post("/api/expenses", async (req, res) => {
     try {
         const {email} = req.body;
 
-        const  
     } catch (error) {
         console.error("Error saving expense:", error);
         res.status(500).json({ error: "Internal server error" });

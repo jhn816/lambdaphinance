@@ -133,7 +133,6 @@ const Expenses = () => {
             console.log("Collection saved successfully", result.collection);
         })
         .catch(error => console.error("Error:", error));
-
     }
 
     const dropdownCategory = (e) => {
