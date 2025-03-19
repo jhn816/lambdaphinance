@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./css/Expenses.css"
 import { Link, useNavigate } from "react-router-dom";
+import { clear } from "@testing-library/user-event/dist/clear";
 
 const Expenses = () => {
     // expense arguments
@@ -14,6 +15,7 @@ const Expenses = () => {
     const [expenseSheet, setExpenseSheet] = useState("Choose Expenses ▼");
     const [dropExpense, setDropExpense] = useState(false);
     
+    const [addedExpense, setAddedExpense] = useState(false);
     const [allExpenses, setAllExpenses] = useState([]);
     const [allCollections, setAllCollections] = useState([]);
     const [collectionName, setCollectionName] = useState("");
@@ -81,16 +83,7 @@ const Expenses = () => {
             setAllExpenses(result.expenses);
         })
 
-        }, [token, navigate, email, expenseSheet]);
-
-    const clearExpense = (event) => {
-        event.preventDefault();
-
-        setValue("");
-        setCategory("Category↴")
-        setGain(true);
-        setPerson("");
-    }
+        }, [token, navigate, email, expenseSheet, addedExpense]);
 
     const addExpense = (event) => {
         event.preventDefault();
@@ -122,9 +115,44 @@ const Expenses = () => {
                 console.log(result.error);
                 return;
             }
+            setAddedExpense(!addedExpense);
+            setValue("");
+            setCategory("Category↴")
+            setGain(true);
+            setPerson("")
             console.log("Expense saved successfully", result.expense);
         })
         .catch(error => console.error("Error:", error));
+    }
+
+    const deleteExpense = (item) => {
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/expense`, {
+            method:"DELETE",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                id:item.id,
+            })
+        }) .then((res) => res.json() )
+        .then( (result) => {
+            if (result.error) {
+                console.log(result.error);
+                return;
+            }
+            console.log("message",result.message);
+            console.log("deletedExpense",result.expense);
+        })
+        .catch(error => console.error("Error:", error));
+    }
+
+    const clearExpense = (event) => {
+        event.preventDefault();
+
+        setValue("");
+        setCategory("Category↴")
+        setGain(true);
+        setPerson("");
     }
 
     const handleChange = (e) => {
@@ -281,18 +309,20 @@ const Expenses = () => {
                         </header>
                         <p>$0</p>
                     </div>
-
                 </div>
             </div>
 
             <div className="expense-sheet">
                 {allExpenses.map((item, index) => (
-                    <p>hi</p>
+                    <div className="expense-row">
+                        <p>{item.category}</p>
+                        <p>{item.value}</p>
+                        <p>{item.person}</p>
+                        <button onClick={(e) => deleteExpense(item)}>delete</button>
+                    </div>
                 ))}
-
-                
-                <p>sheet</p>
             </div>
+
         </div>
     );
 };

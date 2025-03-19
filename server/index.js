@@ -151,6 +151,18 @@ app.post("/api/addexpense", async (req, res) => {
     }
 });
 
+app.delete("/api/expense", async(req, res) => {
+    try {
+        const {id} = req.body;
+         
+        const deletedExpense = await Expense.deleteOne({id});
+        res.status(201).json({ message: "Expense deleted successfully", expense: deletedExpense});
+    } catch (error) {
+        console.error("Error saving expense:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
 app.post("/api/collections", async (req, res) => {
     try {
         const {email} = req.body;
