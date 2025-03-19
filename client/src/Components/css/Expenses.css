@@ -1,0 +1,196 @@
+.expense-page {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    color: black;
+    height: 90vh;
+    width: 100%;
+    gap: 50px;
+}
+
+.add-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #fdf3e5;
+    border-radius: 20px;
+    filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.376));
+    width: 45%;
+    height: 90%;
+    overflow: hidden;
+}
+
+.expense-sheet {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    width: 40%;
+    height: 90%;
+}
+
+.tracker-headers {
+    color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 30px;
+    padding-right: 30px;
+    background-color: #184180;
+}
+
+.expense-information {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(0, 0, 0, 0.272);
+    
+}
+
+.net-expenses {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 80px;
+}
+
+.expense-card {
+    width: 300px;
+    height: 150px;
+    background-color: white;
+    border-radius: 10px;
+    transition: .3s;
+    position: relative; 
+    overflow: hidden;
+}
+
+.balance-card {
+    width: 90%;
+    max-width: 680px;
+    height: 150px;
+    background-color: white;
+    border-radius: 10px;
+    transition: .3s;
+    position: relative; 
+    overflow: hidden;
+}
+
+.expense-card:hover, .balance-card:hover {
+    transform: scale(1.01);
+    filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.376));
+}
+
+.expense-card h3, .balance-card h3 {
+    color:black;
+    cursor: default;
+    font-weight: 100;
+}
+
+.expense-card header, .balance-card header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(228, 228, 228);
+    height: 40%;
+    width: 100%;
+}
+
+.expense-inputs {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.expense-inputs button{
+    width: 80px;
+    height: 30px;
+    background-color: rgb(206, 184, 164);
+    color: black;
+    border: 0px solid transparent;
+    border-radius: 10px;
+    transition: .3s;
+}
+
+.expense-inputs button:hover{
+    background-color: rgb(190, 170, 150);
+    transform: scale(1.03);
+    cursor: pointer;
+}
+
+.expense-inputs button:active{
+    transform: scale(1);
+}
+
+.expense-inputs input {
+    font-size: 20px;
+    width: 30%;
+    height: 30px;
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.expense-button{
+    width: 140px;
+    height: 40px;
+    border-radius: 5px;
+    border: 0px solid transparent;
+    cursor: pointer;
+}
+
+.add-container form h3 {
+    font-weight: 200;
+}
+
+.add-container form {
+    padding-bottom: 30px;
+}
+
+.class-submit {
+    margin-top: 30px;
+    background-color:#7dff7d;
+    height: 30px;
+    width: 150px;
+    border-radius: 10px;
+    border: 0px;
+    transition: .3s;
+}
+
+.class-submit:hover {
+    background-color:#56f356;
+    transform: scale(1.03);
+    cursor: pointer;
+}
+
+.class-submit:active, .class-clear:active{
+    transform: scale(1);
+}
+
+.class-clear {
+    margin-top: 30px;
+    background-color:#ff7d7d;
+    height: 30px;
+    width: 150px;
+    border-radius: 10px;
+    border: 0px;
+    transition: .3s;
+}
+
+.class-clear:hover {
+    background-color:#f35656;
+    transform: scale(1.03);
+    cursor: pointer;
+}
+
+.form-buttons{
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    justify-content: center;
+}

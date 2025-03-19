@@ -8,6 +8,7 @@ import Expenses from "./Components/Expenses.jsx"
 import Records from "./Components/Records.jsx"
 import Plan from "./Components/Plan.jsx"
 import Profile from "./Components/Profile.jsx"
+import About from "./Components/About.jsx"
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -23,9 +24,11 @@ function App() {
 
             {/* Navigation Bar */}
             <Route path="/expenses" element= {<Expenses />}/>
-            <Route path="/Records" element= {<Records />}/>
-            <Route path="/Plan" element= {<Plan />}/>
-            <Route path="/Profile" element= {<Profile />}/>
+            <Route path="/records" element= {<Records />}/>
+            <Route path="/plan" element= {<Plan />}/>
+
+            <Route path="/about" element= {<About />}/>
+            <Route path="/profile" element= {<Profile />}/>
 
           </Routes>
       </header>
