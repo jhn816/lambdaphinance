@@ -112,14 +112,11 @@ const Expenses = () => {
         if (expenseSheet === "Choose Expenses ▼") {
             alert("Please select a collection");
             return;
-        } else if (value === "0" || value === "") {
-            alert("Please enter a valid amount");
-            return;
-        } else if (gain === null) {
-            alert("Please indicate if the expense is positive or negative")
-            return;
-        } else if (category === "Category") {
+        } else if (category === "Category↴") {
             alert("Please select a category");
+            return;
+        }else if (value === "0" || value === "") {
+            alert("Please enter a valid amount");
             return;
         }
 
