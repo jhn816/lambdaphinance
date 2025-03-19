@@ -104,6 +104,7 @@ app.get("/api/profile", (req, res) => {
 
 const expenseSchema = new mongoose.Schema({
     email: String,
+    collection: String,
     value: Number,
     category: String,
     person: String,

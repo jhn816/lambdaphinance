@@ -185,12 +185,14 @@ const Expenses = () => {
                     <div className="tracker-headers">
                         <h4> {username}'s Financial Book</h4>
                         <div className="dropdownmenu">
+
                             {expenseSheet !== "Create New +" && <button type="button" className="expense-button" onClick={dropdownExpense}>{expenseSheet}</button>}
                             {expenseSheet === "Create New +" && <div className="collection-sheets"> 
                                 <input placeholder="Enter Collection Name..." onChange={(e) => (setCollectionName(e.target.value))}/>
                                 <button type="button" onClick={submitCollection}>Create</button>
                                 <button type="button" onClick={selectCollection} value="Choose Expenses ▼">Cancel</button>
                             </div>}
+
                             {dropExpense && <div className="expense-sheets">
                                 <p>Your Collections</p>
                                 {allCollections.map((item ,index) => (
@@ -200,13 +202,16 @@ const Expenses = () => {
                                 <p>Shared with You</p>
                                 <button type="button">None</button>
                             </div>}
+
                         </div>
                     </div>
+
                     <div className="expense-amount">
                         <h3>Amount to add:</h3>
                         { gain ? ( <h3 style={{ color: "green" }}> ${value || "0"} </h3> )
                         : <h3 style={{ color: "red" }}> -${value || "0"} </h3>}
                     </div>
+                    
                     <div className="expense-inputs">
                         <div className="dropdownmenu">
                             <button type="button" onClick={dropdownCategory} className="customize-expense">{category}</button>
@@ -262,6 +267,7 @@ const Expenses = () => {
             </div>
 
             <div className="expense-sheet">
+
                 <p>sheet</p>
             </div>
         </div>
