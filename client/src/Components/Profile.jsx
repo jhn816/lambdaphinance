@@ -5,7 +5,9 @@ import { Link, useNavigate } from "react-router-dom";
 const Profile = () => {
     const [email,setEmail] = useState("");
     const [username,setUsername] = useState("");
+
     const navigate = useNavigate();
+    const token = localStorage.getItem("token");
 
     const logOut = (event) => {
         event.preventDefault();
@@ -15,6 +17,10 @@ const Profile = () => {
     }
 
     useEffect( () => {
+        if (!token) {
+            navigate("/");
+        }
+
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/profile`, {
             method:"GET",
             headers: {
@@ -30,7 +36,7 @@ const Profile = () => {
             setEmail(result.user.email)
             setUsername(result.user.user)
         })
-    }, []);
+    }, [token, navigate]);
 
     return (
         <div className="profile-container">
@@ -43,7 +49,6 @@ const Profile = () => {
                 <button className="logout" onClick={logOut}> Log Out </button>
             </div>
         </div>
-        
     )
 }
 

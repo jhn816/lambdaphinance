@@ -88,6 +88,7 @@
     color:black;
     cursor: default;
     font-weight: 100;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .expense-card header, .balance-card header{
@@ -107,7 +108,7 @@
     gap: 20px;
 }
 
-.expense-inputs button{
+.customize-expense {
     width: 80px;
     height: 30px;
     background-color: rgb(206, 184, 164);
@@ -117,13 +118,13 @@
     transition: .3s;
 }
 
-.expense-inputs button:hover{
+.customize-expense:hover{
     background-color: rgb(190, 170, 150);
     transform: scale(1.03);
     cursor: pointer;
 }
 
-.expense-inputs button:active{
+.customize-expense:active{
     transform: scale(1);
 }
 
@@ -134,14 +135,6 @@
     border-radius: 5px;
     padding-left: 10px;
     padding-right: 10px;
-}
-
-.expense-button{
-    width: 140px;
-    height: 40px;
-    border-radius: 5px;
-    border: 0px solid transparent;
-    cursor: pointer;
 }
 
 .add-container form h3 {
@@ -193,4 +186,93 @@
     flex-direction: row;
     gap: 30px;
     justify-content: center;
+}
+
+.expense-amount {
+    display:flex;
+    justify-content: center;
+}
+
+.dropdownmenu {
+    position: relative;
+}
+
+.categories button {
+    width: 100%;
+    height: 40px;
+    background-color: rgb(236, 217, 200);
+    border: 0px;
+}
+
+.categories {
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+    width: 100px;
+    top: 105%;
+    position: absolute;
+    overflow: hidden;
+}
+
+.categories button:hover {
+    transform: scale(1);
+    background-color: rgb(183, 162, 144);
+    cursor: pointer;
+}
+
+.expense-button{
+    position: relative;
+    width: 140px;
+    height: 40px;
+    border-radius: 5px;
+    border: 0px solid transparent;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.expense-button:hover {
+    background-color: gainsboro;
+}
+
+.expense-sheets {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+
+    border-radius: 5px;
+    overflow: hidden;
+    width: 110%;
+    position: absolute;
+    top: 105%;
+    z-index: 20;
+}
+
+.expense-sheets p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0px;
+    background-color:rgb(228, 228, 228);
+    color: black;
+    width: 100%;
+    height: 20px;
+    font-size: 12px;
+    font-weight: 1000;
+    padding-top: 5px;
+    border-bottom: 1px solid black;
+}
+
+.expense-sheets button {
+    padding: 5px;
+    background-color:rgb(228, 228, 228);
+    color: black;
+    font-size: 12px;
+    border: 0px;
+    transition: .3s;
+}
+
+.expense-sheets button:hover {
+    background-color:rgb(202, 201, 201);
+    cursor: pointer;
 }

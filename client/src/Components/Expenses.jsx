@@ -1,25 +1,48 @@
 import React, { useState, useEffect } from "react";
 import "./css/Expenses.css"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Expenses = () => {
-    const [value, setValue] = useState("0");
+    const [value, setValue] = useState("");
     const [category, setCategory] = useState("Category↴");
     const [person, setPerson] = useState("");
-    const [gain, setGain] = useState(null);
+    const [gain, setGain] = useState(true);
     const [dropCategory, setDropCategory] = useState(false);
-    const [expenseSheet, setExpenseSheet] = useState("Which Expenses ▼");
+    const [expenseSheet, setExpenseSheet] = useState("Choose Expenses ▼");
     const [dropExpense, setDropExpense] = useState(false);
+
+    const navigate = useNavigate();
+    const token = localStorage.getItem("token");
+    const [email,setEmail] = useState("");
+    const [username,setUsername] = useState("");
 
 
     useEffect( () => {
+        if (!token) {
+            navigate("/");
+        }
 
-    }, []);
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/profile`, {
+            method:"GET",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                "Content-Type":"application/json"
+            }
+        }) .then( (res) => res.json() )
+        .then( (result) => {
+            if (!result.user) {
+                console.log("Profile not found");
+                return;
+            }
+            setEmail(result.user.email)
+            setUsername(result.user.user)
+        })
+    }, [token, navigate]);
 
     const clearExpense = (event) => {
         event.preventDefault();
 
-        setValue("0");
+        setValue("");
         setCategory("Category↴")
         setGain(true);
         setPerson("");
@@ -44,10 +67,6 @@ const Expenses = () => {
             setValue(Number(rawValue).toLocaleString());
         }
     };
-
-    const moneySign = (e) => {
-        setGain(!gain);
-    }
 
     const dropdownCategory = (e) => {
         if (dropCategory === false) {
@@ -84,18 +103,26 @@ const Expenses = () => {
             <div className="add-container">
                 <form onSubmit={addExpense}>
                     <div className="tracker-headers">
-                        <h2> Financial Tracker</h2>
-                        <button type="button" class="expense-button" onClick={dropdownExpense}>{expenseSheet}</button>
-                        {dropExpense && <div className="expense-sheets">
-                            <p>Your Expenses</p>
-                            <p>Expenses shared with You</p>
-                        </div>}
-                        
+                        <h4> {username}'s Financial Book</h4>
+                        <div className="dropdownmenu">
+                            <button type="button" class="expense-button" onClick={dropdownExpense}>{expenseSheet}</button>
+                            {dropExpense && <div className="expense-sheets">
+                                <p>Your Collections</p>
+                                <button type="button">None</button>
+                                <p>Shared with You</p>
+                                <button type="button">None</button>
+                            </div>}
+                        </div>
                     </div>
-                    <h3>Amount to add:{!gain && "-"}${value || "0"}</h3>
+                    <div className="expense-amount">
+                        <h3>Amount to add:</h3>
+                        { gain ? ( <h3 style={{ color: "green" }}> ${value || "0"} </h3> )
+                        : <h3 style={{ color: "red" }}> -${value || "0"} </h3>}
+                    </div>
                     <div className="expense-inputs">
                         <div className="dropdownmenu">
-                            <button type="button" onClick={dropdownCategory} className="dropbutton">{category}</button>
+                            <button type="button" onClick={dropdownCategory} className="customize-expense">{category}</button>
+
                             {dropCategory && <div className="categories">
                                 <button type="button" onClick={dropdownCategory} value="Groceries">Groceries</button>
                                 <button type="button" onClick={dropdownCategory} value="Alcohol">Alcohol</button>
@@ -104,8 +131,8 @@ const Expenses = () => {
                             </div>}
                         </div>
 
-                        <button type="button" value="true" onClick={moneySign}> + / -</button>
-                        <input type="text" placeholder="Enter amount..." value={value} onChange={handleChange}
+                        <button type="button" value="true" className="customize-expense" onClick={() => setGain(!gain)}> + / -</button>
+                        <input type="text" placeholder="Enter amount..." value={value} onChange={handleChange} maxLength={20}
                             onKeyDown={(e) => {
                                 if (["e", "E", "+", "-"].includes(e.key)) {
                                     e.preventDefault();
@@ -124,22 +151,22 @@ const Expenses = () => {
                     <div className="net-expenses">
                         <div className="expense-card">
                             <header>
-                                <h3>net gain</h3>
+                                <h3>Net Gain</h3>
                             </header>
-                            <p>$0</p>
+                            <p style={{ color: "green" }}>$0</p>
                         </div>
 
                         <div className="expense-card">
                             <header>
-                                <h3>net loss</h3>
+                                <h3>Net Loss</h3>
                             </header>
-                            <p>$0</p>
+                            <p style={{ color: "red" }}>$0</p>
                         </div>
                     </div>
 
                     <div className="balance-card">
                         <header>
-                            <h3>total balance</h3>
+                            <h3>Total Balance</h3>
                         </header>
                         <p>$0</p>
                     </div>
