@@ -163,6 +163,17 @@ app.post("/api/collections", async (req, res) => {
     }
 })
 
+app.post("/api/expenses", async (req, res) => {
+    try {
+        const {email, collection} = req.body;
+
+        const allExpenses = await Expense.find({email, collection})
+        res.status(201).json({ message: "Collections found successfully", expenses: allExpenses });
+    } catch (error) {
+        console.error("Error saving expense:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+})
 
 
 app.get("/", (req, res) => {

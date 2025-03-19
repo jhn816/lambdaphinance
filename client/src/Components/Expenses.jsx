@@ -14,6 +14,7 @@ const Expenses = () => {
     const [expenseSheet, setExpenseSheet] = useState("Choose Expenses ▼");
     const [dropExpense, setDropExpense] = useState(false);
     
+    const [allExpenses, setAllExpenses] = useState([]);
     const [allCollections, setAllCollections] = useState([]);
     const [collectionName, setCollectionName] = useState("");
 
@@ -62,7 +63,25 @@ const Expenses = () => {
             setAllCollections(result.collections);
         })
 
-        }, [token, navigate, email]);
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/expenses`, {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                email,
+                collection: expenseSheet
+            })
+        }) .then( (res) => res.json() )
+        .then( (result) => {
+            if (result.error) {
+                console.log("Error", result.error);
+                return;
+            }
+            setAllExpenses(result.expenses);
+        })
+
+        }, [token, navigate, email, expenseSheet]);
 
     const clearExpense = (event) => {
         event.preventDefault();
@@ -211,7 +230,7 @@ const Expenses = () => {
                         { gain ? ( <h3 style={{ color: "green" }}> ${value || "0"} </h3> )
                         : <h3 style={{ color: "red" }}> -${value || "0"} </h3>}
                     </div>
-                    
+
                     <div className="expense-inputs">
                         <div className="dropdownmenu">
                             <button type="button" onClick={dropdownCategory} className="customize-expense">{category}</button>
