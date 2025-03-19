@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const Home = ({loggedIn}) => {
     const navigate = useNavigate();
+    const token = localStorage.getItem("token")
 
     useEffect( () => {
         if (!token) {
@@ -28,8 +29,6 @@ const Home = ({loggedIn}) => {
             }
         })
     }, [token, navigate]);
-
-    const token = localStorage.getItem("token")
 
     return (
     (!token ? (<Login /> ) : (
