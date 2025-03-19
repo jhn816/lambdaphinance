@@ -367,7 +367,7 @@
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     color: black;
     width: 20%;
-    max-width: 25%;
+    height: 30px;
     margin: 0px;
     border: .1px solid black;
     padding: 5px;
@@ -392,13 +392,18 @@
     padding-top: 10px;
     font-size: 15px;
 }
-.delete-expense {
+.edit-expense {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-weight: 100;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     color: black;
     background-color: #e3e3e3;
-    width: 25%;
-    max-width: 25%;
+    width: 100%;
+    height: 100%;
     margin: 0px;
     border: .1px solid black;
     padding: 10px;
@@ -406,13 +411,14 @@
     transition: .3s;
 }
 
-.delete-expense:hover{
+.edit-expense:hover{
     cursor: pointer;
     background-color: #d1cfcf;
 }
 
 .scroll-chart {
     overflow: scroll;
+    height: 100%;
 }
 
 .sort-expense {
@@ -444,7 +450,7 @@
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    z-index: 10;
+    z-index: 12;
     width: 200px;
     border: 1px solid black;
     top: 90%;
@@ -468,4 +474,131 @@
 
 .expense-time {
     font-size: 50px;
+}
+
+.expense-row input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 100;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: black;
+    width: 20%;
+    max-width: 25%;
+    height: 30px;
+    margin: 0px;
+    border: .1px solid black;
+    background-color: #faf5ef;
+    padding: 5px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-size: 15px;
+}
+
+.save-category-dropdown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 100;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: black;
+    width: 20%;
+    height: 30px;
+    margin: 0px;
+    border: .1px solid black;
+    padding: 5px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-size: 15px;
+    position: relative;
+}
+
+.saved-category {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(236, 217, 200);
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    border: 0px;
+    font-size: 15px;
+    margin: 0px;
+}
+
+.save-category-menu {
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    
+    z-index: 30;
+    width: 100px;
+    top:0%;
+    position: absolute;
+    overflow: hidden;
+}
+
+.save-category-menu button {
+    width: 100%;
+    height: 40px;
+    background-color: rgb(236, 217, 200);
+    border: 0px;
+    transition: .3s;
+}
+
+.save-category-menu button:hover {
+    transform: scale(1);
+    background-color: rgb(183, 162, 144);
+    cursor: pointer;
+}
+
+.edit-dropdown {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position:relative;
+    width: 20%;
+    max-width: 25%;
+    height: 30px;
+    margin: 0px;
+    border: .1px solid black;
+    padding: 5px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.edit-menu {
+    display: flex;
+    flex-direction: column;
+    position:absolute;
+    z-index: 11;
+    width: 90%;
+    top: 85%;
+    border-radius: 10px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    overflow: hidden;
+    border: .1px solid black;
+}
+
+.edit-menu p, .edit-menu button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 100;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    background-color: #ebeaea;
+    color: black;
+    width: 100%;
+    height: 25px;
+    margin: 0px;
+    padding: 5px;
+    font-size: 13px;
+    border: 0px;
+}
+.edit-menu p:hover, .edit-menu button:hover{
+    background-color: #d9d7d7;
+    cursor: pointer;
 }

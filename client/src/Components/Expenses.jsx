@@ -10,10 +10,17 @@ const Expenses = () => {
     const [person, setPerson] = useState("");
     const [gain, setGain] = useState(true);
 
+    //save expense arguments
+    const [savedValue, setSavedValue] = useState(0);
+    const [savedCategory, setSavedCategory] = useState(null);
+    const [savedPerson, setSavedPerson] = useState("");
+    const [dropSavedCategory, setSavedDropCategory] = useState(false);
+
     // drop down menu
     const [dropCategory, setDropCategory] = useState(false);
     const [expenseSheet, setExpenseSheet] = useState("Choose Expenses ▼");
     const [dropExpense, setDropExpense] = useState(false);
+    const [editingExpense, setEditingExpense] = useState(null);
 
     const [sortExpense, setSortExpense] = useState("Sort By:");
     const [dropSort, setDropSort] = useState(false);
@@ -32,7 +39,6 @@ const Expenses = () => {
     const token = localStorage.getItem("token");
     const [email,setEmail] = useState("");
     const [username,setUsername] = useState("");
-
 
     useEffect( () => {
         if (!token) {
@@ -95,10 +101,13 @@ const Expenses = () => {
                 console.log("Error", result.error);
                 return;
             }
+            setSortExpense("Sort By:");
             setNetLoss(0);
             setNetGain(0);
             setAllExpenses(result.expenses);
-        })
+        }) .catch((error) => {
+            console.error("Error:", error);
+        });
     }, [addedExpense, expenseSheet])
 
     useEffect ( () => {
@@ -131,6 +140,8 @@ const Expenses = () => {
         const date = new Date(timestamp);
         const formattedTimestamp = date.toLocaleString()
 
+        const finalPerson = person.trim() === "" ? "None" : person;
+
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/addexpense`, {
             method:"POST",
             headers: {
@@ -142,7 +153,7 @@ const Expenses = () => {
                 value,
                 category,
                 gain,
-                person,
+                person: finalPerson,
                 formattedTimestamp,
             })
         }).then((res) => res.json() )
@@ -161,8 +172,26 @@ const Expenses = () => {
         .catch(error => console.error("Error:", error));
     }
 
+    const editExpense = (item) => {
+        if (editingExpense === item._id) {
+            setEditingExpense(null);
+            setSavedDropCategory(false);
+            setSavedCategory("");
+            setSavedValue(0);
+            setSavedPerson("");
+        } else {
+            setEditingExpense(item._id);
+            setSavedCategory(item.category);
+            setSavedValue(item.value);
+            setSavedPerson(item.person);
+        }
+        console.log(savedCategory);
+        console.log(savedValue);
+        console.log(savedPerson);
+    };
+    
+
     const deleteExpense = (item) => {
-        console.log(item);
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/expense`, {
             method:"DELETE",
             headers: {
@@ -178,8 +207,10 @@ const Expenses = () => {
                 return;
             }
             setAddedExpense(!addedExpense);
-            console.log("message",result.message);
-            console.log("deletedExpense",result.expense);
+            if (result.expense.deletedCount == 1) {
+                console.log("message",result.message);
+                console.log("deletedExpense",result.expense);
+            }
         })
         .catch(error => console.error("Error:", error));
     }
@@ -248,6 +279,21 @@ const Expenses = () => {
         }
     }
 
+    const dropdownSavedCategory = (e) => {
+        if (dropSavedCategory === false) {
+            let dropSavedCategory = true;
+            setSavedDropCategory(dropSavedCategory);
+        } else {
+            if (e.target.value) {
+                let savedCategory = e.target.value;
+                setSavedCategory(savedCategory);
+
+            }
+            let dropSavedCategory = false;
+            setSavedDropCategory(dropSavedCategory);
+        }
+    }
+
     const dropdownExpense = (e) => {
         if (dropExpense === false) {
             let dropExpense = true;
@@ -278,10 +324,10 @@ const Expenses = () => {
             const sortExpenses = allExpenses.sort ( (a,b) => a.person.localeCompare(b.person));
             setAllExpenses(sortExpenses);
         }  else if (sort === "Time (Latest)") {
-            const sortExpenses = allExpenses.sort ( (a,b) => new Date(a.date) - new Date(b.date));
+            const sortExpenses = allExpenses.sort ( (a,b) => new Date(b.date) - new Date(a.date));
             setAllExpenses(sortExpenses);
         }  else if (sort === "Time (Oldest)") {
-            const sortExpenses = allExpenses.sort ( (a,b) => new Date(b.date) - new Date(a.date));
+            const sortExpenses = allExpenses.sort ( (a,b) => new Date(a.date) - new Date(b.date));
             setAllExpenses(sortExpenses);
         }    
     }
@@ -294,6 +340,7 @@ const Expenses = () => {
                         <h4> {username}'s Financial Book</h4>
                         <div className="dropdownmenu">
                             <p>Looking At</p>
+                            <p>{expenseSheet}</p>
                             {expenseSheet !== "Create New +" && 
                             <button type="button" className="expense-button" onClick={dropdownExpense}>{expenseSheet}</button>}
 
@@ -383,13 +430,13 @@ const Expenses = () => {
                     <p>From/To</p>
                     <p className="sort-dropdown">
                         <button className="sort-expense" onClick={selectSort} value="Sort By:"> {sortExpense}</button>
-                        {dropSort && <div className="sort-dropmenu">
+                        {dropSort && <span className="sort-dropmenu">
                             <button type="button" onClick={selectSort} value="Time (Latest)"> Time (Latest)</button>
                             <button type="button" onClick={selectSort} value="Time (Oldest)"> Time (Oldest)</button>
-                            <button type="button" onClick={selectSort} value="Value (L to H)"> Value (High to Low)</button>
-                            <button type="button" onClick={selectSort} value="From/To (A to Z)"> From/To (A to Z)</button>
                             <button type="button" onClick={selectSort} value="Category (A to Z)"> Category (A to Z)</button>
-                        </div>
+                            <button type="button" onClick={selectSort} value="Value (L to H)"> Value (Low to High)</button>
+                            <button type="button" onClick={selectSort} value="From/To (A to Z)"> From/To (A to Z)</button>
+                        </span>
                         }
                     </p>
                 </div>
@@ -397,13 +444,41 @@ const Expenses = () => {
                     {expenseSheet === "Choose Expenses ▼" && <h3> Select a Collection</h3>}
                     {allExpenses.map((item, index) => (
                         <div key={index} className="expense-row">
-                            <p className="date-expense">{item.date || "none"}</p>
-                            <p>{item.category}</p>
-                            {item.value < 0 ? (<p style={{color:"red"}}>${item.value}</p>) : (
-                                <p style={{color:"green"}}>${item.value}</p>
-                            ) }
-                            <p>{item.person}</p>
-                            <p onClick={(e) => deleteExpense(item)} className="delete-expense">Edit</p>
+                            { (editingExpense !== item._id) ? (
+                                <>
+                                <p className="date-expense">{item.date || "none"}</p>
+                                <p>{item.category}</p>
+                                {item.value < 0 ? (<p style={{color:"red"}}>${item.value}</p>) : (
+                                    <p style={{color:"green"}}>${item.value}</p>
+                                ) }
+                                <p>{item.person}</p>
+                                </>
+                            ):(
+                                <>
+                                    <p className="date-expense">{item.date || "none"}</p>
+                                    <div className="save-category-dropdown">
+                                        <button type="button" onClick={dropdownSavedCategory} className="saved-category">{savedCategory}</button>
+                                        {dropSavedCategory && <span className="save-category-menu">
+                                            <button type="button" onClick={dropdownSavedCategory} value="Groceries">Groceries</button>
+                                            <button type="button" onClick={dropdownSavedCategory} value="Alcohol">Alcohol</button>
+                                            <button type="button" onClick={dropdownSavedCategory} value="Brotherhood">Brotherhood</button>
+                                            <button type="button" onClick={dropdownSavedCategory} value="Rush">Rush</button>
+                                        </span>}
+                                    </div>
+                                    <input type="number" value={savedValue} onChange={(e) => setSavedValue(e.target.value)} />
+                                    <input value={savedPerson} onChange={(e) => setSavedPerson(e.target.value)}/>
+                                </> 
+                            )}             
+                        <div className="edit-dropdown">    
+                            <button onClick={(e) => editExpense(item)} className="edit-expense">Edit</button>
+                            {editingExpense === item._id && (
+                                <div className="edit-menu">  
+                                    <button onClick={() => deleteExpense(item)}>Delete </button>
+                                    <button type="button">Save</button>
+                                    <button type="button" onClick={() => setEditingExpense(null)}>Cancel</button>
+                                </div>
+                            )}
+                            </div>
                         </div>
                     ))}
                 </div>
