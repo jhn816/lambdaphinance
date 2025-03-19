@@ -189,7 +189,7 @@ const Expenses = () => {
                             {dropExpense && <div className="expense-sheets">
                                 <p>Your Collections</p>
                                 {allCollections.map((item ,index) => (
-                                    <button key="index" type="button" value={item.collectionName} onClick={selectCollection}>{item.collectionName}</button>
+                                    <button key={index} type="button" value={item.collectionName} onClick={selectCollection}>{item.collectionName}</button>
                                 ))}
                                 <button type="button" value="Create New +"onClick={selectCollection}>Create New +</button>
                                 <p>Shared with You</p>
