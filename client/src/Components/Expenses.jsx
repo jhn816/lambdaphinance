@@ -153,13 +153,14 @@ const Expenses = () => {
     }
 
     const deleteExpense = (item) => {
+        console.log(item);
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/expense`, {
             method:"DELETE",
             headers: {
                 "Content-Type":"application/json"
             },
             body: JSON.stringify({
-                id:item._id,
+                _id:item._id,
             })
         }) .then((res) => res.json() )
         .then( (result) => {
