@@ -28,7 +28,7 @@ const Expenses = () => {
     const [netGain, setNetGain] = useState(0);
     const [netLoss, setNetLoss] = useState(0);
     
-    const [addedExpense, setAddedExpense] = useState(false);
+    const [changedExpenses, setChangedExpenses] = useState(false);
     const [allExpenses, setAllExpenses] = useState([]);
 
     const [allCollections, setAllCollections] = useState([]);
@@ -108,7 +108,7 @@ const Expenses = () => {
         }) .catch((error) => {
             console.error("Error:", error);
         });
-    }, [addedExpense, expenseSheet])
+    }, [changedExpenses, expenseSheet])
 
     useEffect ( () => {
         for (let expense of allExpenses) {
@@ -162,7 +162,7 @@ const Expenses = () => {
                 console.log(result.error);
                 return;
             }
-            setAddedExpense(!addedExpense);
+            setChangedExpenses(!changedExpenses);
             setValue("");
             setCategory("Category↴")
             setGain(true);
@@ -185,9 +185,6 @@ const Expenses = () => {
             setSavedValue(item.value);
             setSavedPerson(item.person);
         }
-        console.log(savedCategory);
-        console.log(savedValue);
-        console.log(savedPerson);
     };
 
     const saveExpense = (item) => {
@@ -197,20 +194,21 @@ const Expenses = () => {
                 "Content-Type":"application/json"
             },
             body: JSON.stringify({
-                savedID: item.id,
+                savedID: item._id,
                 savedCategory,
                 savedValue,
                 savedPerson
             })
-        }) .then((res) => res.json)
+        }) .then((res) => res.json())
         .then ((result) => {
             if (result.error) {
                 console.log(result.error);
                 return;
             }
+            setChangedExpenses(!changedExpenses);
             console.log("Expense updated successfully", result.expense);
         })
-        console.log(false);
+        setEditingExpense(null)
     }
     
 
@@ -229,7 +227,7 @@ const Expenses = () => {
                 console.log(result.error);
                 return;
             }
-            setAddedExpense(!addedExpense);
+            setChangedExpenses(!changedExpenses);
             if (result.expense.deletedCount == 1) {
                 console.log("message",result.message);
                 console.log("deletedExpense",result.expense);
@@ -496,7 +494,7 @@ const Expenses = () => {
                             {editingExpense === item._id && (
                                 <div className="edit-menu">  
                                     <button onClick={() => deleteExpense(item)}>Delete </button>
-                                    <button type="button" onClick={saveExpense(item)}>Save</button>
+                                    <button type="button" onClick={() => (saveExpense(item))}>Save</button>
                                     <button type="button" onClick={() => setEditingExpense(null)}>Cancel</button>
                                 </div>
                             )}
