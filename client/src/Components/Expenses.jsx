@@ -91,6 +91,7 @@ const Expenses = () => {
             },
             body: JSON.stringify({
                 email,
+                collection:expenseSheet,
                 value,
                 category,
                 gain,
@@ -121,6 +122,8 @@ const Expenses = () => {
     }
 
     const submitCollection = (event) => {
+        event.preventDefault();
+
         setExpenseSheet(collectionName);
         setDropExpense(false);
 
@@ -140,6 +143,7 @@ const Expenses = () => {
                 return;
             }
             console.log("Collection saved successfully", result.collection);
+            setAllCollections(prevCollections => [...prevCollections, result.collection]);
         })
         .catch(error => console.error("Error:", error));
     }
@@ -185,6 +189,7 @@ const Expenses = () => {
                             {expenseSheet === "Create New +" && <div className="collection-sheets"> 
                                 <input placeholder="Enter Collection Name..." onChange={(e) => (setCollectionName(e.target.value))}/>
                                 <button type="button" onClick={submitCollection}>Create</button>
+                                <button type="button" onClick={selectCollection} value="Choose Expenses ▼">Cancel</button>
                             </div>}
                             {dropExpense && <div className="expense-sheets">
                                 <p>Your Collections</p>

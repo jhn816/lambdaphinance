@@ -133,14 +133,14 @@ app.post("/api/addcollection", async (req, res) => {
 
 app.post("/api/addexpense", async (req, res) => {
     try {
-        const { email, value, category, gain, person } = req.body;
+        const { email, collection, value, category, gain, person } = req.body;
 
         let new_value = parseInt(value);
         if (!gain) {
             new_value = new_value * -1;
         }
 
-        const newExpense = new Expense({ email, value: new_value, category, person });
+        const newExpense = new Expense({ email, collection, value: new_value, category, person });
         await newExpense.save();
 
         res.status(201).json({ message: "Expense saved successfully", expense: newExpense });
