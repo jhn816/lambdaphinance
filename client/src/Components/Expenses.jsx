@@ -394,6 +394,7 @@ const Expenses = () => {
                     </p>
                 </div>
                 <div className="scroll-chart">
+                    {expenseSheet === "Choose Expenses ▼" && <h3> Select a Collection</h3>}
                     {allExpenses.map((item, index) => (
                         <div key={index} className="expense-row">
                             <p className="date-expense">{item.date || "none"}</p>
