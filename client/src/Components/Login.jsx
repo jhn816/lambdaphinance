@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./css/Login.css"
 import { Link } from "react-router-dom";
 import Money from "../assets/money.jpg"
@@ -7,6 +7,10 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error,setError] = useState({});
+
+    useEffect( () => {
+        window.scrollTo(0, document.body.scrollHeight);
+    })
 
     const checkAccount = (event) => {
         event.preventDefault();

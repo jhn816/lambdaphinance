@@ -21,6 +21,22 @@
     overflow: hidden;
 }
 
+.tracker-content {
+    display: flex;
+    flex-direction: row;
+    height: 85%;
+}
+
+.right-add {
+    width: 70%;
+    height: 100%;
+    border-left: 1px solid black;
+}
+
+.left-add {
+    background-color: rgb(236, 236, 236);    ;
+    width: 30%;
+}
 .expense-sheet {
     display: flex;
     flex-direction: column;
@@ -41,7 +57,10 @@
     justify-content: space-between;
     padding-left: 30px;
     padding-right: 30px;
-    background-color: #184180;
+    background-color: #004ab9;
+    font-size: 35px;
+    height: 15%;
+    filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.876));
 }
 
 .expense-information {
@@ -50,21 +69,19 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    padding-top: 30px;
-    border-top: 1px solid rgba(0, 0, 0, 0.272);
-    
 }
 
 .net-expenses {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 80px;
+    width: 90%;
+    gap:10px;
 }
 
 .expense-card {
-    width: 300px;
-    height: 150px;
+    width: 100%;
+    height: 100px;
     background-color: white;
     border-radius: 10px;
     transition: .3s;
@@ -74,8 +91,7 @@
 
 .balance-card {
     width: 90%;
-    max-width: 680px;
-    height: 150px;
+    height: 100px;
     background-color: white;
     border-radius: 10px;
     transition: .3s;
@@ -83,16 +99,16 @@
     overflow: hidden;
 }
 
-.expense-card:hover, .balance-card:hover {
-    transform: scale(1.01);
-    filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.376));
+.expense-card p, .balance-card p{
+    margin-top: 13px;
+    font-weight: 1000;
 }
 
 .expense-card h3, .balance-card h3 {
     color:black;
     cursor: default;
     font-weight: 100;
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 20px;
 }
 
 .expense-card header, .balance-card header{
@@ -109,11 +125,12 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    margin: 10px;
     gap: 20px;
 }
 
 .customize-expense {
-    width: 80px;
+    width: 120px;
     height: 30px;
     background-color: rgb(206, 184, 164);
     color: black;
@@ -134,7 +151,7 @@
 
 .expense-inputs input {
     font-size: 20px;
-    width: 30%;
+    width: 70%;
     height: 30px;
     border-radius: 5px;
     padding-left: 10px;
@@ -143,6 +160,7 @@
 
 .add-container form h3 {
     font-weight: 200;
+    margin: 0px;
 }
 
 .add-container form {
@@ -150,18 +168,17 @@
 }
 
 .class-submit {
-    margin-top: 30px;
-    background-color:#7dff7d;
+    background-color:#80fe99;
     height: 30px;
-    width: 150px;
+    width: 70%;
     border-radius: 10px;
     border: 0px;
     transition: .3s;
 }
 
 .class-submit:hover {
-    background-color:#56f356;
-    transform: scale(1.03);
+    background-color:#7df595;
+    transform: scale(1.01);
     cursor: pointer;
 }
 
@@ -170,31 +187,45 @@
 }
 
 .class-clear {
-    margin-top: 30px;
-    background-color:#ff7d7d;
+    background-color:#ff9393;
     height: 30px;
-    width: 150px;
+    width: 70%;
     border-radius: 10px;
     border: 0px;
     transition: .3s;
 }
 
 .class-clear:hover {
-    background-color:#f35656;
-    transform: scale(1.03);
+    background-color:#fb8383;
+    transform: scale(1.01);
     cursor: pointer;
 }
 
 .form-buttons{
     display: flex;
-    flex-direction: row;
-    gap: 30px;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
     justify-content: center;
 }
 
 .expense-amount {
     display:flex;
     justify-content: center;
+    align-items: center;
+    gap:10px;
+    margin-top: 15px;
+}
+
+.amount-box {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background-color: white; 
+    border: 1px solid #e3e3e3;
+    border-radius: 10px;
+    width: 50%;
+    height: 20px;
 }
 
 .dropdownmenu {
@@ -202,6 +233,17 @@
 }
 
 .dropdownmenu p {
+    font-size: 20px;
+    margin: 0px;
+    margin-bottom: 5px;
+}
+
+.your-collection {
+    height: 50%;
+    overflow: scroll;
+}
+
+.your-collection p {
     font-size: 20px;
     margin: 0px;
     margin-bottom: 5px;
@@ -249,41 +291,42 @@
 .expense-sheets {
     display: flex;
     flex-direction: column;
-    border: 1px solid black;
-
-    border-radius: 5px;
-    overflow: hidden;
-    width: 110%;
-    position: absolute;
-    top: 105%;
-    z-index: 20;
 }
 
-.expense-sheets p {
+.header-collection  {
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0px;
-    background-color:rgb(228, 228, 228);
     color: black;
     width: 100%;
     height: 20px;
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 1000;
-    padding-top: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    background-color: rgb(221, 221, 221);
 }
 
-.expense-sheets button {
-    padding: 5px;
-    background-color:rgb(228, 228, 228);
-    color: black;
-    font-size: 12px;
+.scroll-collection {
+    display: flex;
+    flex-direction: column;
+    overflow: scroll
+}
+
+.expense-sheets .scroll-collection button {
+    background-color: rgb(236, 236, 236);
     border: 0px;
+    border-bottom: 1px solid rgb(223, 223, 223);
+    padding: 5px;
+    color: black;
+    font-size: 18px;
     transition: .3s;
 }
 
-.expense-sheets button:hover {
+.expense-sheets .scroll-collection button:hover {
     background-color:rgb(202, 201, 201);
     cursor: pointer;
 }

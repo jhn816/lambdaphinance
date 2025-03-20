@@ -359,88 +359,109 @@ const Expenses = () => {
     return (
         <div className="expense-page">
             <div className="add-container">
-                <form onSubmit={addExpense}>
-                    <div className="tracker-headers">
-                        <h4> Your Financial Book</h4>
-                        <div className="dropdownmenu">
-                            <p>Looking At</p>
-                            {expenseSheet !== "Create New +" && 
-                            <button type="button" className="expense-button" onClick={dropdownExpense}>{expenseSheet}</button>}
+                <div className="tracker-headers">
+                    {(expenseSheet === "Choose Expenses ▼" || expenseSheet === "Create New +") ? ( <h4> Finance Book</h4>) : (<h4> {expenseSheet} Finance Book</h4>)}
+                    <div className="dropdownmenu">
+                        {expenseSheet === "Create New +" && <div className="collection-sheets"> 
+                            <input placeholder="Enter Collection Name..." onChange={(e) => (setCollectionName(e.target.value))} maxLength={10}/>
+                            <button type="button" onClick={submitCollection}>Create</button>
+                            <button type="button" onClick={selectCollection} value="Choose Expenses ▼">Cancel</button>
+                        </div>}
+                    </div>
+                </div>
+                <div className="tracker-content">
+                    <div className="left-add">
+                        <p className="header-collection">Your Collections</p>
+                        <div className="your-collection">
+                            <div className="expense-sheets">
+                                <div className="scroll-collection">
+                                    <button type="button" value="Create New +"onClick={selectCollection}>Create New +</button>
+                                    {allCollections.map((item ,index) => (
+                                        <button key={index} type="button" value={item.collectionName} onClick={selectCollection}>{item.collectionName}</button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <p className="header-collection">Shared with You</p>
+                        <div className="your-collection">
+                            <div className="expense-sheets">
+                                <div className="scroll-collection">
 
-                            {expenseSheet === "Create New +" && <div className="collection-sheets"> 
-                                <input placeholder="Enter Collection Name..." onChange={(e) => (setCollectionName(e.target.value))} maxLength={10}/>
-                                <button type="button" onClick={submitCollection}>Create</button>
-                                <button type="button" onClick={selectCollection} value="Choose Expenses ▼">Cancel</button>
-                            </div>}
-
-                            {dropExpense && <div className="expense-sheets">
-                                <p>Your Collections</p>
-                                {allCollections.map((item ,index) => (
-                                    <button key={index} type="button" value={item.collectionName} onClick={selectCollection}>{item.collectionName}</button>
-                                ))}
-                                <button type="button" value="Create New +"onClick={selectCollection}>Create New +</button>
-                                <p>Shared with You</p>
-                                <button type="button">None</button>
-                            </div>}
-
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div className="expense-amount">
-                        <h3>Amount to add:</h3>
-                        { gain ? ( <h3 style={{ color: "green" }}> ${value || "0"} </h3> )
-                        : <h3 style={{ color: "red" }}> -${value || "0"} </h3>}
-                    </div>
+                    <div className="right-add">
+                        <form onSubmit={addExpense}>
+                            <div className="expense-amount">
+                                <h3>Amount to add:</h3>
+                            </div>
+                            <div className="expense-amount">
+                                <div className="amount-box">
+                                    { gain ? ( <h3 style={{ color: "green" }}> ${value || "0"} </h3> )
+                                    : <h3 style={{ color: "red" }}> -${value || "0"} </h3>}
+                                </div>
+                            </div>
 
-                    <div className="expense-inputs">
-                        <div className="dropdownmenu">
-                            <button type="button" onClick={dropdownCategory} className="customize-expense">{category}</button>
+                            <div className="expense-inputs">
+                                <div className="dropdownmenu">
+                                    <button type="button" onClick={dropdownCategory} className="customize-expense">{category}</button>
 
-                            {dropCategory && <span className="categories">
-                                <button type="button" onClick={dropdownCategory} value="Groceries">Groceries</button>
-                                <button type="button" onClick={dropdownCategory} value="Alcohol">Alcohol</button>
-                                <button type="button" onClick={dropdownCategory} value="Brotherhood">Brotherhood</button>
-                                <button type="button" onClick={dropdownCategory} value="Rush">Rush</button>
-                            </span>}
+                                    {dropCategory && <span className="categories">
+                                        <button type="button" onClick={dropdownCategory} value="Groceries">Groceries</button>
+                                        <button type="button" onClick={dropdownCategory} value="Alcohol">Alcohol</button>
+                                        <button type="button" onClick={dropdownCategory} value="Brotherhood">Brotherhood</button>
+                                        <button type="button" onClick={dropdownCategory} value="Rush">Rush</button>
+                                    </span>}
+                                </div>
+
+                                <button type="button" value="true" className="customize-expense" onClick={() => setGain(!gain)}> + / -</button>
+                            </div>
+
+                            <div className="expense-inputs">
+                                <input type="text" placeholder="Enter amount..." value={value} onChange={handleChange} maxLength={6}
+                                    onKeyDown={(e) => {
+                                        if (["e", "E", "+", "-"].includes(e.key)) {
+                                            e.preventDefault();
+                                        }
+                                    }}/>
+                            </div>
+                            
+                            <div className="expense-inputs">
+                                <input type="text" placeholder="From/to who (optional)" value={person} onChange={(e) => (setPerson(e.target.value))} />
+                            </div>
+                            
+                            <div className="form-buttons">
+                                <button type="submit" className="class-submit">Add Expense</button>
+                                <button type="button" onClick={clearExpense} className="class-clear">Clear Expense</button>
+                            </div>
+                        
+                        </form>
+                        <div className="expense-information">
+                            <div className="net-expenses">
+                                <div className="expense-card">
+                                    <header style={{"background-color":"#c9ffd1"}}>
+                                        <h3>Net Gain</h3>
+                                    </header>
+                                    <p style={{ color: "green", "font-family": "Arial, Helvetica, sans-serif"}}>${netGain}</p>
+                                </div>
+
+                                <div className="expense-card">
+                                    <header style={{"background-color":"#ffc9c9"}}>
+                                        <h3>Net Loss</h3>
+                                    </header>
+                                    <p style={{ color: "red", "font-family": "Arial, Helvetica, sans-serif"}}>${netLoss}</p>
+                                </div>  
+                            </div>
+                            <div className="balance-card">
+                                    <header>
+                                        <h3>Total Balance</h3>
+                                    </header>
+                                    <p style={{"font-family": "Arial, Helvetica, sans-serif"}}>${netGain}{" - $"}{netLoss}{" = $"}{netGain - netLoss}</p>
+                                </div>  
                         </div>
-
-                        <button type="button" value="true" className="customize-expense" onClick={() => setGain(!gain)}> + / -</button>
-                        <input type="text" placeholder="Enter amount..." value={value} onChange={handleChange} maxLength={6}
-                            onKeyDown={(e) => {
-                                if (["e", "E", "+", "-"].includes(e.key)) {
-                                    e.preventDefault();
-                                }
-                            }}/>
-                        <input type="text" placeholder="From/to who (optional)" value={person} onChange={(e) => (setPerson(e.target.value))} />
-                    </div>
-                    <div className="form-buttons">
-                        <button type="button" onClick={clearExpense} className="class-clear">Clear Expense</button>
-                        <button type="submit" className="class-submit">Add Expense</button>
-                    </div>
-                
-                </form>
-                <div className="expense-information">
-                    <div className="net-expenses">
-                        <div className="expense-card">
-                            <header>
-                                <h3>Net Gain</h3>
-                            </header>
-                            <p style={{ color: "green" }}>${netGain}</p>
-                        </div>
-
-                        <div className="expense-card">
-                            <header>
-                                <h3>Net Loss</h3>
-                            </header>
-                            <p style={{ color: "red" }}>${netLoss}</p>
-                        </div>
-                    </div>
-
-                    <div className="balance-card">
-                        <header>
-                            <h3>Total Balance</h3>
-                        </header>
-                        <p>${netGain - netLoss}</p>
                     </div>
                 </div>
             </div>
