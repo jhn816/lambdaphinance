@@ -57,45 +57,60 @@ const Records = () => {
     }
 
     return (
-        <div className="records-page">
-            <div className="record-container">
-                <h2>Your Collections</h2>
-                <div className="collections">
-                { allCollections.map((item, index) => (
-                    <div key={index} className="collection-box"> 
-                        <p class="collection-name">{item.collectionName} </p>
-                        <div className="collection-details">
-                            <div className="div-balance">
-                                <p className="collection-balance" style={{"color":"green"}}> Bal $40</p>
+        <div className="wholerecords">
+            <div className="records-page">
+                <div className="record-container">
+                    <div className="records">
+                        <h2>Your Collections</h2>
+                        <div className="collections">
+                        { allCollections.map((item, index) => (
+                            <div key={index} className="collection-box"> 
+                                <p class="collection-name">{item.collectionName} </p>
+                                <div className="collection-details">
+                                    <div className="div-balance">
+                                        <p className="collection-balance" style={{"color":"green"}}> Balance $40</p>
+                                    </div>
+                                    <div className="div-indices">
+                                        <p className="collection-indices">(3)</p>
+                                    </div>
+                                    <div className="div-manage">
+                                        <button className="collection-manage"> Manage {item.collectionName}</button>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="div-indices">
-                                <p className="collection-indices"> Indices 3</p>
-                            </div>
-                            <div className="div-manage">
-                                <button className="collection-manage"> Manage</button>
+                        ))}
+                        </div>
+                    </div>
+                        
+                    <div className="records-debts">
+                        <h2>Your Debts</h2>
+                        <div className="debts">
+
+                        </div>
+                    </div>
+                </div>
+
+                <div className="friends-container">
+                    <div className="makefriend">
+                        <div className="addinfo">
+                            <form onSubmit={makeFriend}>
+                                <h2>Add a Friend</h2>
+                                <div className="addfriend">
+                                    <input type="email" placeholder="Enter their email..."/>
+                                    <button>Done</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div className="friendslist">
+                        <h3>Friends List</h3>
+                        <div className="friends">
+                            <div className="friend-box">
+
                             </div>
                         </div>
                     </div>
-                ))}
-                </div>
-
-                <h2>Your Debts</h2>
-                <div className="debts">
-
-                </div>
-            </div>
-
-            <div className="friends-container">
-                <div className="makefriend">
-                    <form onSubmit={makeFriend}>
-                        <h2>Add a Friend</h2>
-                        <input type="text" placeholder="Enter their email"/>
-                        <button>Done</button>
-                    </form>
-                </div>
-
-                <div className="friendslist">
-                    <h3>Friends List</h3>
                 </div>
             </div>
         </div>

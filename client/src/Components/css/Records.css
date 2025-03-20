@@ -1,3 +1,11 @@
+.wholerecords {
+    width: 97vw;
+    height: 85vh;
+    margin-right: 1.5vw;
+    margin-left: 1.5vw;
+    margin-top: 2.5vh;
+    margin-bottom: 2.5vh;
+}
 .records-page {
     display: flex;
     flex-direction: row;
@@ -5,50 +13,147 @@
     align-items: center;
     background-color: white;
     color: black;
-    height: 90vh;
+    height: 100%;
     width: 100%;
+}
+
+.records {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    height: 40%;
+}
+
+.records-debts {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    height: 60%;
 }
 
 .record-container {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    margin: 50px;
     width: 50%;
-    height: 90vh;
+    height: 100%;
+    gap:20px;
 }
 
-.record-container h2 {
+.records h2 {
     filter: drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.462));
     margin-bottom: 15px;
     border-bottom: 1px solid black;
+    margin-top: 0px;
 }
 
+.records-debts h2 {
+    filter: drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.462));
+    margin-bottom: 15px;
+    border-bottom: 1px solid black;
+    margin-top: 0px;
+}
 .friends-container {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin: 50px;
-    margin-left: 0px;
-
+    gap:20px; 
     width: 50%;
-    height: 90vh;
+    height: 100%;
 }
 
-.makefriend form {
+.friendslist {
+    padding: 2.5%;
+    filter: drop-shadow(0px 0px 5px rgba(0, 0, 10, 0.462));
+    background-image: linear-gradient(rgb(203, 203, 203), rgb(182, 182, 182));
+    height: 100%;
+    width: 95%;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.friendslist h3 {
+    margin-bottom: 10px;
+    margin-top: 0px;
+}
+
+.friends {
+    background-color: #f5f5f5;
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+}
+
+.addinfo {
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(rgb(218, 218, 218), rgb(237, 237, 237));
+    filter: drop-shadow(0px 0px 5px rgba(0, 0, 10, 0.462));
+    border-radius: 10px;
+}
+
+.makefriend {
+    width: 100%;
+    height: 20%;
+}
+.addinfo form h2 {
+    margin-bottom: 0px;
+    margin-top: 0px;
+
+}
+.addinfo form {
+    margin: 3%;
+    margin-top: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 94%;
+    height: 94%;
+}
+
+.addfriend {
     display: flex;
     flex-direction: row;
-    gap: 50px;
+    width: 100%;
+    height: 40px;
+    gap:10px;
+}
+
+.addfriend input {
+    border-radius: 10px;
+    border: 1px solid black;
+    padding: 10px;
+    font-size: 22px;
+    width: 80%;
+}
+
+.addfriend button {
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color: #e9e9e9;
+    width: 20%;
+    transition: .3s;
+}
+
+.addfriend button:hover {
+    background-color: rgb(177, 247, 199);
+    cursor: pointer;
 }
 
 .collections {
-    width: 100%;
+    width: 95%;
+    border-radius: 10px;
     height: 250px;
     overflow-x: hidden;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap:10px;    
+    background-color: white;
 }   
 
 .collection-box {
@@ -60,7 +165,7 @@
     background-image: linear-gradient(#498bfc, #4ca9ff);
     padding-left: 20px;
     border-radius: 40px;
-    width: 90%;
+    width: 95%;
     height: 50px;
 }
 
@@ -86,7 +191,7 @@
 }
 
 .collection-details button {
-    width: 100px;
+    width: 150px;
     height: 30px;
     border-radius: 10px;
     border: 1px solid black;
@@ -105,21 +210,22 @@
 }
 
 .div-balance {
-    width: 45%;
+    width: 40%;
     display:flex;
-    flex-direction:col;
+    flex-direction:column;
     align-items: flex-start;
 }
 
 .div-indices {
-    width: 45%;
+    width: 25%;
     display:flex;
-    flex-direction:col;
-    align-items: flex-start;
+    flex-direction:column;
+    align-items: flex-end;
 }
 
 .div-manage {
+    width: 35%;
     display:flex;
-    flex-direction:col;
-    align-items: flex-start;
+    flex-direction:column;
+    align-items: flex-end;
 }
