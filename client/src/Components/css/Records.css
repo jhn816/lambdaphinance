@@ -1,0 +1,125 @@
+.records-page {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    color: black;
+    height: 90vh;
+    width: 100%;
+}
+
+.record-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 50px;
+    width: 50%;
+    height: 90vh;
+}
+
+.record-container h2 {
+    filter: drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.462));
+    margin-bottom: 15px;
+    border-bottom: 1px solid black;
+}
+
+.friends-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 50px;
+    margin-left: 0px;
+
+    width: 50%;
+    height: 90vh;
+}
+
+.makefriend form {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+}
+
+.collections {
+    width: 100%;
+    height: 250px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap:10px;    
+}   
+
+.collection-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.562));
+    background-image: linear-gradient(#498bfc, #4ca9ff);
+    padding-left: 20px;
+    border-radius: 40px;
+    width: 90%;
+    height: 50px;
+}
+
+.collection-name {
+    margin: 0px;
+    font-size:25px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    padding-left: 20px;
+}
+
+.collection-details {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-right: 20px;
+    padding-left: 20px;
+    background-image: linear-gradient(#e1e1e1, #fdfdfd);
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    width: 60%;
+    font-size: 15px;
+    height: 50px;
+}
+
+.collection-details button {
+    width: 100px;
+    height: 30px;
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color:#e1e1e1;
+    transition: .3s;
+}
+
+.collection-details button:hover {
+    background-color:#f1f1f1;
+    cursor: pointer;
+}
+
+.debts {
+    height: 30%;
+    overflow: scroll;
+}
+
+.div-balance {
+    width: 45%;
+    display:flex;
+    flex-direction:col;
+    align-items: flex-start;
+}
+
+.div-indices {
+    width: 45%;
+    display:flex;
+    flex-direction:col;
+    align-items: flex-start;
+}
+
+.div-manage {
+    display:flex;
+    flex-direction:col;
+    align-items: flex-start;
+}

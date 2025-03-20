@@ -603,8 +603,19 @@
     padding: 5px;
     font-size: 13px;
     border: 0px;
+    transition: .3s;
 }
-.edit-menu p:hover, .edit-menu button:hover{
+.edit-menu p:hover, .edit-cancel:hover {
     background-color: #d9d7d7;
+    cursor: pointer;
+}
+
+.edit-delete:hover {
+    background-color: rgb(255, 121, 121);
+    cursor: pointer;
+}
+
+.edit-save:hover {
+    background-color: rgb(117, 255, 117);
     cursor: pointer;
 }

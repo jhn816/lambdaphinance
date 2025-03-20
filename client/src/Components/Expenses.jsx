@@ -260,7 +260,10 @@ const Expenses = () => {
 
     const submitCollection = (event) => {
         event.preventDefault();
-
+        if (collectionName === "") {
+            alert("Please enter a collection name");
+            return;
+        }
         setExpenseSheet(collectionName);
         setDropExpense(false);
 
@@ -358,14 +361,14 @@ const Expenses = () => {
             <div className="add-container">
                 <form onSubmit={addExpense}>
                     <div className="tracker-headers">
-                        <h4> {username}'s Financial Book</h4>
+                        <h4> Your Financial Book</h4>
                         <div className="dropdownmenu">
                             <p>Looking At</p>
                             {expenseSheet !== "Create New +" && 
                             <button type="button" className="expense-button" onClick={dropdownExpense}>{expenseSheet}</button>}
 
                             {expenseSheet === "Create New +" && <div className="collection-sheets"> 
-                                <input placeholder="Enter Collection Name..." onChange={(e) => (setCollectionName(e.target.value))}/>
+                                <input placeholder="Enter Collection Name..." onChange={(e) => (setCollectionName(e.target.value))} maxLength={10}/>
                                 <button type="button" onClick={submitCollection}>Create</button>
                                 <button type="button" onClick={selectCollection} value="Choose Expenses ▼">Cancel</button>
                             </div>}
@@ -461,7 +464,12 @@ const Expenses = () => {
                     </p>
                 </div>
                 <div className="scroll-chart">
-                    {expenseSheet === "Choose Expenses ▼" && <h3> Select a Collection</h3>}
+                    {expenseSheet === "Choose Expenses ▼" ? 
+                        (<h3> Select a Collection of Expenses</h3>) :
+                    (<>
+                        {allExpenses.length === 0 && <p>No Expenses Found</p>}
+                    </>) }
+                    
                     {allExpenses.map((item, index) => (
                         <div key={index} className="expense-row">
                             { (editingExpense !== item._id) ? (
@@ -493,9 +501,9 @@ const Expenses = () => {
                             <button onClick={(e) => editExpense(item)} className="edit-expense">Edit</button>
                             {editingExpense === item._id && (
                                 <div className="edit-menu">  
-                                    <button onClick={() => deleteExpense(item)}>Delete </button>
-                                    <button type="button" onClick={() => (saveExpense(item))}>Save</button>
-                                    <button type="button" onClick={() => setEditingExpense(null)}>Cancel</button>
+                                    <button className="edit-delete" onClick={() => deleteExpense(item)}>Delete </button>
+                                    <button className="edit-save" type="button" onClick={() => (saveExpense(item))}>Save</button>
+                                    <button className="edit-cancel" type="button" onClick={() => setEditingExpense(null)}>Cancel</button>
                                 </div>
                             )}
                             </div>
