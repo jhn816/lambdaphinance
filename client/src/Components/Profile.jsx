@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 const Profile = () => {
     const [email,setEmail] = useState("");
     const [username,setUsername] = useState("");
+    const [image, setImage] = useState(null);
 
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
@@ -40,11 +41,34 @@ const Profile = () => {
         })
     }, [token, navigate]);
 
+    const changeImage = (e) => {
+        setImage(e.target.files[0]);
+    }
+
+    const handleUpload = async (event) => {
+        event.preventDefault();
+    
+        const formData = new FormData();
+        formData.append("image", image);
+        formData.append("email", email);
+    
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/upload`, {
+            method: "POST",
+            body: formData,
+        });
+    
+        const result = await response.json();
+        console.log(result);
+    };
+
     return (
         <div className="profile-container">
             <div className="information-container">
                 <div className="account-information">
                     <h1> Profile Information</h1>
+                    <img src={`${process.env.REACT_APP_API_BASE_URL}/api/uploads/${email}`} onChange={changeImage}alt="pfp" width="100px" />
+                    <button onClick={handleUpload}>Upload</button>
+                    <input type="file" onChange={handleUpload} />
                     <p>Email: {email}</p>
                     <p>Username: {username}</p>
                 </div>

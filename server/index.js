@@ -4,6 +4,12 @@ const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+//profile pics, multiple chunks for large data
+const multer = require("multer");
+const GridFsStorage = require("multer-gridfs-storage").GridFsStorage;
+const Grid = require("gridfs-stream");
+
+
 const app = express();
 
 const allowedOrigins = [
@@ -20,7 +26,8 @@ app.use(cors({
 
 app.use(express.json());
 
-const accounts = mongoose.createConnection("mongodb+srv://justinhnguyen1:Lambda19891989!@lambda-phinance.4ilv4.mongodb.net/?retryWrites=true&w=majority&appName=lambda-phinance", {
+const mongo_url = proncess.env.MONGO_URL;
+const accounts = mongoose.createConnection(mongo_url, {
     dbName:"accounts",
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -28,7 +35,7 @@ const accounts = mongoose.createConnection("mongodb+srv://justinhnguyen1:Lambda1
 accounts.on("error", (err) => console.error("accounts connection error:", err));
 accounts.once("open", () => console.log("Connected to accounts"));
 
-const finances = mongoose.createConnection("mongodb+srv://justinhnguyen1:Lambda19891989!@lambda-phinance.4ilv4.mongodb.net/?retryWrites=true&w=majority&appName=lambda-phinance", {
+const finances = mongoose.createConnection(mongo_url, {
     dbName:"finances",
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -36,10 +43,32 @@ const finances = mongoose.createConnection("mongodb+srv://justinhnguyen1:Lambda1
 finances.on("error", (err) => console.error("finances connection error:", err));
 finances.once("open", () => console.log("Connected to finances"));
 
+let gfs;
+accounts.once("open", () => {
+    gfs = Grid(accounts.db, mongoose.mongo);
+    gfs.collection("uploads");
+});
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "uploads/");
+    },
+    filename: (req, file, cb) => {
+        const userEmail = req.body.email;
+
+        const sanitizedEmail = userEmail.replace(/[@.]/g, "_");
+        const fileExt = path.extname(file.originalname);
+
+        cb(null, `${sanitizedEmail}${fileExt}`);
+    }
+});
+
+const upload = multer({storage});
+
 const userSchema = new mongoose.Schema({
     username: String,
     email: String,
-    password: String
+    password: String,
 });
 const User = accounts.model("User", userSchema);
 
@@ -100,6 +129,18 @@ app.get("/api/profile", (req, res) => {
         console.error("JWT Verification Error:", error.message);
         return res.status(403).json({ error: "Invalid or expired token" });
     }
+}); 
+
+app.post("/api/upload", upload.single("image"), (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ error: "No file uploaded" });
+    }
+
+    res.json({
+        message: "File uploaded successfully",
+        filename: req.file.filename,
+        path: req.file.path,
+    });
 });
 
 const expenseSchema = new mongoose.Schema({
