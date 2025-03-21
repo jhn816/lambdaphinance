@@ -4,12 +4,6 @@ const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-//profile pics, multiple chunks for large data
-const multer = require("multer");
-const GridFsStorage = require("multer-gridfs-storage").GridFsStorage;
-const Grid = require("gridfs-stream");
-
-
 const app = express();
 
 const allowedOrigins = [
@@ -45,26 +39,32 @@ const finances = mongoose.createConnection(mongo_url, {
 finances.on("error", (err) => console.error("finances connection error:", err));
 finances.once("open", () => console.log("Connected to finances"));
 
-let gfs;
-accounts.once("open", () => {
-    gfs = Grid(accounts.db, mongoose.mongo);
-    gfs.collection("uploads");
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const multer = require("multer");
+const { storage } = require("./cloudinaryConfig");
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,   
+  api_secret: process.env.CLOUD_API_SECRET
 });
 
-const storage = new GridFsStorage({
-    url: mongo_url,
-    options: { useNewUrlParser: true, useUnifiedTopology: true },
-    file: (req, file) => {
-        return {
-            filename: req.body.email.replace(/[@.]/g, "_"),
-            bucketName: "uploads",
-            metadata: { email: req.body.email }
-        };
-    }
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: async (req, file) => ({
+    folder: "profile_pics",
+    public_id: req.body.email.replace(/[@.]/g, "_"),
+    transformation: [{ width: 300, height: 300, crop: "fill" }],
+  }),
 });
 
+module.exports = {
+  cloudinary,
+  storage,
+};
 
-const upload = multer({storage});
+const upload = multer({ storage });
 
 const userSchema = new mongoose.Schema({
     username: String,
@@ -132,18 +132,16 @@ app.get("/api/profile", (req, res) => {
     }
 }); 
 
-app.post("/api/upload", upload.single("image"), async (req, res) => {
-    try {
-        if (!req.file) {
-            return res.status(400).json({ error: "No file uploaded" });
-        }
-
-        res.json({ message: "Image uploaded successfully!", filename: req.file.filename });
-    } catch (error) {
-        console.error("Error uploading image:", error);
-        res.status(500).json({ error: "Internal server error" });
+app.post("/api/upload", upload.single("image"), (req, res) => {
+    if (!req.file) {
+      return res.status(400).json({ error: "No image uploaded" });
     }
-});
+  
+    res.json({
+      message: "Image uploaded successfully",
+      imageUrl: req.file.path,
+    });
+  });
 
 app.get("/api/uploads/:email", async (req, res) => {
     try {
@@ -273,4 +271,8 @@ app.get("/api/register", (req, res) => {
 });
 
 
-module.exports = app;
+module.exports = {
+    app,
+    cloudinary,
+    storage,
+  };

@@ -56,31 +56,32 @@ const Profile = () => {
     
 
     const changeImage = (e) => {
+        console.log(e.target.files[0]);
         setImage(e.target.files[0]);
     }
 
-    const handleUpload = async (event) => {
-        event.preventDefault();
-    
+    const handleUpload = async (e) => {
+        e.preventDefault();
+      
         const formData = new FormData();
-        formData.append("image", image);
+        formData.append("image", image); 
         formData.append("email", email);
-    
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/upload`, {
-            method: "POST",
-            body: formData,
+      
+        const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/upload`, {
+          method: "POST",
+          body: formData,
         });
-    
-        const result = await response.json();
-        console.log(result);
-    };
+      
+        const result = await res.json();
+        console.log(result.imageUrl);
+      };
 
     return (
         <div className="profile-container">
             <div className="information-container">
                 <div className="account-information">
                     <h1> Profile Information</h1>
-                    <img src={uploaded || "default_profile.png"} alt="Profile" width="100px" />
+                    <img src={result.imageUrl} alt="Profile" width="150" />
                     <button onClick={handleUpload}>Upload</button>
                     <input type="file" onChange={(e) => changeImage(e)} />
                     <p>Email: {email}</p>
