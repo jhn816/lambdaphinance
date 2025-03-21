@@ -210,7 +210,6 @@ app.post("/api/expenses", async (req, res) => {
     }
 })
 
-
 app.get("/", (req, res) => {
     res.json({ message: "Backend is working!" });
 });
@@ -218,6 +217,8 @@ app.get("/", (req, res) => {
 app.get("/api/register", (req, res) => {
     res.json({ message: "Register page successful!" });
 });
+
+
 
 require("dotenv").config();
 const cloudinary = require("cloudinary").v2;
