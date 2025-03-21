@@ -35,13 +35,9 @@ const Profile = () => {
                 localStorage.removeItem("token");
                 navigate("/");
                 return;
-            }
-        
+            }  
             setEmail(result.user.email);
             setUsername(result.user.user);
-            if (result.imageUrl) {
-                setUploaded(result.imageUrl);
-            }
         })
     }, [token, navigate]);
 
