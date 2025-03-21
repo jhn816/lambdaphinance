@@ -443,24 +443,24 @@ const Expenses = () => {
                         <div className="expense-information">
                             <div className="net-expenses">
                                 <div className="expense-card">
-                                    <header style={{"background-color":"#c9ffd1"}}>
+                                    <header style={{"backgroundColor":"#c9ffd1"}}>
                                         <h3>Net Gain</h3>
                                     </header>
-                                    <p style={{ color: "green", "font-family": "Arial, Helvetica, sans-serif"}}>${netGain}</p>
+                                    <p style={{ color: "green", "fontfamily": "Arial, Helvetica, sans-serif"}}>${netGain}</p>
                                 </div>
 
                                 <div className="expense-card">
-                                    <header style={{"background-color":"#ffc9c9"}}>
+                                    <header style={{"backgroundColor":"#ffc9c9"}}>
                                         <h3>Net Loss</h3>
                                     </header>
-                                    <p style={{ color: "red", "font-family": "Arial, Helvetica, sans-serif"}}>${netLoss}</p>
+                                    <p style={{ color: "red", "fontFamily": "Arial, Helvetica, sans-serif"}}>${netLoss}</p>
                                 </div>  
                             </div>
                             <div className="balance-card">
                                     <header>
                                         <h3>Total Balance</h3>
                                     </header>
-                                    <p style={{"font-family": "Arial, Helvetica, sans-serif"}}>${netGain}{" - $"}{netLoss}{" = $"}{netGain - netLoss}</p>
+                                    <p style={{"fontFamily": "Arial, Helvetica, sans-serif"}}>${netGain}{" - $"}{netLoss}{" = $"}{netGain - netLoss}</p>
                                 </div>  
                         </div>
                     </div>
