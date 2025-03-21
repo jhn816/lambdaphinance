@@ -11,7 +11,7 @@ const Records = () => {
 
     const [manageCollection, setManageCollection] = useState(null);
     const [editCollectionName, setEditCollectionName] = useState(null);
-    const [friendInput, setFriendInput] = useState(null);
+    const [friendInput, setFriendInput] = useState("");
     const [changedCollections, setChangedCollections] = useState(false);
   
     useEffect( () => {

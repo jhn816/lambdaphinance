@@ -51,7 +51,7 @@ const friendSchema = new mongoose.Schema({
 });
 const Friend = accounts.model("Friends", friendSchema);
 
-app.post("api/friend", async (req, res) => {
+app.post("/api/friend", async (req, res) => {
     try {
         const {recepient, sender} = req.body;
 
