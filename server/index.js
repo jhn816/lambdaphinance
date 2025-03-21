@@ -45,6 +45,25 @@ const userSchema = new mongoose.Schema({
 });
 const User = accounts.model("User", userSchema);
 
+const friendSchema = new mongoose.Schema({
+    recepient: String,
+    sender: String,
+});
+const Friend = accounts.model("Friends", friendSchema);
+
+app.post("api/friend", async (req, res) => {
+    try {
+        const {recepient, sender} = req.body;
+
+        const new_friend = new Friend({recepient, sender});
+        await new_friend.save();
+        res.json({ message: "Friend added successfully!" });
+    } catch (error) {
+        console.error("Error saving expense:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
 app.post("/api/register", async (req, res) => {
     const { username, email, password } = req.body;
 

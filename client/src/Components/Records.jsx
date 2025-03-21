@@ -4,11 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Records = () => {
     const [email, setEmail] = useState("");
+    const [uploaded, setUploaded] = useState(null);
     const [allCollections, setAllCollections] = useState([]);
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
 
     const [manageCollection, setManageCollection] = useState(null);
+    const [editCollectionName, setEditCollectionName] = useState(null);
+    const [friendInput, setFriendInput] = useState(null);
     const [changedCollections, setChangedCollections] = useState(false);
   
     useEffect( () => {
@@ -31,6 +34,7 @@ const Records = () => {
                 return;
             }
             setEmail(result.user.email)
+            setUploaded(result.imageUrl);
         })
     }, [token, navigate]);
 
@@ -88,7 +92,16 @@ const Records = () => {
 
 
     const makeFriend = () => {
-
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/friend`, {
+            method:"POST",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                recepient: email,
+                sender: friendInput
+            })
+        })
     }
 
     return (
@@ -100,7 +113,9 @@ const Records = () => {
                         <div className="collections">
                         { allCollections.map((item, index) => (
                             <div key={index} className="collection-box"> 
-                                <p className="collection-name">{item.collectionName} </p>
+                                {(manageCollection !== item.collectionName) ? 
+                                    (<p className="collection-name">{item.collectionName}</p>)
+                                        : (<input type="text" onChange={(e) => setEditCollectionName(e.target.value)} value={editCollectionName}/>)}
                                      {(manageCollection !== item.collectionName) ? ( <div className="collection-details">
                                          <div className="div-balance">
                                              <p className="collection-balance" style={{"color":"green"}}> Balance $40</p>
@@ -109,7 +124,7 @@ const Records = () => {
                                              <p className="collection-indices">(3)</p>
                                          </div>
                                          <div className="div-manage">
-                                             <button className="collection-manage" onClick={(e) => openCollection(item)}> Manage {item.collectionName}</button>
+                                             <button className="collection-manage" onClick={(e) => { openCollection(item); setEditCollectionName(item.collectionName); }}> Manage {item.collectionName}</button>
                                          </div>
                                      </div>
                                      ) : ( <div className="edit-details">
@@ -138,7 +153,7 @@ const Records = () => {
                             <form onSubmit={makeFriend}>
                                 <h2>Add a Friend</h2>
                                 <div className="addfriend">
-                                    <input type="email" placeholder="Enter their email..."/>
+                                    <input type="email" value={friendInput} onChange={(e) => setFriendInput(e.target.value)} placeholder="Enter their email..."/>
                                     <button>Done</button>
                                 </div>
                             </form>
@@ -149,7 +164,8 @@ const Records = () => {
                         <h3>Friends List</h3>
                         <div className="friends">
                             <div className="friend-box">
-
+                                <img src={uploaded} alt="Profile" height="80" />
+                                <p>Justin</p>
                             </div>
                         </div>
                     </div>

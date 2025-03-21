@@ -258,3 +258,9 @@
     cursor: pointer;
     background-color:#915e2ba9;
 }
+
+.friend-box {
+    background-color: #498bfc;
+    width: 100%;
+    height: 100px;
+}
