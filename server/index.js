@@ -6,6 +6,47 @@ const jwt = require("jsonwebtoken");
 
 const app = express();
 
+require("dotenv").config();
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const multer = require("multer");
+
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUD_API_KEY,
+    api_secret: process.env.CLOUD_API_SECRET
+});
+
+const storage = new CloudinaryStorage({
+    cloudinary,
+    params: async (req, file) => ({
+        folder: "profile_pics",
+        public_id: req.body.email.replace(/[@.]/g, "_"), 
+        transformation: [{ width: 300, height: 300, crop: "fill" }] 
+    }),
+});
+
+const upload = multer({ storage });
+
+app.post("/api/upload", upload.single("image"), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: "No image uploaded" });
+        }
+
+        const { email } = req.body;
+        const imageUrl = req.file.path;
+
+        await User.findOneAndUpdate({ email }, { profileImage: imageUrl });
+
+        res.json({ message: "Image uploaded successfully", imageUrl });
+    } catch (error) {
+        console.error("Upload error:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+
 const allowedOrigins = [
     "http://localhost:3000",
     "https://lambdaphinance.netlify.app"
@@ -38,7 +79,8 @@ finances.once("open", () => console.log("Connected to finances"));
 const userSchema = new mongoose.Schema({
     username: String,
     email: String,
-    password: String
+    password: String,
+    profileImage: String,
 });
 const User = accounts.model("User", userSchema);
 
@@ -87,18 +129,26 @@ app.post("/api/login", async (req,res) => {
     res.json({ message: "Login successful!", "token": token, "user": email });
 });
 
-app.get("/api/profile", (req, res) => {
+app.get("/api/profile", async (req, res) => {
     try {
         const user = jwt.verify(req.header("Authorization").split(" ")[1], SECRET_KEY);
-        console.log("Token verified successfully:", user);
+        const userData = await User.findOne({ email: user.email });
 
-        res.json({ message: "User verified", user, imageUrl: user.profileImage  });
+        if (!userData) {
+            return res.status(404).json({ error: "User not found" });
+        }
 
+        res.json({
+            message: "User verified",
+            user: userData,
+            imageUrl: userData.profileImage,
+        });
     } catch (error) {
         console.error("JWT Verification Error:", error.message);
         return res.status(403).json({ error: "Invalid or expired token" });
     }
 });
+
 
 const expenseSchema = new mongoose.Schema({
     email: String,

@@ -5,6 +5,9 @@ import { Link, useNavigate } from "react-router-dom";
 const Profile = () => {
     const [email,setEmail] = useState("");
     const [username,setUsername] = useState("");
+    const [image, setImage] = useState(null);
+    const [uploaded, setUploaded] = useState(null);
+
 
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
@@ -15,6 +18,28 @@ const Profile = () => {
         navigate("/");
         window.location.reload();
     }
+
+    const changeImage = (e) => {
+        console.log(e.target.files[0]);
+        setImage(e.target.files[0]);
+    };
+
+    const handleUpload = async (e) => {
+        e.preventDefault();
+    
+        const formData = new FormData();
+        formData.append("image", image); 
+        formData.append("email", email);
+    
+        const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/upload`, {
+            method: "POST",
+            body: formData,
+        });
+    
+        const result = await res.json();
+        setUploaded(result.imageUrl);
+    };
+    
 
     useEffect(() => {
         console.log(process.env.REACT_APP_API_BASE_URL);
@@ -38,7 +63,9 @@ const Profile = () => {
             }  
             setEmail(result.user.email);
             setUsername(result.user.user);
+            setUploaded(result.imageUrl);
         })
+        .catch(error => console.error("Error fetching profile:", error));
     }, [token, navigate]);
 
     return (
@@ -46,6 +73,10 @@ const Profile = () => {
             <div className="information-container">
                 <div className="account-information">
                     <h1> Profile Information</h1>
+                    <img src={uploaded} alt="Profile" width="150" />
+                    <button onClick={handleUpload}>Upload</button>
+                    <input type="file" onChange={changeImage} />
+
                     <p>Email: {email}</p>
                     <p>Username: {username}</p>
                 </div>
