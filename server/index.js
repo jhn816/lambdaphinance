@@ -235,16 +235,17 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
     cloudinary,
     params: async (req, file) => {
-      if (!req.body || !req.body.email) {
-        throw new Error("Missing email in request body");
-      }
-      
-      return {
-        folder: "profile_pics",
-        public_id: req.body.email.replace(/[@.]/g, "_"),
-        transformation: [{ width: 300, height: 300, crop: "fill" }],
-      };
-    },
+        console.log("CloudinaryStorage params req.body:", req.body);
+        if (!req.body || !req.body.email) {
+            throw new Error("Missing email in request body");
+        }
+        
+        return {
+            folder: "profile_pics",
+            public_id: req.body.email.replace(/[@.]/g, "_"),
+            transformation: [{ width: 300, height: 300, crop: "fill" }],
+        };
+        },
   });
   
 
@@ -252,7 +253,8 @@ const upload = multer({ storage });
 
 app.post("/api/upload", upload.single("image"), async (req, res) => {
     try {
-        console.log("Request Body:", req.body); // Debugging log
+        console.log("Request Body:", req.body);
+        console.log("Uploaded file:", req.file);
 
         if (!req.file) {
             return res.status(400).json({ error: "No image uploaded" });
