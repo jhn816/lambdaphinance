@@ -49,19 +49,18 @@ accounts.once("open", () => {
     gfs.collection("uploads");
 });
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "uploads/");
-    },
-    filename: (req, file, cb) => {
-        const userEmail = req.body.email;
-
-        const sanitizedEmail = userEmail.replace(/[@.]/g, "_");
-        const fileExt = path.extname(file.originalname);
-
-        cb(null, `${sanitizedEmail}${fileExt}`);
+const storage = new GridFsStorage({
+    url: mongo_url,
+    options: { useNewUrlParser: true, useUnifiedTopology: true },
+    file: (req, file) => {
+        return {
+            filename: req.body.email.replace(/[@.]/g, "_"),
+            bucketName: "uploads",
+            metadata: { email: req.body.email }
+        };
     }
 });
+
 
 const upload = multer({storage});
 
@@ -131,17 +130,36 @@ app.get("/api/profile", (req, res) => {
     }
 }); 
 
-app.post("/api/upload", upload.single("image"), (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ error: "No file uploaded" });
-    }
+app.post("/api/upload", upload.single("image"), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: "No file uploaded" });
+        }
 
-    res.json({
-        message: "File uploaded successfully",
-        filename: req.file.filename,
-        path: req.file.path,
-    });
+        res.json({ message: "Image uploaded successfully!", filename: req.file.filename });
+    } catch (error) {
+        console.error("Error uploading image:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
 });
+
+app.get("/api/uploads/:email", async (req, res) => {
+    try {
+        const file = await gfs.files.findOne({ filename: req.params.email.replace(/[@.]/g, "_") });
+
+        if (!file) {
+            return res.status(404).json({ error: "Image not found" });
+        }
+
+        const readStream = gfs.createReadStream(file.filename);
+        res.set("Content-Type", file.contentType);
+        readStream.pipe(res);
+    } catch (error) {
+        console.error("Error fetching image:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
 
 const expenseSchema = new mongoose.Schema({
     email: String,
