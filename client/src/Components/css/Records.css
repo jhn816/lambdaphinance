@@ -148,8 +148,7 @@
     width: 95%;
     border-radius: 10px;
     height: 250px;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: scroll;
     display: flex;
     flex-direction: column;
     gap:10px;    
@@ -228,4 +227,34 @@
     display:flex;
     flex-direction:column;
     align-items: flex-end;
+}
+
+.edit-details {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 20px;
+    padding-left: 20px;
+    background-image: linear-gradient(#e1e1e1, #fdfdfd);
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    width: 60%;
+    height: 50px;
+    gap: 10px;
+}
+
+.edit-details button {
+    width: 80px;
+    height: 30px;
+    font-size: 12px;
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color:#915e2b79;
+    transition: .3s;
+}
+
+.edit-details button:hover{
+    cursor: pointer;
+    background-color:#915e2ba9;
 }
