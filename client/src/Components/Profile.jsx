@@ -26,6 +26,7 @@ const Profile = () => {
 
     const handleUpload = async (e) => {
         e.preventDefault();
+        console.log(email);
     
         const formData = new FormData();
         formData.append("image", image); 

@@ -233,12 +233,19 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
     cloudinary,
-    params: async (req, file) => ({
+    params: async (req, file) => {
+      if (!req.body || !req.body.email) {
+        throw new Error("Missing email in request body");
+      }
+      
+      return {
         folder: "profile_pics",
-        public_id: req.body.email.replace(/[@.]/g, "_"), 
-        transformation: [{ width: 300, height: 300, crop: "fill" }] 
-    }),
-});
+        public_id: req.body.email.replace(/[@.]/g, "_"),
+        transformation: [{ width: 300, height: 300, crop: "fill" }],
+      };
+    },
+  });
+  
 
 const upload = multer({ storage });
 
