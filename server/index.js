@@ -74,7 +74,7 @@ app.post("/api/friends", async (req, res) => {
         const {email} = req.body;
         console.log("Friends email:", email)
 
-        const senders = await Friend.find({recepient});
+        const senders = await Friend.find({recepient: email});
         console.log("Friends list:", senders);
         let friendsList = [];
         for (let friend of senders) {
