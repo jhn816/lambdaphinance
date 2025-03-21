@@ -26,7 +26,7 @@ app.use(cors({
 
 app.use(express.json());
 
-const mongo_url = proncess.env.MONGO_URL;
+const mongo_url = prncess.env.MONGO_URL;
 const accounts = mongoose.createConnection(mongo_url, {
     dbName:"accounts",
     useNewUrlParser: true,
