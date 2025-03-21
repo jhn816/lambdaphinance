@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event";
 import "./css/Home.css";
 import { useNavigate } from "react-router-dom";
 
+
 const Home = ({loggedIn}) => {
     const navigate = useNavigate();
     const token = localStorage.getItem("token")

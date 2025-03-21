@@ -19,6 +19,7 @@ const Profile = () => {
     }
 
     useEffect(() => {
+        console.log(process.env.REACT_APP_API_BASE_URL);
         if (!token) {
             navigate("/");
         }
