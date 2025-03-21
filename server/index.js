@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 
 require("dotenv").config();
 
+
 const app = express();
 
 const allowedOrigins = [
@@ -60,10 +61,6 @@ const storage = new CloudinaryStorage({
   }),
 });
 
-module.exports = {
-  cloudinary,
-  storage,
-};
 
 const upload = multer({ storage });
 
