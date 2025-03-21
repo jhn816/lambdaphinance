@@ -46,23 +46,27 @@ const userSchema = new mongoose.Schema({
 const User = accounts.model("User", userSchema);
 
 const friendSchema = new mongoose.Schema({
-    recepient: String,
     sender: String,
+    recepient: String,
+    added: Boolean,
 });
 const Friend = accounts.model("Friends", friendSchema);
 
 app.post("/api/friend", async (req, res) => {
     try {
         const {recepient, sender} = req.body;
-        
-        const added = await Friend.find({recepient, sender});
-        if (added) {
+        const sent = await Friend.find({sender, recepient});
+
+        if (!sent) {
+            const new_friend = new Friend({sender, recepient, added: false});
+            await new_friend.save();
+            res.json({ message: "Friend added successfully!" });
+        } else if (sent.added) {
             res.json({ message: "Friend is already added!" });
             return;
+        } else if (sent.added === false) {
+            res.json({ message: "Friend request already sent" });
         }
-        const new_friend = new Friend({recepient, sender});
-        await new_friend.save();
-        res.json({ message: "Friend added successfully!" });
     } catch (error) {
         console.error("Error saving:", error);
         res.status(500).json({ error: "Internal server error" });
@@ -72,26 +76,68 @@ app.post("/api/friend", async (req, res) => {
 app.post("/api/friends", async (req, res) => {
     try {
         const {email} = req.body;
-        console.log("Friends email:", email)
 
-        const senders = await Friend.find({recepient: email});
-        console.log("Friends list:", senders);
+        const recepients = await Friend.find({sender: email});
         let friendsList = [];
-        for (let friend of senders) {
-            const sender = friend.sender;
-            console.log(sender);
+        for (let friend of recepients) {
+            if (friend.added === true) {
+                const recepient = friend.recepient;
 
-            const senderUser = await User.findOne({email: sender});
-            console.log(senderUser)
-            friendsList.push(senderUser);
-            console.log(friendsList)
+                const addedUser = await User.findOne({email: recepient});
+                friendsList.push(addedUser);
+            }
         }
         res.json({message:"Friends list grabbed", listFriends: friendsList});
     } catch (error) {
-        console.error("Error saving:", error);
+        console.error("Error grabbing friends:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 });
+
+app.post("/api/requests", async (req, res) => {
+    try {
+        const {email} = req.body;
+
+        const senders = await Friend.find({recepient: email});
+        let friendsList = [];
+        for (let friend of senders) {
+            if (friend.added === false) {
+                const sender = friend.sender;
+
+                const requestedUser = await User.findOne({email: sender});
+                friendsList.push(requestedUser);
+            }
+        }
+        res.json({message:"Requests list grabbed", listRequests: friendsList});
+    } catch (error) {
+        console.error("Error grabbing requests:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+app.put("/api/friend", async (req, res) => {
+    try {
+        const {recepient, sender} = req.body;
+        const acceptedRequest = await Friend.findOneAndUpdate({recepient, sender}, { added: true }, { new: true });
+
+        res.json({message:"Friend request accepted", acceptedRequest});
+    } catch (error) {
+        console.error("Error accepting friend:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+})
+
+app.delete("/api/friend", async (req, res) => {
+    try {
+        const {recepient, sender} = req.body;
+        const deletedRequest = await Friend.deleteOne({recepient, sender});
+
+        res.json({message:"Friend request deleted", deletedRequest});
+    } catch (error) {
+        console.error("Error accepting friend:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+})
 
 app.post("/api/register", async (req, res) => {
     const { username, email, password } = req.body;

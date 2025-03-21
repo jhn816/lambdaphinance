@@ -15,6 +15,7 @@ const Records = () => {
 
     const [friendInput, setFriendInput] = useState("");
     const [listFriends, setListFriends] = useState([]);
+    const [listRequests, setListRequests] = useState([]);
 
   
     useEffect( () => {
@@ -77,9 +78,24 @@ const Records = () => {
             }
             console.log("message", result.message);
             setListFriends(result.listFriends);
-            for (let friend of listFriends){
-                console.log("Friend:", friend);
+        })
+
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/requests`, {
+            method:"POST",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                email
+            })
+        }) .then ((res) => res.json())
+        .then((result) => {
+            if (result.error) {
+                console.log("Error", result.error);
+                return;
             }
+            console.log("message", result.message);
+            setListRequests(result.listRequests);
         })
     }, [email, changedCollections])
 
@@ -134,6 +150,52 @@ const Records = () => {
                 return;
             }
             console.log("message",result.message);
+            setChangedCollections(!changedCollections);
+        })
+        .catch(error => console.error("Error:", error));
+    }
+
+    const acceptFriend = (item) => {
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/friend`, {
+            method:"PUT",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                recepient: email,
+                sender: item.email
+            })
+        }) .then((res) => res.json() )
+        .then( (result) => {
+            if (result.error) {
+                console.log(result.error);
+                return;
+            }
+            console.log("message",result.message);
+            console.log("Request", result.acceptedRequest)
+            setChangedCollections(!changedCollections);
+        })
+        .catch(error => console.error("Error:", error));
+    }
+
+    const rejectFriend = (item) => {
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/friend`, {
+            method:"DELETE",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                recepient: email,
+                sender: item.email
+            })
+        }) .then((res) => res.json() )
+        .then( (result) => {
+            if (result.error) {
+                console.log(result.error);
+                return;
+            }
+            console.log("message",result.message);
+            console.log("Request", result.deletedRequest)
             setChangedCollections(!changedCollections);
         })
         .catch(error => console.error("Error:", error));
@@ -195,18 +257,40 @@ const Records = () => {
                         </div>
                     </div>
 
+                    <div className="request-container">
+                        <div className="addinfo">
+                            <form>
+                                <h5>Friend Requests</h5>
+                                <div className="request-box">
+                                    {listRequests.map((item, index) => {
+                                        return (
+                                            <div className="accept-friend">
+                                                <img src={item.profileImage} alt="Profile"/>
+                                                <div className="accept-info">
+                                                    <p>{item.username}</p>
+                                                    <div className="accept-buttons">
+                                                        <button onClick={(item) => acceptFriend(item)} className="friend-accept" type="button"> Accept</button>
+                                                        <button onClick={(item) => rejectFriend(item)} className="friend-reject" type="button"> Reject</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
                     <div className="friendslist">
                         <h3>Friends List</h3>
                         <div className="friends">
-                            <div className="friend-box">
-                                <img src={uploaded} alt="Profile" height="80" />
-                                <p>Justin</p>
-                            </div>
                             {listFriends.map((item, index) => {
+                                return (
                                 <div key={index} className="friend-box">
                                     <img src={item.profileImage} alt="Profile" height="80" />
                                     <p>{item.email}</p>
                                 </div>
+                                )
                             })}
                         </div>
                     </div>
