@@ -18,8 +18,7 @@ app.use(cors({
     allowedHeaders: "Content-Type,Authorization"
 }));
 
-app.use(express.json({ limit: '20mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(express);
 
 const accounts = mongoose.createConnection("mongodb+srv://justinhnguyen1:Lambda19891989!@lambda-phinance.4ilv4.mongodb.net/?retryWrites=true&w=majority&appName=lambda-phinance", {
     dbName:"accounts",
