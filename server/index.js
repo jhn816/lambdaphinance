@@ -64,7 +64,7 @@ app.post("/api/friend", async (req, res) => {
         await new_friend.save();
         res.json({ message: "Friend added successfully!" });
     } catch (error) {
-        console.error("Error saving expense:", error);
+        console.error("Error saving:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 });
@@ -81,9 +81,9 @@ app.get("/api/friend", async (req, res) => {
             const senderUser = await User.findOne({email: sender});
             friendsList.push(senderUser);
         }
-        res.json({message:"Friends list grabbed", listFriends});
+        res.json({message:"Friends list grabbed", listFriends: friendsList});
     } catch (error) {
-        console.error("Error saving expense:", error);
+        console.error("Error saving:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 });
@@ -179,7 +179,7 @@ app.post("/api/addcollection", async (req, res) => {
         
         res.json({ message: `Collection '${collectionName}' created successfully!`, collection:newCollection});
     } catch (error) {
-        console.error("Error saving expense:", error);
+        console.error("Error saving:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 });
@@ -213,7 +213,7 @@ app.put("/api/expense", async (req, res) => {
         const updatedExpense = await Expense.findByIdAndUpdate(savedID, {category:savedCategory, value:savedValue, person:savedPerson}, { new: true });
         res.status(201).json({ message: "Expense updated successfully", expense: updatedExpense});
     } catch (error) {
-        console.error("Error saving expense:", error);
+        console.error("Error editing expense:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 })
@@ -237,7 +237,7 @@ app.post("/api/collections", async (req, res) => {
         const allCollections = await Collection.find({email})
         res.status(201).json({ message: "Collections found successfully", collections: allCollections });
     } catch (error) {
-        console.error("Error saving expense:", error);
+        console.error("Error making collection:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 })
@@ -261,7 +261,7 @@ app.post("/api/expenses", async (req, res) => {
         const allExpenses = await Expense.find({email, collection});
         res.status(201).json({ message: "Collections found successfully", expenses: allExpenses });
     } catch (error) {
-        console.error("Error saving expense:", error);
+        console.error("Error deleting collection:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 })
