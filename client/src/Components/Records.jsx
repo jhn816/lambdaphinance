@@ -16,6 +16,8 @@ const Records = () => {
     const [friendInput, setFriendInput] = useState("");
     const [listFriends, setListFriends] = useState([]);
     const [listRequests, setListRequests] = useState([]);
+    const [changedFriends, setChangedFriends] = useState(false);
+
 
   
     useEffect( () => {
@@ -62,6 +64,9 @@ const Records = () => {
             console.error("Error:", error);
         });
 
+    }, [email, changedCollections])
+
+    useEffect( () => {
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/friends`, {
             method:"POST",
             headers: {
@@ -97,7 +102,7 @@ const Records = () => {
             console.log("message", result.message);
             setListRequests(result.listRequests);
         })
-    }, [email, changedCollections])
+    }, [email, changedFriends])
 
     const deleteCollection = (item) => {
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/collections`, {
@@ -140,8 +145,8 @@ const Records = () => {
                 "Content-Type":"application/json"
             },
             body: JSON.stringify({
-                recepient: email,
-                sender: friendInput
+                sender: email,
+                recepient: friendInput
             })
         }) .then((res) => res.json() )
         .then( (result) => {
@@ -150,7 +155,7 @@ const Records = () => {
                 return;
             }
             console.log("message",result.message);
-            setChangedCollections(!changedCollections);
+            setChangedFriends(!changedFriends);
         })
         .catch(error => console.error("Error:", error));
     }
@@ -172,8 +177,8 @@ const Records = () => {
                 return;
             }
             console.log("message",result.message);
-            console.log("Request", result.acceptedRequest)
-            setChangedCollections(!changedCollections);
+            console.log("Request", result.acceptedRequest);
+            setChangedFriends(!changedFriends);
         })
         .catch(error => console.error("Error:", error));
     }
@@ -196,7 +201,7 @@ const Records = () => {
             }
             console.log("message",result.message);
             console.log("Request", result.deletedRequest)
-            setChangedCollections(!changedCollections);
+            setChangedFriends(!changedFriends);
         })
         .catch(error => console.error("Error:", error));
     }
@@ -208,6 +213,7 @@ const Records = () => {
                     <div className="records">
                         <h2>Your Collections</h2>
                         <div className="collections">
+                        { allCollections.length === 0 && <div className="collection-box"> Get started in Expenses!</div>}
                         { allCollections.map((item, index) => (
                             <div key={index} className="collection-box"> 
                                 {(manageCollection !== item.collectionName) ? 
@@ -262,9 +268,10 @@ const Records = () => {
                             <form>
                                 <h5>Friend Requests</h5>
                                 <div className="request-box">
+                                    {listRequests.length === 0 && <p> No Requests :(</p>}
                                     {listRequests.map((item, index) => {
                                         return (
-                                            <div className="accept-friend">
+                                            <div key={index} className="accept-friend">
                                                 <img src={item.profileImage} alt="Profile"/>
                                                 <div className="accept-info">
                                                     <p>{item.username}</p>

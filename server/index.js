@@ -54,7 +54,7 @@ const Friend = accounts.model("Friends", friendSchema);
 
 app.post("/api/friend", async (req, res) => {
     try {
-        const {recepient, sender} = req.body;
+        const {sender, recepient} = req.body;
         const sent = await Friend.findOne({sender, recepient});
 
         if (!sent) {
@@ -120,6 +120,8 @@ app.post("/api/requests", async (req, res) => {
 app.put("/api/friend", async (req, res) => {
     try {
         const {recepient, sender} = req.body;
+        console.log("rec",recepient);
+        console.log("sender",sender);
         const acceptedRequest = await Friend.findOneAndUpdate({recepient, sender}, { added: true }, { new: true });
 
         res.json({message:"Friend request accepted", acceptedRequest});
@@ -132,6 +134,8 @@ app.put("/api/friend", async (req, res) => {
 app.delete("/api/friend", async (req, res) => {
     try {
         const {recepient, sender} = req.body;
+        console.log("rec",recepient);
+        console.log("sender",sender);
         const deletedRequest = await Friend.deleteOne({recepient, sender});
 
         res.json({message:"Friend request deleted", deletedRequest});
