@@ -55,17 +55,19 @@ const Friend = accounts.model("Friends", friendSchema);
 app.post("/api/friend", async (req, res) => {
     try {
         const {recepient, sender} = req.body;
-        const sent = await Friend.find({sender, recepient});
+        const sent = await Friend.findOne({sender, recepient});
 
         if (!sent) {
             const new_friend = new Friend({sender, recepient, added: false});
             await new_friend.save();
             res.json({ message: "Friend added successfully!" });
+            return;
         } else if (sent.added) {
             res.json({ message: "Friend is already added!" });
             return;
-        } else if (sent.added === false) {
+        } else if (!sent.added) {
             res.json({ message: "Friend request already sent" });
+            return;
         }
     } catch (error) {
         console.error("Error saving:", error);
