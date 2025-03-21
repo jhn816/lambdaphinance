@@ -69,11 +69,13 @@ app.post("/api/friend", async (req, res) => {
     }
 });
 
-app.get("/api/friend", async (req, res) => {
+app.post("/api/friends", async (req, res) => {
     try {
-        const recepient = req.query.recepient;
+        const {email} = req.body;
+        console.log("Friends email:", email)
 
         const senders = await Friend.find({recepient});
+        console.log("Friends list:", senders);
         let friendsList = [];
         for (let friend of senders) {
             const sender = friend.sender;

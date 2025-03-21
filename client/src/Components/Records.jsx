@@ -61,11 +61,14 @@ const Records = () => {
             console.error("Error:", error);
         });
 
-        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/friend?recepient=${email}`, {
-            method:"GET",
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/friends`, {
+            method:"POST",
             headers: {
                 "Content-Type":"application/json"
-            }
+            },
+            body: JSON.stringify({
+                email
+            })
         }) .then ((res) => res.json())
         .then((result) => {
             if (result.error) {
@@ -74,6 +77,7 @@ const Records = () => {
             }
             console.log("message", result.message);
             setListFriends(result.listFriends);
+            console.log(listFriends);
         })
     }, [email, changedCollections])
 
