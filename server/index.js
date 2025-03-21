@@ -4,10 +4,6 @@ const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-require("dotenv").config();
-console.log("MONGO_URL:", process.env.MONGO_URL);
-console.log("Cloudinary Name:", process.env.CLOUD_NAME);
-
 const app = express();
 
 const allowedOrigins = [
@@ -25,9 +21,7 @@ app.use(cors({
 app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-
-const mongo_url = "mongodb+srv://justinhnguyen1:Lambda19891989!@lambda-phinance.4ilv4.mongodb.net/?retryWrites=true&w=majority&appName=lambda-phinance";
-const accounts = mongoose.createConnection(mongo_url, {
+const accounts = mongoose.createConnection("mongodb+srv://justinhnguyen1:Lambda19891989!@lambda-phinance.4ilv4.mongodb.net/?retryWrites=true&w=majority&appName=lambda-phinance", {
     dbName:"accounts",
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -35,7 +29,7 @@ const accounts = mongoose.createConnection(mongo_url, {
 accounts.on("error", (err) => console.error("accounts connection error:", err));
 accounts.once("open", () => console.log("Connected to accounts"));
 
-const finances = mongoose.createConnection(mongo_url, {
+const finances = mongoose.createConnection("mongodb+srv://justinhnguyen1:Lambda19891989!@lambda-phinance.4ilv4.mongodb.net/?retryWrites=true&w=majority&appName=lambda-phinance", {
     dbName:"finances",
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -43,32 +37,10 @@ const finances = mongoose.createConnection(mongo_url, {
 finances.on("error", (err) => console.error("finances connection error:", err));
 finances.once("open", () => console.log("Connected to finances"));
 
-const cloudinary = require("cloudinary").v2;
-const { CloudinaryStorage } = require("multer-storage-cloudinary");
-const multer = require("multer");
-
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.CLOUD_API_KEY,   
-  api_secret: process.env.CLOUD_API_SECRET
-});
-
-const storage = new CloudinaryStorage({
-  cloudinary,
-  params: async (req, file) => ({
-    folder: "profile_pics",
-    public_id: req.body.email.replace(/[@.]/g, "_"),
-    transformation: [{ width: 300, height: 300, crop: "fill" }],
-  }),
-});
-
-const upload = multer({ storage });
-
 const userSchema = new mongoose.Schema({
     username: String,
     email: String,
-    password: String,
-    profileImage: String,
+    password: String
 });
 const User = accounts.model("User", userSchema);
 
@@ -128,22 +100,7 @@ app.get("/api/profile", (req, res) => {
         console.error("JWT Verification Error:", error.message);
         return res.status(403).json({ error: "Invalid or expired token" });
     }
-}); 
-
-app.post("/api/upload", upload.single("image"), async (req, res) => {
-    if (!req.file) {
-      return res.status(400).json({ error: "No image uploaded" });
-    }
-
-    await User.findOneAndUpdate({ email: req.body.email }, {
-        profileImage: req.file.path
-    });
-  
-    res.json({
-      message: "Image uploaded successfully",
-      imageUrl: req.file.path,
-    });
-  });
+});
 
 const expenseSchema = new mongoose.Schema({
     email: String,

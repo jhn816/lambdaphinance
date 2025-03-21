@@ -7,8 +7,6 @@ const Records = () => {
     const [allCollections, setAllCollections] = useState([]);
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
-
-    const [manageCollection, setManageCollection] = useState(null);
   
     useEffect( () => {
         if (!token) {
@@ -54,33 +52,6 @@ const Records = () => {
         });
     }, [email])
 
-    const deleteCollection = (item) => {
-        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/collections`, {
-            method:"DELETE",
-            headers: {
-                "Content-Type":"application/json"
-            },
-            body: JSON.stringify({
-                _id:item._id,
-            })
-        }) .then((res) => res.json() )
-        .then( (result) => {
-            if (result.error) {
-                console.log(result.error);
-                return;
-            }
-        })
-        .catch(error => console.error("Error:", error));
-    }
-
-    const openCollection = (item) => {
-        if (item.collectionName === manageCollection) {
-            setManageCollection(null);
-        } else {
-            setManageCollection(item.collectionName);
-        }
-    }
-
     const makeFriend = () => {
 
     }
@@ -94,29 +65,22 @@ const Records = () => {
                         <div className="collections">
                         { allCollections.map((item, index) => (
                             <div key={index} className="collection-box"> 
-                                <p className="collection-name">{item.collectionName} </p>
-                                    {(manageCollection !== item.collectionName) ? ( <div className="collection-details">
-                                        <div className="div-balance">
-                                            <p className="collection-balance" style={{"color":"green"}}> Balance $40</p>
-                                        </div>
-                                        <div className="div-indices">
-                                            <p className="collection-indices">(3)</p>
-                                        </div>
-                                        <div className="div-manage">
-                                            <button className="collection-manage" onClick={(e) => openCollection(item)}> Manage {item.collectionName}</button>
-                                        </div>
+                                <p class="collection-name">{item.collectionName} </p>
+                                <div className="collection-details">
+                                    <div className="div-balance">
+                                        <p className="collection-balance" style={{"color":"green"}}> Balance $40</p>
                                     </div>
-                                    ) : ( <div className="edit-details">
-                                            <button> Edit Name </button>
-                                            <button onClick={() => (deleteCollection(item))}> Delete </button>
-                                            <button> Share </button>
-                                            <button onClick={() => (setManageCollection(null))}> Cancel </button>
-                                        </div>
-                                    )}
+                                    <div className="div-indices">
+                                        <p className="collection-indices">(3)</p>
+                                    </div>
+                                    <div className="div-manage">
+                                        <button className="collection-manage"> Manage {item.collectionName}</button>
+                                    </div>
                                 </div>
-                        ))}                     
+                            </div>
+                        ))}
                         </div>
-                    </div>                
+                    </div>
                         
                     <div className="records-debts">
                         <h2>Your Debts</h2>
