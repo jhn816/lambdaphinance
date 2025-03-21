@@ -83,9 +83,14 @@ app.post("/api/friends", async (req, res) => {
         let friendsList = [];
         for (let friend of recipients) {
             if (friend.added === true) {
-                const recipient = friend.recipient;
-
-                const addedUser = await User.findOne({email: recipient});
+                let addedUser;
+                if (friend.recipient === email) {
+                    const sender = friend.sender;
+                    addedUser = await User.findOne({email: sender});
+                } else if (friend.sender === email) {
+                    const recipient = friend.recipient;
+                    addedUser = await User.findOne({email: recipient});
+                }
                 friendsList.push(addedUser);
             }
         }
