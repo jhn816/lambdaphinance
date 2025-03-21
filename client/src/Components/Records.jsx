@@ -91,7 +91,9 @@ const Records = () => {
     }
 
 
-    const makeFriend = () => {
+    const makeFriend = (event) => {
+        event.preventDefault();
+
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/friend`, {
             method:"POST",
             headers: {
@@ -101,7 +103,15 @@ const Records = () => {
                 recepient: email,
                 sender: friendInput
             })
+        }) .then((res) => res.json() )
+        .then( (result) => {
+            if (result.error) {
+                console.log(result.error);
+                return;
+            }
+            console.log("message",result.message);
         })
+        .catch(error => console.error("Error:", error));
     }
 
     return (
