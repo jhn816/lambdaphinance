@@ -42,12 +42,17 @@ const Profile = () => {
         formData.append("email", email);
     
         console.log("Uploading for email:", email);  // Debugging line
+        console.log("form", formData.get("email"));
     
         try {
-            const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/upload`, {
-                method: "POST",
-                body: formData,
-            });
+            const res = await fetch(
+                `${process.env.REACT_APP_API_BASE_URL}/api/upload?email=${encodeURIComponent(email)}`,
+                {
+                  method: "POST",
+                  body: formData,
+                }
+              );
+              
     
             const result = await res.json();
             console.log("Upload result:", result);

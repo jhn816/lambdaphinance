@@ -235,17 +235,18 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
     cloudinary,
     params: async (req, file) => {
-        console.log("CloudinaryStorage params req.body:", req.body);
-        if (!req.body || !req.body.email) {
-            throw new Error("Missing email in request body");
-        }
-        
-        return {
-            folder: "profile_pics",
-            public_id: req.body.email.replace(/[@.]/g, "_"),
-            transformation: [{ width: 300, height: 300, crop: "fill" }],
-        };
-        },
+      console.log("CloudinaryStorage params req.query:", req.query);
+      console.log("CloudinaryStorage params req.body:", req.body);
+      const emailToUse = req.query.email || req.body.email;
+      if (!emailToUse) {
+        throw new Error("Missing email in request");
+      }
+      return {
+        folder: "profile_pics",
+        public_id: emailToUse.replace(/[@.]/g, "_"),
+        transformation: [{ width: 300, height: 300, crop: "fill" }],
+      };
+    },
   });
   
 
