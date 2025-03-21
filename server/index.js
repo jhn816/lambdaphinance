@@ -42,7 +42,6 @@ finances.once("open", () => console.log("Connected to finances"));
 const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const multer = require("multer");
-const { storage } = require("./cloudinaryConfig");
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -142,24 +141,6 @@ app.post("/api/upload", upload.single("image"), (req, res) => {
       imageUrl: req.file.path,
     });
   });
-
-app.get("/api/uploads/:email", async (req, res) => {
-    try {
-        const file = await gfs.files.findOne({ filename: req.params.email.replace(/[@.]/g, "_") });
-
-        if (!file) {
-            return res.status(404).json({ error: "Image not found" });
-        }
-
-        const readStream = gfs.createReadStream(file.filename);
-        res.set("Content-Type", file.contentType);
-        readStream.pipe(res);
-    } catch (error) {
-        console.error("Error fetching image:", error);
-        res.status(500).json({ error: "Internal server error" });
-    }
-});
-
 
 const expenseSchema = new mongoose.Schema({
     email: String,
@@ -271,8 +252,4 @@ app.get("/api/register", (req, res) => {
 });
 
 
-module.exports = {
-    app,
-    cloudinary,
-    storage,
-  };
+module.exports = app;
