@@ -146,7 +146,7 @@ const Records = () => {
             },
             body: JSON.stringify({
                 sender: email,
-                recepient: friendInput
+                recipient: friendInput
             })
         }) .then((res) => res.json() )
         .then( (result) => {
@@ -167,7 +167,7 @@ const Records = () => {
                 "Content-Type":"application/json"
             },
             body: JSON.stringify({
-                recepient: email,
+                recipient: email,
                 sender: item.email
             })
         }) .then((res) => res.json() )
@@ -190,7 +190,7 @@ const Records = () => {
                 "Content-Type":"application/json"
             },
             body: JSON.stringify({
-                recepient: email,
+                recipient: email,
                 sender: item.email
             })
         }) .then((res) => res.json() )
@@ -276,8 +276,8 @@ const Records = () => {
                                                 <div className="accept-info">
                                                     <p>{item.username}</p>
                                                     <div className="accept-buttons">
-                                                        <button onClick={(item) => acceptFriend(item)} className="friend-accept" type="button"> Accept</button>
-                                                        <button onClick={(item) => rejectFriend(item)} className="friend-reject" type="button"> Reject</button>
+                                                        <button onClick={() => acceptFriend(item)} className="friend-accept" type="button"> Accept</button>
+                                                        <button onClick={() => rejectFriend(item)} className="friend-reject" type="button"> Reject</button>
                                                     </div>
                                                 </div>
                                             </div>

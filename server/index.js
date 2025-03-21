@@ -47,18 +47,18 @@ const User = accounts.model("User", userSchema);
 
 const friendSchema = new mongoose.Schema({
     sender: String,
-    recepient: String,
+    recipient: String,
     added: Boolean,
 });
 const Friend = accounts.model("Friends", friendSchema);
 
 app.post("/api/friend", async (req, res) => {
     try {
-        const {sender, recepient} = req.body;
-        const sent = await Friend.findOne({sender, recepient});
+        const {sender, recipient} = req.body;
+        const sent = await Friend.findOne({sender, recipient});
 
         if (!sent) {
-            const new_friend = new Friend({sender, recepient, added: false});
+            const new_friend = new Friend({sender, recipient, added: false});
             await new_friend.save();
             res.json({ message: "Friend added successfully!" });
             return;
@@ -79,13 +79,13 @@ app.post("/api/friends", async (req, res) => {
     try {
         const {email} = req.body;
 
-        const recepients = await Friend.find({sender: email});
+        const recipients = await Friend.find({ $or: [ {sender:email}, {recipient:email}]});
         let friendsList = [];
-        for (let friend of recepients) {
+        for (let friend of recipients) {
             if (friend.added === true) {
-                const recepient = friend.recepient;
+                const recipient = friend.recipient;
 
-                const addedUser = await User.findOne({email: recepient});
+                const addedUser = await User.findOne({email: recipient});
                 friendsList.push(addedUser);
             }
         }
@@ -100,7 +100,7 @@ app.post("/api/requests", async (req, res) => {
     try {
         const {email} = req.body;
 
-        const senders = await Friend.find({recepient: email});
+        const senders = await Friend.find({recipient: email});
         let friendsList = [];
         for (let friend of senders) {
             if (friend.added === false) {
@@ -119,10 +119,8 @@ app.post("/api/requests", async (req, res) => {
 
 app.put("/api/friend", async (req, res) => {
     try {
-        const {recepient, sender} = req.body;
-        console.log("rec",recepient);
-        console.log("sender",sender);
-        const acceptedRequest = await Friend.findOneAndUpdate({recepient, sender}, { added: true }, { new: true });
+        const {recipient, sender} = req.body;
+        const acceptedRequest = await Friend.findOneAndUpdate({recipient, sender}, { added: true }, { new: true });
 
         res.json({message:"Friend request accepted", acceptedRequest});
     } catch (error) {
@@ -133,10 +131,8 @@ app.put("/api/friend", async (req, res) => {
 
 app.delete("/api/friend", async (req, res) => {
     try {
-        const {recepient, sender} = req.body;
-        console.log("rec",recepient);
-        console.log("sender",sender);
-        const deletedRequest = await Friend.deleteOne({recepient, sender});
+        const {recipient, sender} = req.body;
+        const deletedRequest = await Friend.deleteOne({recipient, sender});
 
         res.json({message:"Friend request deleted", deletedRequest});
     } catch (error) {
