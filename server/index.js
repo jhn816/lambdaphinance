@@ -81,9 +81,10 @@ app.post("/api/friends", async (req, res) => {
             const sender = friend.sender;
             console.log(sender);
 
-            const senderUser = await User.find({email: sender});
+            const senderUser = await User.findOne({email: sender});
             console.log(senderUser)
             friendsList.push(senderUser);
+            console.log(friendsList)
         }
         res.json({message:"Friends list grabbed", listFriends: friendsList});
     } catch (error) {

@@ -77,7 +77,9 @@ const Records = () => {
             }
             console.log("message", result.message);
             setListFriends(result.listFriends);
-            console.log(listFriends);
+            for (let friend of listFriends){
+                console.log("Friend:", friend);
+            }
         })
     }, [email, changedCollections])
 
