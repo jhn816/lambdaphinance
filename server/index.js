@@ -26,7 +26,7 @@ app.use(cors({
 
 app.use(express.json());
 
-const mongo_url = process.env.MONGO_URL;
+const mongo_url = "mongodb+srv://justinhnguyen1:Lambda19891989!@lambda-phinance.4ilv4.mongodb.net/?retryWrites=true&w=majority&appName=lambda-phinance";
 const accounts = mongoose.createConnection(mongo_url, {
     dbName:"accounts",
     useNewUrlParser: true,
