@@ -252,13 +252,20 @@ const upload = multer({ storage });
 
 app.post("/api/upload", upload.single("image"), async (req, res) => {
     try {
+        console.log("Request Body:", req.body); // Debugging log
+
         if (!req.file) {
             return res.status(400).json({ error: "No image uploaded" });
         }
 
         const { email } = req.body;
-        const imageUrl = req.file.path;
 
+        if (!email) {
+            console.error("Email is missing in request body");
+            return res.status(400).json({ error: "Email is required" });
+        }
+
+        const imageUrl = req.file.path;
         await User.findOneAndUpdate({ email }, { profileImage: imageUrl });
 
         res.json({ message: "Image uploaded successfully", imageUrl });
@@ -267,6 +274,7 @@ app.post("/api/upload", upload.single("image"), async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 });
+
 
 
 module.exports = app;
