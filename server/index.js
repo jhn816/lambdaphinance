@@ -199,6 +199,18 @@ app.post("/api/collections", async (req, res) => {
     }
 })
 
+app.delete("/api/collections", async(req, res) => {
+    try {
+        const {_id} = req.body;
+         
+        const deletedCollection = await Collection.deleteOne({_id});
+        res.status(201).json({ message: "Collection deleted successfully", collection: deletedCollection});
+    } catch (error) {
+        console.error("Error saving expense:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
 app.post("/api/expenses", async (req, res) => {
     try {
         const {email, collection} = req.body;
@@ -235,8 +247,6 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
     cloudinary,
     params: async (req, file) => {
-      console.log("CloudinaryStorage params req.query:", req.query);
-      console.log("CloudinaryStorage params req.body:", req.body);
       const emailToUse = req.query.email || req.body.email;
       if (!emailToUse) {
         throw new Error("Missing email in request");
@@ -254,9 +264,6 @@ const upload = multer({ storage });
 
 app.post("/api/upload", upload.single("image"), async (req, res) => {
     try {
-        console.log("Request Body:", req.body);
-        console.log("Uploaded file:", req.file);
-
         if (!req.file) {
             return res.status(400).json({ error: "No image uploaded" });
         }

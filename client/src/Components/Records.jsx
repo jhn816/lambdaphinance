@@ -9,6 +9,7 @@ const Records = () => {
     const navigate = useNavigate();
 
     const [manageCollection, setManageCollection] = useState(null);
+    const [changedCollections, setChangedCollections] = useState(false);
   
     useEffect( () => {
         if (!token) {
@@ -52,7 +53,7 @@ const Records = () => {
         }) .catch((error) => {
             console.error("Error:", error);
         });
-    }, [email])
+    }, [email, changedCollections])
 
     const deleteCollection = (item) => {
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/collections`, {
@@ -68,6 +69,10 @@ const Records = () => {
             if (result.error) {
                 console.log(result.error);
                 return;
+            }
+            setChangedCollections(!changedCollections);
+            if (result.collection.deletedCount == 1) {
+                console.log("deletedCollection",result.collection);
             }
         })
         .catch(error => console.error("Error:", error));

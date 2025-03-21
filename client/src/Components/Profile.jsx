@@ -7,7 +7,7 @@ const Profile = () => {
     const [username,setUsername] = useState("");
     const [image, setImage] = useState(null);
     const [uploaded, setUploaded] = useState(null);
-
+    const [savedImage, setSavedImage] = useState(false);
 
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
@@ -20,7 +20,6 @@ const Profile = () => {
     }
 
     const changeImage = (e) => {
-        console.log(e.target.files[0]);
         setImage(e.target.files[0]);
     };
 
@@ -28,21 +27,13 @@ const Profile = () => {
         e.preventDefault();
         
         if (!image) {
-            console.error("No image selected");
-            return;
-        }
-    
-        if (!email) {
-            console.error("Email is missing before upload");
+            alert("No image selected");
             return;
         }
     
         const formData = new FormData();
         formData.append("image", image);
         formData.append("email", email);
-    
-        console.log("Uploading for email:", email);  // Debugging line
-        console.log("form", formData.get("email"));
     
         try {
             const res = await fetch(
@@ -52,25 +43,15 @@ const Profile = () => {
                   body: formData,
                 }
               );
-              
-    
             const result = await res.json();
-            console.log("Upload result:", result);
-    
-            if (result.imageUrl) {
-                setUploaded(result.imageUrl);
-            } else {
-                console.error("Upload failed:", result);
-            }
+            setUploaded(result.imageUrl);
+            imageAppear();
         } catch (error) {
             console.error("Error during upload:", error);
         }
     };
-    
-    
 
     useEffect(() => {
-        console.log(process.env.REACT_APP_API_BASE_URL);
         if (!token) {
             navigate("/");
         }
@@ -90,23 +71,39 @@ const Profile = () => {
                 return;
             }  
             setEmail(result.user.email);
-            setUsername(result.user.user);
+            setUsername(result.user.username);
             setUploaded(result.imageUrl);
         })
         .catch(error => console.error("Error fetching profile:", error));
     }, [token, navigate]);
+
+    const imageAppear = () => {
+        setSavedImage(true)
+        setTimeout(() => setSavedImage(false), 5000);
+    };
 
     return (
         <div className="profile-container">
             <div className="information-container">
                 <div className="account-information">
                     <h1> Profile Information</h1>
-                    <img src={uploaded} alt="Profile" width="150" />
-                    <button onClick={handleUpload}>Upload</button>
-                    <input type="file" onChange={changeImage} />
-
-                    <p>Email: {email}</p>
-                    <p>Username: {username}</p>
+                    <div className="information-inputs">
+                        <div className="picture-box">
+                            <img id="user-picture" src={uploaded} alt="Profile" width="200" />
+                            {savedImage && <p id="saved-picture">Picture Saved</p>}
+                        </div>
+                        <div className="information-box">
+                            <div className="image-info">
+                                <p>User Picture</p>
+                                <div className="image-buttons">
+                                    <input type="file" onChange={changeImage} />
+                                    <button onClick={handleUpload}>Upload</button>
+                                </div>
+                            </div>
+                            <p>Email: {email}</p>
+                            <p>Username: {username}</p>
+                        </div>
+                    </div>
                 </div>
                 <button className="logout" onClick={logOut}> Log Out </button>
             </div>
