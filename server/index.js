@@ -5,7 +5,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 require("dotenv").config();
-
+console.log("MONGO_URL:", process.env.MONGO_URL);
+console.log("Cloudinary Name:", process.env.CLOUD_NAME);
 
 const app = express();
 
