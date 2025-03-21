@@ -69,6 +69,25 @@ app.post("/api/friend", async (req, res) => {
     }
 });
 
+app.get("/api/friend", async (req, res) => {
+    try {
+        const {recepient} = req.query.recepient;
+
+        const senders = await Friend.find({recepient});
+        let friendsList = [];
+        for (let friend of senders) {
+            const sender = friend.sender;
+
+            const senderUser = await User.findOne({sender});
+            friendsList.push(senderUser);
+        }
+        res.json({message:"Friends list grabbed", listFriends});
+    } catch (error) {
+        console.error("Error saving expense:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
 app.post("/api/register", async (req, res) => {
     const { username, email, password } = req.body;
 

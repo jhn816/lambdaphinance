@@ -11,8 +11,11 @@ const Records = () => {
 
     const [manageCollection, setManageCollection] = useState(null);
     const [editCollectionName, setEditCollectionName] = useState(null);
-    const [friendInput, setFriendInput] = useState("");
     const [changedCollections, setChangedCollections] = useState(false);
+
+    const [friendInput, setFriendInput] = useState("");
+    const [listFriends, setListFriends] = useState([]);
+
   
     useEffect( () => {
         if (!token) {
@@ -57,6 +60,21 @@ const Records = () => {
         }) .catch((error) => {
             console.error("Error:", error);
         });
+
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/friend?recepient=${email}`, {
+            method:"GET",
+            headers: {
+                "Content-Type":"application/json"
+            }
+        }) .then ((res) => res.json())
+        .then((result) => {
+            if (result.error) {
+                console.log("Error", result.error);
+                return;
+            }
+            console.log("message", result.message);
+            setListFriends(result.listFriends);
+        })
     }, [email, changedCollections])
 
     const deleteCollection = (item) => {
@@ -110,6 +128,7 @@ const Records = () => {
                 return;
             }
             console.log("message",result.message);
+            setChangedCollections(!changedCollections);
         })
         .catch(error => console.error("Error:", error));
     }
@@ -177,6 +196,12 @@ const Records = () => {
                                 <img src={uploaded} alt="Profile" height="80" />
                                 <p>Justin</p>
                             </div>
+                            {listFriends.map((item, index) => {
+                                <div key={index} className="friend-box">
+                                    <img src={item.profileImage} alt="Profile" height="80" />
+                                    <p>{item.email}</p>
+                                </div>
+                            })}
                         </div>
                     </div>
                 </div>
