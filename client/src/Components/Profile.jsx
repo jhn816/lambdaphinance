@@ -33,14 +33,16 @@ const Profile = () => {
         .then(res => res.json())
         .then(result => {
             if (!result.user) {
-                console.log("Profile not found");
                 localStorage.removeItem("token");
                 navigate("/");
                 return;
             }
+        
             setEmail(result.user.email);
             setUsername(result.user.user);
-            fetchImage(result.user.email);
+            if (result.imageUrl) {
+                setUploaded(result.imageUrl);
+            }
         })
     }, [token, navigate]);
 
@@ -75,7 +77,7 @@ const Profile = () => {
             <div className="information-container">
                 <div className="account-information">
                     <h1> Profile Information</h1>
-                    <img src={uploaded} alt="Profile" width="150" />
+                    <img src={uploaded || "default-fallback.jpg"} alt="Profile" width="150" />
                     <button onClick={handleUpload}>Upload</button>
                     <input type="file" onChange={(e) => changeImage(e)} />
                     <p>Email: {email}</p>

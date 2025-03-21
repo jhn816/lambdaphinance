@@ -69,6 +69,7 @@ const userSchema = new mongoose.Schema({
     username: String,
     email: String,
     password: String,
+    profileImage: String,
 });
 const User = accounts.model("User", userSchema);
 
@@ -123,7 +124,7 @@ app.get("/api/profile", (req, res) => {
         const user = jwt.verify(req.header("Authorization").split(" ")[1], SECRET_KEY);
         console.log("Token verified successfully:", user);
 
-        res.json({ message: "User verified", user });
+        res.json({ message: "User verified", user, imageUrl: user.profileImage  });
 
     } catch (error) {
         console.error("JWT Verification Error:", error.message);
@@ -131,10 +132,14 @@ app.get("/api/profile", (req, res) => {
     }
 }); 
 
-app.post("/api/upload", upload.single("image"), (req, res) => {
+app.post("/api/upload", upload.single("image"), async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ error: "No image uploaded" });
     }
+
+    await User.findOneAndUpdate({ email: req.body.email }, {
+        profileImage: req.file.path
+    });
   
     res.json({
       message: "Image uploaded successfully",
