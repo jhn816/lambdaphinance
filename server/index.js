@@ -6,47 +6,6 @@ const jwt = require("jsonwebtoken");
 
 const app = express();
 
-require("dotenv").config();
-const cloudinary = require("cloudinary").v2;
-const { CloudinaryStorage } = require("multer-storage-cloudinary");
-const multer = require("multer");
-
-cloudinary.config({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.CLOUD_API_KEY,
-    api_secret: process.env.CLOUD_API_SECRET
-});
-
-const storage = new CloudinaryStorage({
-    cloudinary,
-    params: async (req, file) => ({
-        folder: "profile_pics",
-        public_id: req.body.email.replace(/[@.]/g, "_"), 
-        transformation: [{ width: 300, height: 300, crop: "fill" }] 
-    }),
-});
-
-const upload = multer({ storage });
-
-app.post("/api/upload", upload.single("image"), async (req, res) => {
-    try {
-        if (!req.file) {
-            return res.status(400).json({ error: "No image uploaded" });
-        }
-
-        const { email } = req.body;
-        const imageUrl = req.file.path;
-
-        await User.findOneAndUpdate({ email }, { profileImage: imageUrl });
-
-        res.json({ message: "Image uploaded successfully", imageUrl });
-    } catch (error) {
-        console.error("Upload error:", error);
-        res.status(500).json({ error: "Internal server error" });
-    }
-});
-
-
 const allowedOrigins = [
     "http://localhost:3000",
     "https://lambdaphinance.netlify.app"
@@ -60,6 +19,7 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
 const accounts = mongoose.createConnection("mongodb+srv://justinhnguyen1:Lambda19891989!@lambda-phinance.4ilv4.mongodb.net/?retryWrites=true&w=majority&appName=lambda-phinance", {
     dbName:"accounts",
     useNewUrlParser: true,
@@ -257,6 +217,46 @@ app.get("/", (req, res) => {
 
 app.get("/api/register", (req, res) => {
     res.json({ message: "Register page successful!" });
+});
+
+require("dotenv").config();
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const multer = require("multer");
+
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUD_API_KEY,
+    api_secret: process.env.CLOUD_API_SECRET
+});
+
+const storage = new CloudinaryStorage({
+    cloudinary,
+    params: async (req, file) => ({
+        folder: "profile_pics",
+        public_id: req.body.email.replace(/[@.]/g, "_"), 
+        transformation: [{ width: 300, height: 300, crop: "fill" }] 
+    }),
+});
+
+const upload = multer({ storage });
+
+app.post("/api/upload", upload.single("image"), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: "No image uploaded" });
+        }
+
+        const { email } = req.body;
+        const imageUrl = req.file.path;
+
+        await User.findOneAndUpdate({ email }, { profileImage: imageUrl });
+
+        res.json({ message: "Image uploaded successfully", imageUrl });
+    } catch (error) {
+        console.error("Upload error:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
 });
 
 
