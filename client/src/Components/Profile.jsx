@@ -31,6 +31,7 @@ const Profile = () => {
         const formData = new FormData();
         formData.append("image", image); 
         formData.append("email", email);
+        console.log("Uploading for email:", email); 
     
         const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/upload`, {
             method: "POST",
