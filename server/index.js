@@ -61,7 +61,6 @@ const storage = new CloudinaryStorage({
   }),
 });
 
-
 const upload = multer({ storage });
 
 const userSchema = new mongoose.Schema({
@@ -88,7 +87,6 @@ app.post("/api/register", async (req, res) => {
     res.json({ message: "User registered successfully!" });
 });
 
-require("dotenv").config();
 const SECRET_KEY = process.env.SECRET_KEY || "failsafe";
 app.post("/api/login", async (req,res) => {
     const {email, password} = req.body;
