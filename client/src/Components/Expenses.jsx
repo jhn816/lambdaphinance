@@ -198,7 +198,8 @@ const Expenses = () => {
                 savedID: item._id,
                 savedCategory,
                 savedValue,
-                savedPerson
+                savedPerson,
+                email
             })
         }) .then((res) => res.json())
         .then ((result) => {

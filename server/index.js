@@ -265,6 +265,9 @@ const Expense = finances.model("Expense", expenseSchema);
 const collectionSchema = new mongoose.Schema({
     email: String,
     collectionName: String,
+    netGain: Number,
+    netLoss: Number,
+    totalBalance: Number,
 });
 const Collection = accounts.model("Collection", collectionSchema);
 
@@ -293,9 +296,24 @@ app.post("/api/addexpense", async (req, res) => {
 // edit an expense
 app.put("/api/expense", async (req, res) => {
     try {
-        const {savedID, savedCategory, savedValue, savedPerson} = req.body;
+        const {savedID, savedCategory, savedValue, savedPerson, email} = req.body;
 
         const updatedExpense = await Expense.findByIdAndUpdate(savedID, {category:savedCategory, value:savedValue, person:savedPerson}, { new: true });
+        
+        // update collection values
+        const allExpenses = await Expense.find({collection:updatedExpense.collection})
+        let netGain, netLoss, totalBalance = 0;
+        for (let expense of allExpenses) {
+            if (expense.value < 0) {
+                netLoss = netLoss - expense.value;
+            } else {
+                netGain = netGain - expense.value;
+            }
+            totalBalance += expense.value;
+        }
+
+        await Collection.findOneAndUpdate({collectionName:updatedExpense.collection, email} , {$set: {netGain, netLoss, totalBalance}})
+
         res.status(201).json({ message: "Expense updated successfully", expense: updatedExpense});
     } catch (error) {
         console.error("Error editing expense:", error);
@@ -340,7 +358,7 @@ app.post("/api/addcollection", async (req, res) => {
             return;
         }
 
-        const newCollection = new Collection({collectionName, email});
+        const newCollection = new Collection({collectionName, email, netGain:0, netLoss:0, totalBalance:0});
         await newCollection.save();
         
         res.json({ message: `Collection '${collectionName}' created successfully!`, collection:newCollection});

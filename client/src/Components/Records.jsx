@@ -147,6 +147,11 @@ const Records = () => {
     }
 
     const changeCollection = (item) => {
+        if (item.collectionName === editCollectionName) {
+            alert("That's the same name!");
+            return;
+        }
+        
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/collection`, {
             method:"PUT",
             headers:{
