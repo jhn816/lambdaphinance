@@ -334,6 +334,12 @@ app.post("/api/addcollection", async (req, res) => {
     try {
         const { collectionName, email} = req.body;
 
+        const existingCollection = await Collection.findOne({collectionName, email});
+        if (existingCollection) {
+            res.json({ message: "Collection with that name already exists"});
+            return;
+        }
+
         const newCollection = new Collection({collectionName, email});
         await newCollection.save();
         
@@ -347,8 +353,12 @@ app.post("/api/addcollection", async (req, res) => {
 // editing a users collection name
 app.put("/api/collection", async (req,res) => {
     try {
-        const {_id, name} = req.body;
-        const editedCollection = await Collection.findByIdAndUpdate({_id}, {collectionName:name}, {new:true})
+        const {_id, name, email} = req.body;
+
+        const oldCollection = await Collection.findById(_id);
+        await Expense.updateMany({collectionName:oldCollection.collectionName, email} , {$set: {collectionName:name}});
+
+        const editedCollection = await Collection.findByIdAndUpdate(_id, {collectionName:name}, {new:true});
 
         res.json({message:"Collection list edited:", editedCollection});
 

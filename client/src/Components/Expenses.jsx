@@ -265,8 +265,6 @@ const Expenses = () => {
             alert("Please enter a collection name");
             return;
         }
-        setExpenseSheet(collectionName);
-        setDropExpense(false);
 
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/addcollection`, {
             method:"POST",
@@ -282,7 +280,12 @@ const Expenses = () => {
             if (result.error) {
                 console.log(result.error);
                 return;
+            } else if (result.message === "Collection with that name already exists") {
+                alert("Collection with that name already exists");
+                return;
             }
+            setExpenseSheet(collectionName);
+            setDropExpense(false);
             console.log("Collection saved successfully", result.collection);
             setAllCollections(prevCollections => [...prevCollections, result.collection]);
         })
@@ -316,21 +319,6 @@ const Expenses = () => {
             }
             let dropSavedCategory = false;
             setSavedDropCategory(dropSavedCategory);
-        }
-    }
-
-    const dropdownExpense = (e) => {
-        if (dropExpense === false) {
-            let dropExpense = true;
-            setDropExpense(dropExpense);
-        } else {
-            if (e.target.value) {
-                let expenseSheet = e.target.value;
-                setExpenseSheet(expenseSheet);
-
-            }
-            let dropExpense = false;
-            setDropExpense(dropExpense);
         }
     }
 

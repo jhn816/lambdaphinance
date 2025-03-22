@@ -102,11 +102,11 @@
     justify-content: center;
     padding: 3%;
     background-color: #498bfc;
+    box-shadow: 0px 0px 10px #00000063;
     width: 42%;
     height: 80px;
     border-radius: 30px;
     gap:5%;
-    filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.262));
     transition: .3s;
 }
 
@@ -139,7 +139,10 @@
     flex-direction: row;
     width: 100%;
     gap: 6%;
+    position: relative;
+    z-index: 3;
 }
+
 .friend-information button {
     background-color: #e8e9e8;
     width: 47%;
@@ -156,6 +159,44 @@
 .friend-information button:active {
     transform: scale(.98);
 }
+
+.friend-dropmenu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    border-radius: 5px;
+    border: 1px solid black;
+    width: 55%;
+    left: 53%;
+    top: 110%;
+    z-index: 5;
+}
+
+.friend-dropmenu button {
+    border: 0px;
+    width: 100%;
+    background-color: transparent;
+    font-size: 12px;
+}
+
+#delete-friend:hover {
+    background-color: rgb(255, 140, 140);
+    transform: scale(1);
+}
+
+#favorite-friend:hover {
+    background-color: rgb(255, 236, 140);
+    transform: scale(1);
+}
+
+#share-friend:hover {
+    background-color: rgb(140, 211, 255);
+    transform: scale(1);
+}
+
 
 .request-tabs {
     display: flex;

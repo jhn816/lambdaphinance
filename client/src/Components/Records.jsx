@@ -12,11 +12,12 @@ const Records = () => {
     const [manageCollection, setManageCollection] = useState(null);
     const [editCollectionName, setEditCollectionName] = useState(null);
 
-    const [friendInput, setFriendInput] = useState("");
+    const [friendInput, setFriendInput] = useState(""); // email generating friend request
     const [listFriends, setListFriends] = useState([]); // all added friends
     const [listRequests, setListRequests] = useState([]); // all received requests
     const [listSents, setListSents] = useState([]); // all sent requests
     const [requestTab, setRequestTab] = useState("receive"); // track request tab
+    const [manageFriend, setManageFriend] = useState(null); // friend manage dropdown
   
     useEffect( () => {
         if (!token) {
@@ -154,6 +155,7 @@ const Records = () => {
             body: JSON.stringify({
                 _id:item._id,
                 name: editCollectionName,
+                email,
                 })
             }) .then ((res) => res.json() )
             .then ((result) => {
@@ -173,6 +175,14 @@ const Records = () => {
             setManageCollection(null);
         } else {
             setManageCollection(item.collectionName);
+        }
+    }
+
+    const openFriend = (item) => {
+        if (item._id === manageFriend) {
+            setManageFriend(null);
+        } else {
+            setManageFriend(item._id);
         }
     }
 
@@ -388,10 +398,17 @@ const Records = () => {
                                         <p>user: {item.username}</p>
                                         <div className="friend-buttons">
                                             <button> Message</button>
-                                            <button> Manage</button>
+                                            <button onClick={() => (openFriend(item))}> Manage</button>
+                                                {manageFriend === item._id &&
+                                                <div className="friend-dropmenu">
+                                                    <button style={{borderBottomLeftRadius:"0px", borderBottomRightRadius:"0px"}} id="favorite-friend">Favorite</button>
+                                                    <button style={{borderRadius:"0px"}}id="share-friend">Share</button>
+                                                    <button style={{borderTopLeftRadius:"0px", borderTopRightRadius:"0px"}} id="delete-friend">Delete</button>
+                                                </div>
+                                                }
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                                 </>
                                 )
                             })}
