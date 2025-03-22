@@ -184,11 +184,14 @@ app.delete("/api/friend", async (req, res) => {
 app.post("/api/register", async (req, res) => {
     const { username, email, password } = req.body;
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-        return res.status(400).json({ error: "User already exists" });
+    const existingUsers = await User.find( {$or :[{email}, {username}]});
+    for (let user of existingUsers) {
+        if ( user.username === username ) {
+            return res.status(400).json({ error: "Username is already taken" });
+        } else if ( user.email === email ) {
+            return res.status(400).json({ error: "Account already linked with this Email" });
+        }
     }
-
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User({ username, email, password: hashedPassword });

@@ -286,7 +286,7 @@ const Records = () => {
                             <div key={index} className="collection-box"> 
                                 {(manageCollection !== item.collectionName) ? 
                                     (<p className="collection-name">{item.collectionName}</p>)
-                                        : (<input type="text" onChange={(e) => setEditCollectionName(e.target.value)} value={editCollectionName}/>)}
+                                        : (<input type="text" maxLength={10} onChange={(e) => setEditCollectionName(e.target.value)} value={editCollectionName}/>)}
                                      {(manageCollection !== item.collectionName) ? ( <div className="collection-details">
                                          <div className="div-balance">
                                              <p className="collection-balance" style={{"color":"green"}}> Balance $40</p>

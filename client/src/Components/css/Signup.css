@@ -123,13 +123,25 @@
     color: #2776ffc5;
 }
 
+.input-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 .signup-input p {
     color: rgb(255, 20, 20);
     font-weight: 1000;
-    margin: 0px;
     margin-top: 5px;
     font-size: 15px;
-    align-self: flex-end;
+}
+
+#character-count {
+    color: rgb(0, 0, 0);
+    font-weight: 1000;
+    margin-top: 5px;
+    margin-left: 5px;
+    font-size: 12px;
 }
 
 .money {

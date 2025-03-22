@@ -64,8 +64,11 @@ const Signup = () => {
 
                         <div className="signup-input">
                             <h4> Username </h4>
-                            <input type="text" onChange={(e)=> setUsername(e.target.value)} placeholder="type here..." />
-                            {error.username && <p>{error.username}</p>}
+                            <input maxLength={15} type="text" onChange={(e)=> setUsername(e.target.value)} placeholder="type here..." />
+                            <div className="input-info">
+                                <p id="character-count">{username.length}/15</p>
+                                {!error.username && <p>{error.username}</p>}
+                            </div>
                         </div>
 
                         <div className="signup-input">
