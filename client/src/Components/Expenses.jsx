@@ -20,7 +20,6 @@ const Expenses = () => {
     // drop down menu
     const [dropCategory, setDropCategory] = useState(false);
     const [expenseSheet, setExpenseSheet] = useState("Choose Expenses ▼");
-    const [dropExpense, setDropExpense] = useState(false);
     const [editingExpense, setEditingExpense] = useState(null);
 
     const [sortExpense, setSortExpense] = useState("Sort By:");
@@ -30,7 +29,6 @@ const Expenses = () => {
     const [netLoss, setNetLoss] = useState(0);
     const [totalBalance, setTotalBalance] = useState(0);
     
-    const [changedExpenses, setChangedExpenses] = useState(false);
     const [allExpenses, setAllExpenses] = useState([]);
 
     const [allCollections, setAllCollections] = useState([]);
@@ -63,10 +61,12 @@ const Expenses = () => {
             }
             setEmail(result.user.email)
             setUsername(result.user.user)
+            getUserCollections(result.user.email);
+            getUserExpenses(expenseSheet);
         })
-    }, [token, navigate]);
+    }, [token, navigate, expenseSheet]);
 
-    useEffect( () => {
+    const getUserCollections = (email) => {
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/collections`, {
             method:"POST",
             headers:{
@@ -93,9 +93,9 @@ const Expenses = () => {
         }) .catch((error) => {
             console.error("Error:", error);
         });
-    }, [expenseSheet, email])
+    };
 
-    useEffect( () => {
+    const getUserExpenses = (expenseSheet) => {
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/expenses`, {
             method:"POST",
             headers:{
@@ -116,7 +116,7 @@ const Expenses = () => {
         }) .catch((error) => {
             console.error("Error:", error);
         });
-    }, [changedExpenses, expenseSheet])
+    };
 
     const addExpense = (event) => {
         event.preventDefault();
@@ -158,7 +158,8 @@ const Expenses = () => {
                 console.log(result.error);
                 return;
             }
-            setChangedExpenses(!changedExpenses);
+            getUserExpenses(expenseSheet);
+            getUserCollections(email);
             setValue("");
             setCategory("Category↴")
             setGain(true);
@@ -202,7 +203,8 @@ const Expenses = () => {
                 console.log(result.error);
                 return;
             }
-            setChangedExpenses(!changedExpenses);
+            getUserExpenses(expenseSheet);
+            getUserCollections(email);
             console.log("Expense updated successfully", result.expense);
         })
         setEditingExpense(null)
@@ -217,6 +219,7 @@ const Expenses = () => {
             },
             body: JSON.stringify({
                 _id:item._id,
+                email
             })
         }) .then((res) => res.json() )
         .then( (result) => {
@@ -224,7 +227,8 @@ const Expenses = () => {
                 console.log(result.error);
                 return;
             }
-            setChangedExpenses(!changedExpenses);
+            getUserExpenses(expenseSheet);
+            getUserCollections(email);
             if (result.expense.deletedCount == 1) {
                 console.log("message",result.message);
                 console.log("deletedExpense",result.expense);
@@ -252,7 +256,6 @@ const Expenses = () => {
 
     const selectCollection = (e) => {
         setExpenseSheet(e.target.value);
-        setDropExpense(false);
     }
 
     const submitCollection = (event) => {
@@ -281,7 +284,6 @@ const Expenses = () => {
                 return;
             }
             setExpenseSheet(collectionName);
-            setDropExpense(false);
             console.log("Collection saved successfully", result.collection);
             setAllCollections(prevCollections => [...prevCollections, result.collection]);
         })
@@ -430,21 +432,21 @@ const Expenses = () => {
                                     <header style={{"backgroundColor":"#c9ffd1"}}>
                                         <h3>Net Gain</h3>
                                     </header>
-                                    <p style={{ color: "green", "fontfamily": "Arial, Helvetica, sans-serif"}}>${netGain}</p>
+                                    <p style={{ color: "green", "fontfamily": "Arial, Helvetica, sans-serif"}}>${netGain || "0"}</p>
                                 </div>
 
                                 <div className="expense-card">
                                     <header style={{"backgroundColor":"#ffc9c9"}}>
                                         <h3>Net Loss</h3>
                                     </header>
-                                    <p style={{ color: "red", "fontFamily": "Arial, Helvetica, sans-serif"}}>${netLoss}</p>
+                                    <p style={{ color: "red", "fontFamily": "Arial, Helvetica, sans-serif"}}>${netLoss || "0"}</p>
                                 </div>  
                             </div>
                             <div className="balance-card">
                                     <header>
                                         <h3>Total Balance</h3>
                                     </header>
-                                    <p style={{"fontFamily": "Arial, Helvetica, sans-serif"}}>${netGain}{" - $"}{netLoss}{" = $"}{totalBalance}</p>
+                                    <p style={{"fontFamily": "Arial, Helvetica, sans-serif"}}>${netGain ||"0"}{" - $"}{netLoss || "0"}{" = $"}{totalBalance || "0"}</p>
                                 </div>  
                         </div>
                     </div>

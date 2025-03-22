@@ -348,7 +348,7 @@ app.put("/api/expense", async (req, res) => {
 // delete an expense
 app.delete("/api/expense", async(req, res) => {
     try {
-        const {_id} = req.body;
+        const {_id, email} = req.body;
          
         const deletedExpense = await Expense.findOneAndDelete({_id});
 
