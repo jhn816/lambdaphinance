@@ -350,7 +350,7 @@ app.delete("/api/expense", async(req, res) => {
     try {
         const {_id} = req.body;
          
-        const deletedExpense = await Expense.deleteOne({_id});
+        const deletedExpense = await Expense.findOneAndDelete({_id});
 
         const allExpenses = await Expense.find({collection:deletedExpense.collection, email})
         let netGain = 0;
@@ -438,7 +438,7 @@ app.delete("/api/collections", async(req, res) => {
     try {
         const {_id} = req.body;
          
-        const deletedCollection = await Collection.deleteOne({_id});
+        const deletedCollection = await Collection.findOneAndDelete({_id});
         await Expense.deleteMany({collection:deletedCollection.collectionName, email:deletedCollection.email})
         res.status(201).json({ message: "Collection deleted successfully", collection: deletedCollection});
     } catch (error) {

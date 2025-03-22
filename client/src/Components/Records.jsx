@@ -151,7 +151,7 @@ const Records = () => {
             alert("That's the same name!");
             return;
         }
-        
+
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/collection`, {
             method:"PUT",
             headers:{
@@ -307,10 +307,10 @@ const Records = () => {
                                         : (<input type="text" maxLength={10} onChange={(e) => setEditCollectionName(e.target.value)} value={editCollectionName}/>)}
                                      {(manageCollection !== item.collectionName) ? ( <div className="collection-details">
                                          <div className="div-balance">
-                                             <p className="collection-balance" style={{"color":"green"}}> Balance $40</p>
+                                             <p className="collection-balance" style={{"color":"green"}}> Balance ${item.totalBalance}</p>
                                          </div>
                                          <div className="div-indices">
-                                             <p className="collection-indices">(3)</p>
+                                             <p className="collection-indices">({item.indices})</p>
                                          </div>
                                          <div className="div-manage">
                                              <button className="collection-manage" onClick={(e) => { openCollection(item); setEditCollectionName(item.collectionName); }}> Manage {item.collectionName}</button>
