@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const app = express();
 
@@ -52,6 +53,7 @@ const friendSchema = new mongoose.Schema({
 });
 const Friend = accounts.model("Friends", friendSchema);
 
+// generating a friends request
 app.post("/api/friend", async (req, res) => {
     try {
         const {sender, recipient} = req.body;
@@ -75,6 +77,7 @@ app.post("/api/friend", async (req, res) => {
     }
 });
 
+// generating users friends list
 app.post("/api/friends", async (req, res) => {
     try {
         const {email} = req.body;
@@ -101,6 +104,7 @@ app.post("/api/friends", async (req, res) => {
     }
 });
 
+// grab all received requests to the user
 app.post("/api/requests", async (req, res) => {
     try {
         const {email} = req.body;
@@ -122,6 +126,29 @@ app.post("/api/requests", async (req, res) => {
     }
 });
 
+// grab all sent requests to the user
+app.post("/api/sents", async (req, res) => {
+    try {
+        const {email} = req.body;
+
+        const recipients = await Friend.find({sender: email});
+        let friendsList = [];
+        for (let friend of recipients) {
+            if (friend.added === false) {
+                const recipient = friend.recipient;
+
+                const requestedUser = await User.findOne({email: recipient});
+                friendsList.push(requestedUser);
+            }
+        }
+        res.json({message:"Sents list grabbed", listSents: friendsList});
+    } catch (error) {
+        console.error("Error grabbing sent requests:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+// accept friend requests
 app.put("/api/friend", async (req, res) => {
     try {
         const {recipient, sender} = req.body;
@@ -134,6 +161,7 @@ app.put("/api/friend", async (req, res) => {
     }
 })
 
+// reject friend requests
 app.delete("/api/friend", async (req, res) => {
     try {
         const {recipient, sender} = req.body;
@@ -146,6 +174,7 @@ app.delete("/api/friend", async (req, res) => {
     }
 })
 
+// register a user
 app.post("/api/register", async (req, res) => {
     const { username, email, password } = req.body;
 
@@ -162,6 +191,7 @@ app.post("/api/register", async (req, res) => {
     res.json({ message: "User registered successfully!" });
 });
 
+// log a user in with a verified token
 const SECRET_KEY = process.env.SECRET_KEY || "failsafe";
 app.post("/api/login", async (req,res) => {
     const {email, password} = req.body;
@@ -191,6 +221,7 @@ app.post("/api/login", async (req,res) => {
     res.json({ message: "Login successful!", "token": token, "user": email });
 });
 
+// get the user's information and user data
 app.get("/api/profile", async (req, res) => {
     try {
         const user = jwt.verify(req.header("Authorization").split(" ")[1], SECRET_KEY);
@@ -228,6 +259,7 @@ const collectionSchema = new mongoose.Schema({
 });
 const Collection = accounts.model("Collection", collectionSchema);
 
+// make a new collection
 app.post("/api/addcollection", async (req, res) => {
     try {
         const { collectionName, email} = req.body;
@@ -242,7 +274,7 @@ app.post("/api/addcollection", async (req, res) => {
     }
 });
 
-
+// make an expense to the current collection
 app.post("/api/addexpense", async (req, res) => {
     try {
         const { email, collection, value, category, gain, person, formattedTimestamp } = req.body;
@@ -264,6 +296,7 @@ app.post("/api/addexpense", async (req, res) => {
     }
 });
 
+// edit an expense
 app.put("/api/expense", async (req, res) => {
     try {
         const {savedID, savedCategory, savedValue, savedPerson} = req.body;
@@ -276,6 +309,7 @@ app.put("/api/expense", async (req, res) => {
     }
 })
 
+// delete an expense
 app.delete("/api/expense", async(req, res) => {
     try {
         const {_id} = req.body;
@@ -288,6 +322,7 @@ app.delete("/api/expense", async(req, res) => {
     }
 });
 
+// generating all the user's collections in the database
 app.post("/api/collections", async (req, res) => {
     try {
         const {email} = req.body;
@@ -300,6 +335,7 @@ app.post("/api/collections", async (req, res) => {
     }
 })
 
+// deleting a user's collection
 app.delete("/api/collections", async(req, res) => {
     try {
         const {_id} = req.body;
@@ -307,11 +343,12 @@ app.delete("/api/collections", async(req, res) => {
         const deletedCollection = await Collection.deleteOne({_id});
         res.status(201).json({ message: "Collection deleted successfully", collection: deletedCollection});
     } catch (error) {
-        console.error("Error saving expense:", error);
+        console.error("Error deleting collection:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 });
 
+// generating all expenses found in that collection's database
 app.post("/api/expenses", async (req, res) => {
     try {
         const {email, collection} = req.body;
@@ -319,7 +356,7 @@ app.post("/api/expenses", async (req, res) => {
         const allExpenses = await Expense.find({email, collection});
         res.status(201).json({ message: "Collections found successfully", expenses: allExpenses });
     } catch (error) {
-        console.error("Error deleting collection:", error);
+        console.error("Error generating expenses:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 })
@@ -333,8 +370,7 @@ app.get("/api/register", (req, res) => {
 });
 
 
-
-require("dotenv").config();
+// all stuff below is to upload profile pictures and grab them from the database (cloudinary)
 const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const multer = require("multer");

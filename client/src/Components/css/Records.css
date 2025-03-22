@@ -11,7 +11,6 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    background-color: white;
     color: black;
     height: 100%;
     width: 100%;
@@ -66,15 +65,16 @@
 .friendslist {
     padding: 2.5%;
     filter: drop-shadow(0px 0px 5px rgba(0, 0, 10, 0.462));
-    background-image: linear-gradient(rgb(203, 203, 203), rgb(182, 182, 182));
-    height: 60%;
+    background-image: linear-gradient(rgb(52 52 52), rgb(75 75 75));
+    color:rgb(228, 228, 228);
+    height: 57%;
     width: 95%;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
-.friendslist h3, .addinfo h5 {
+.friendslist h3 {
     margin-bottom: 10px;
     margin-top: 0px;
 }
@@ -87,22 +87,60 @@
     height: 100%;
 }
 
+.request-tabs {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.addinfo h5 {
+    padding: 10px;
+    padding-top: 15px;
+    padding-bottom: 5px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    font-size: 15px;
+    background-image: linear-gradient(rgb(208, 206, 206), rgb(175, 173, 173));
+    margin: 0px;
+    transition: .3s;
+
+}
+
+#received-request:hover, #sent-request:hover {
+    background-image: linear-gradient(rgb(199, 197, 197), rgb(165, 163, 163));
+    cursor: pointer;
+    transform: scale(1.01);
+}
+
+#received-request:active, #sent-request:active {
+    transform: scale(.98);
+}
+
 .addinfo {
-    width: 100%;
-    height: 100%;
-    background-image: linear-gradient(rgb(218, 218, 218), rgb(237, 237, 237));
-    filter: drop-shadow(0px 0px 5px rgba(0, 0, 10, 0.462));
-    border-radius: 10px;
+    width: 94%;
+    height: 88%;
 }
 
 .makefriend {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(rgb(218, 218, 218), rgb(237, 237, 237));
+    filter: drop-shadow(0px 0px 5px rgba(0, 0, 10, 0.462));
+    border-radius: 10px;
     width: 100%;
     height: 15%;
 }
 
 .request-container {
+    background-image: linear-gradient(rgb(52 52 52), rgb(75 75 75));
+    filter: drop-shadow(0px 0px 5px rgba(0, 0, 10, 0.462));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    height: 25%;
+    height: 28%;
     max-height: 176px;
 }
 .addinfo form h2 {
@@ -111,27 +149,28 @@
 
 }
 .addinfo form {
-    margin: 3%;
-    margin-top: 0px;
-    margin-bottom: 10px;
     display: flex;
+    
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    width: 94%;
-    height: 94%;
+    width: 100%;
+    height: 100%;
 }
 
 .request-box {
     height: 60%;
-    width: 100%;
+    width: 96%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     flex-wrap: wrap;
     overflow: scroll;
     row-gap: 10px;
-
+    background-color: rgb(235, 235, 235);
+    padding: 2%;
+    border-radius: 5px;
+    border-top-left-radius: 0px;
 }
 
 .accept-info {
@@ -155,6 +194,7 @@
     width: 46%;
     gap: 10px;
     border: 1px solid black;
+    background-color: white;
     padding: 10px;
     border-radius: 10px;
     height: 60px;
@@ -231,7 +271,12 @@
 
 .addfriend button:hover {
     background-color: rgb(177, 247, 199);
+    transform: scale(1.02);
     cursor: pointer;
+}
+
+.addfriend button:active {
+    transform: scale(.98);
 }
 
 .collections {
