@@ -355,8 +355,14 @@ app.put("/api/collection", async (req,res) => {
     try {
         const {_id, name, email} = req.body;
 
+        const existingCollection = await Collection.findOne({collectionName:name, email});
+        if (existingCollection) {
+            res.json({ message: "Collection with that name already exists"});
+            return;
+        }
+
         const oldCollection = await Collection.findById(_id);
-        await Expense.updateMany({collectionName:oldCollection.collectionName, email} , {$set: {collectionName:name}});
+        await Expense.updateMany({collection:oldCollection.collectionName, email} , {$set: {collection:name}});
 
         const editedCollection = await Collection.findByIdAndUpdate(_id, {collectionName:name}, {new:true});
 

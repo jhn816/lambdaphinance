@@ -162,6 +162,9 @@ const Records = () => {
                 if (result.error) {
                     console.log(result.error);
                     return;
+                } else if (result.message === "Collection with that name already exists") {
+                    alert("Collection with that name already exists");
+                    return;
                 }
                 console.log ("message:", result.message);
                 console.log("editedCollection:", result.editedCollection);
