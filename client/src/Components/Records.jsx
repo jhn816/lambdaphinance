@@ -228,6 +228,29 @@ const Records = () => {
         .catch(error => console.error("Error:", error));
     }
 
+    const cancelFriend = (item) => {
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/friend`, {
+            method:"DELETE",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                sender: email,
+                recipient: item.email
+            })
+        }) .then((res) => res.json() )
+        .then( (result) => {
+            if (result.error) {
+                console.log(result.error);
+                return;
+            }
+            console.log("message",result.message);
+            console.log("Request", result.deletedRequest)
+            getUserFriends(email);
+        })
+        .catch(error => console.error("Error:", error));
+    }
+
     return (
         <div className="wholerecords">
             <div className="records-page">
@@ -294,7 +317,7 @@ const Records = () => {
                                 </div>
                                 <div className="request-box">
                                     {(requestTab === "receive") ? (<>
-                                        {listRequests.length === 0 && <p> No Requests :(</p>}
+                                        {listRequests.length === 0 && <p> No Received Requests :(</p>}
                                         {listRequests.map((item, index) => {
                                             return (
                                                 <div key={index} className="accept-friend">
@@ -309,7 +332,22 @@ const Records = () => {
                                                 </div>
                                             )
                                         })}
-                                    </>) : ( <p>f</p> )
+                                    </>) : ( <>
+                                        {listSents.length === 0 && <p> No Sent Requests :(</p>}
+                                        {listSents.map((item, index) => {
+                                            return (
+                                                <div key={index} className="accept-friend">
+                                                    <img src={item.profileImage} alt="Profile"/>
+                                                    <div className="accept-info">
+                                                        <p>{item.username}</p>
+                                                        <div className="accept-buttons">
+                                                            <button onClick={() => cancelFriend(item)} className="friend-cancel" type="button"> Cancel</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })}
+                                    </> )
                                     }
 
                                 </div>

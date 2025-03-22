@@ -229,6 +229,15 @@
     transition: .3s;
 }
 
+.friend-cancel {
+    background-color: #9393936b;
+    width: 47%;
+    height: 100%;
+    border-radius: 50px;
+    border: 0px;
+    transition: .3s;
+}
+
 .friend-reject:hover{
     background-color: #ff00008d;
     cursor: pointer;
@@ -241,7 +250,13 @@
     transform: scale(1.02);
 }
 
-.friend-reject:active, .friend-accept:active {
+.friend-cancel:hover{
+    background-color: #93939398;
+    cursor: pointer;
+    transform: scale(1.02);
+}
+
+.friend-reject:active, .friend-accept:active .friend-cancel:active {
     transform: scale(.98);
 }
 

@@ -57,8 +57,14 @@ const Friend = accounts.model("Friends", friendSchema);
 app.post("/api/friend", async (req, res) => {
     try {
         const {sender, recipient} = req.body;
-        const sent = await Friend.findOne({sender, recipient});
 
+        const existingUser = await User.findOne({email:recipient});
+        if (!existingUser) {
+            res.json({ message: "User does not exist!" });
+            return;
+        }
+
+        const sent = await Friend.findOne({sender, recipient});
         if (!sent) {
             const new_friend = new Friend({sender, recipient, added: false});
             await new_friend.save();
@@ -161,15 +167,15 @@ app.put("/api/friend", async (req, res) => {
     }
 })
 
-// reject friend requests
+// reject/cancel friend requests
 app.delete("/api/friend", async (req, res) => {
     try {
         const {recipient, sender} = req.body;
         const deletedRequest = await Friend.deleteOne({recipient, sender});
 
-        res.json({message:"Friend request deleted", deletedRequest});
+        res.json({message:"Friend request deleted/canceled:", deletedRequest});
     } catch (error) {
-        console.error("Error accepting friend:", error);
+        console.error("Error rejecting/canceling friend:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 })
