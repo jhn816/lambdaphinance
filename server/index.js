@@ -265,21 +265,6 @@ const collectionSchema = new mongoose.Schema({
 });
 const Collection = accounts.model("Collection", collectionSchema);
 
-// make a new collection
-app.post("/api/addcollection", async (req, res) => {
-    try {
-        const { collectionName, email} = req.body;
-
-        const newCollection = new Collection({collectionName, email});
-        await newCollection.save();
-        
-        res.json({ message: `Collection '${collectionName}' created successfully!`, collection:newCollection});
-    } catch (error) {
-        console.error("Error saving:", error);
-        res.status(500).json({ error: "Internal server error" });
-    }
-});
-
 // make an expense to the current collection
 app.post("/api/addexpense", async (req, res) => {
     try {
@@ -340,6 +325,35 @@ app.post("/api/collections", async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 })
+
+// make a new collection
+app.post("/api/addcollection", async (req, res) => {
+    try {
+        const { collectionName, email} = req.body;
+
+        const newCollection = new Collection({collectionName, email});
+        await newCollection.save();
+        
+        res.json({ message: `Collection '${collectionName}' created successfully!`, collection:newCollection});
+    } catch (error) {
+        console.error("Error saving:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+// editing a users collection name
+app.put("/api/collection", async (req,res) => {
+    try {
+        const {_id, name} = req.body;
+        const editedCollection = await Collection.findById({_id}, {collectionName:name}, {new:true})
+
+        res.json({message:"Collection list edited:", editedCollection});
+
+    } catch (error) {
+        console.error("Error editing collection:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
 
 // deleting a user's collection
 app.delete("/api/collections", async(req, res) => {

@@ -145,6 +145,26 @@ const Records = () => {
         .catch(error => console.error("Error:", error));
     }
 
+    const changeCollection = (item) => {
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/collection`, {
+            method:"PUT",
+            headers:{
+                "Content-Type":"application/json",
+            }, body: JSON.stringify({
+                _id:item._id,
+                name: editCollectionName,
+            }) .then ((res) => res.json() )
+            .then ((result) => {
+                if (result.error) {
+                    console.log(result.error);
+                    return;
+                }
+                console.log ("message:", result.message);
+                console.log("editedCollection:", result.editedCollection);
+            })
+        })
+    }
+
     const openCollection = (item) => {
         if (item.collectionName === manageCollection) {
             setManageCollection(null);
@@ -276,7 +296,7 @@ const Records = () => {
                                          </div>
                                      </div>
                                      ) : ( <div className="edit-details">
-                                             <button> Edit Name </button>
+                                             <button onClick={() => (changeCollection(item))}> Edit Name </button>
                                              <button onClick={() => (deleteCollection(item))}> Delete </button>
                                              <button> Share </button>
                                              <button onClick={() => (setManageCollection(null))}> Cancel </button>
@@ -349,7 +369,6 @@ const Records = () => {
                                         })}
                                     </> )
                                     }
-
                                 </div>
                             </form>
                         </div>
@@ -359,11 +378,18 @@ const Records = () => {
                         <h3>Friends List</h3>
                         <div className="friends">
                             {listFriends.map((item, index) => {
-                                return (
+                                return (<>
                                 <div key={index} className="friend-box">
-                                    <img src={item.profileImage} alt="Profile" height="80" />
-                                    <p>{item.email}</p>
+                                    <img src={item.profileImage} alt="Profile" height= "90" />
+                                    <div className="friend-information">
+                                        <p>user: {item.username}</p>
+                                        <div className="friend-buttons">
+                                            <button> Message</button>
+                                            <button> Manage</button>
+                                        </div>
+                                    </div>
                                 </div>
+                                </>
                                 )
                             })}
                         </div>

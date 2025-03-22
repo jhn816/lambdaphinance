@@ -66,7 +66,7 @@
     padding: 2.5%;
     filter: drop-shadow(0px 0px 5px rgba(0, 0, 10, 0.462));
     background-image: linear-gradient(rgb(52 52 52), rgb(75 75 75));
-    color:rgb(228, 228, 228);
+    color:rgb(244, 241, 241);
     height: 57%;
     width: 95%;
     border-radius: 10px;
@@ -75,16 +75,86 @@
     align-items: flex-start;
 }
 .friendslist h3 {
-    margin-bottom: 10px;
+    margin-bottom: 2%;
+    height: 8%;
     margin-top: 0px;
 }
 
 .friends {
-    background-color: #f5f5f5;
-    border: 1px solid black;
+    background-image: linear-gradient(rgb(255, 255, 255), rgb(241, 241, 241));
+    display: flex;
+    flex-direction: row;
     border-radius: 5px;
+    padding: 3%;
+    gap: 4%;
+    row-gap: 4%;
+    width: 94%;
+    height: 85%;
+    flex-wrap: wrap;
+    overflow: scroll;
+    box-shadow: inset 0px 0px 10px #000000;
+}
+
+.friend-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 3%;
+    background-color: #498bfc;
+    width: 42%;
+    height: 80px;
+    border-radius: 30px;
+    gap:5%;
+    filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.262));
+    transition: .3s;
+}
+
+.friend-box:hover {
+    transform: scale(1.01);
+}
+
+.friend-box img {
+    clip-path: circle(45px at 50% 50%);
+}
+
+.friend-box p {
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    font-weight: 100;
+    margin: 0px;
+}
+
+.friend-information {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 65%;
+    gap: 5px;
+}
+
+.friend-buttons {
+    display: flex;
+    flex-direction: row;
     width: 100%;
-    height: 100%;
+    gap: 6%;
+}
+.friend-information button {
+    background-color: #e8e9e8;
+    width: 47%;
+    height: 30px;
+    border-radius: 5px;
+    transition: .3s;
+}
+
+.friend-information button:hover {
+    cursor: pointer;
+    transform: scale(1.01);
+}
+
+.friend-information button:active {
+    transform: scale(.98);
 }
 
 .request-tabs {
@@ -117,7 +187,7 @@
 }
 
 .addinfo {
-    width: 94%;
+    width: 95%;
     height: 88%;
 }
 
@@ -168,6 +238,7 @@
     overflow: scroll;
     row-gap: 10px;
     background-color: rgb(235, 235, 235);
+    box-shadow: inset 0px 0px 5px #000000;
     padding: 2%;
     border-radius: 5px;
     border-top-left-radius: 0px;
@@ -407,10 +478,4 @@
 .edit-details button:hover{
     cursor: pointer;
     background-color:#915e2ba9;
-}
-
-.friend-box {
-    background-color: #498bfc;
-    width: 100%;
-    height: 100px;
 }
