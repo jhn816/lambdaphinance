@@ -286,6 +286,23 @@ app.post("/api/addexpense", async (req, res) => {
         const newExpense = new Expense({ email, collection, value: new_value, category, person, date:formattedTimestamp});
         await newExpense.save();
 
+        // update collection values
+        const allExpenses = await Expense.find({collection:updatedExpense.collection})
+        let netGain = 0;
+        let netLoss = 0;
+        let totalBalance = 0;
+        for (let expense of allExpenses) {
+            if (expense.value < 0) {
+                netLoss = netLoss - expense.value;
+            } else {
+                netGain = netGain - expense.value;
+            }
+            totalBalance += expense.value;
+        }
+
+        await Collection.findOneAndUpdate({collectionName:updatedExpense.collection, email} , {$set: {netGain, netLoss, totalBalance}})
+
+
         res.status(201).json({ message: "Expense saved successfully", expense: newExpense });
     } catch (error) {
         console.error("Error saving expense:", error);
@@ -302,7 +319,9 @@ app.put("/api/expense", async (req, res) => {
         
         // update collection values
         const allExpenses = await Expense.find({collection:updatedExpense.collection})
-        let netGain, netLoss, totalBalance = 0;
+        let netGain = 0;
+        let netLoss = 0;
+        let totalBalance = 0;
         for (let expense of allExpenses) {
             if (expense.value < 0) {
                 netLoss = netLoss - expense.value;
