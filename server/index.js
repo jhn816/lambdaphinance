@@ -287,7 +287,7 @@ app.post("/api/addexpense", async (req, res) => {
         await newExpense.save();
 
         // update collection values
-        const allExpenses = await Expense.find({collection:updatedExpense.collection})
+        const allExpenses = await Expense.find({collection, email})
         let netGain = 0;
         let netLoss = 0;
         let totalBalance = 0;
@@ -300,7 +300,7 @@ app.post("/api/addexpense", async (req, res) => {
             totalBalance += expense.value;
         }
 
-        await Collection.findOneAndUpdate({collectionName:updatedExpense.collection, email} , {$set: {netGain, netLoss, totalBalance}})
+        await Collection.findOneAndUpdate({collectionName:collection, email} , {$set: {netGain, netLoss, totalBalance}})
 
 
         res.status(201).json({ message: "Expense saved successfully", expense: newExpense });
@@ -318,7 +318,7 @@ app.put("/api/expense", async (req, res) => {
         const updatedExpense = await Expense.findByIdAndUpdate(savedID, {category:savedCategory, value:savedValue, person:savedPerson}, { new: true });
         
         // update collection values
-        const allExpenses = await Expense.find({collection:updatedExpense.collection})
+        const allExpenses = await Expense.find({collection:updatedExpense.collection, email})
         let netGain = 0;
         let netLoss = 0;
         let totalBalance = 0;
