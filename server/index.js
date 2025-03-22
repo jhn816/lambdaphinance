@@ -268,6 +268,7 @@ const collectionSchema = new mongoose.Schema({
     netGain: Number,
     netLoss: Number,
     totalBalance: Number,
+    indices: Number,
 });
 const Collection = accounts.model("Collection", collectionSchema);
 
@@ -291,16 +292,18 @@ app.post("/api/addexpense", async (req, res) => {
         let netGain = 0;
         let netLoss = 0;
         let totalBalance = 0;
+        let indices = 0;
         for (let expense of allExpenses) {
             if (expense.value < 0) {
                 netLoss = netLoss - expense.value;
             } else {
-                netGain = netGain - expense.value;
+                netGain = netGain + expense.value;
             }
             totalBalance += expense.value;
+            indices += 1;
         }
 
-        await Collection.findOneAndUpdate({collectionName:collection, email} , {$set: {netGain, netLoss, totalBalance}})
+        await Collection.findOneAndUpdate({collectionName:collection, email} , {$set: {netGain, netLoss, totalBalance, indices}})
 
 
         res.status(201).json({ message: "Expense saved successfully", expense: newExpense });
@@ -322,16 +325,18 @@ app.put("/api/expense", async (req, res) => {
         let netGain = 0;
         let netLoss = 0;
         let totalBalance = 0;
+        let indices = 0;
         for (let expense of allExpenses) {
             if (expense.value < 0) {
-                netLoss = netLoss - expense.value;
+                netLoss -= expense.value;
             } else {
-                netGain = netGain - expense.value;
+                netGain += expense.value;
             }
             totalBalance += expense.value;
+            indices += 1;
         }
 
-        await Collection.findOneAndUpdate({collectionName:updatedExpense.collection, email} , {$set: {netGain, netLoss, totalBalance}})
+        await Collection.findOneAndUpdate({collectionName:updatedExpense.collection, email} , {$set: {netGain, netLoss, totalBalance, indices}})
 
         res.status(201).json({ message: "Expense updated successfully", expense: updatedExpense});
     } catch (error) {
@@ -346,6 +351,23 @@ app.delete("/api/expense", async(req, res) => {
         const {_id} = req.body;
          
         const deletedExpense = await Expense.deleteOne({_id});
+
+        const allExpenses = await Expense.find({collection:deletedExpense.collection, email})
+        let netGain = 0;
+        let netLoss = 0;
+        let totalBalance = 0;
+        let indices = 0;
+        for (let expense of allExpenses) {
+            if (expense.value < 0) {
+                netLoss -= expense.value;
+            } else {
+                netGain += expense.value;
+            }
+            totalBalance += expense.value;
+            indices += 1;
+        }
+
+        await Collection.findOneAndUpdate({collectionName:deletedExpense.collection, email} , {$set: {netGain, netLoss, totalBalance, indices}})
         res.status(201).json({ message: "Expense deleted successfully", expense: deletedExpense});
     } catch (error) {
         console.error("Error saving expense:", error);
@@ -377,7 +399,7 @@ app.post("/api/addcollection", async (req, res) => {
             return;
         }
 
-        const newCollection = new Collection({collectionName, email, netGain:0, netLoss:0, totalBalance:0});
+        const newCollection = new Collection({collectionName, email, netGain:0, netLoss:0, totalBalance:0, indices: 0});
         await newCollection.save();
         
         res.json({ message: `Collection '${collectionName}' created successfully!`, collection:newCollection});
@@ -411,12 +433,13 @@ app.put("/api/collection", async (req,res) => {
     }
 });
 
-// deleting a user's collection
+// deleting a user's collection and all its expenses
 app.delete("/api/collections", async(req, res) => {
     try {
         const {_id} = req.body;
          
         const deletedCollection = await Collection.deleteOne({_id});
+        await Expense.deleteMany({collection:deletedCollection.collectionName, email:deletedCollection.email})
         res.status(201).json({ message: "Collection deleted successfully", collection: deletedCollection});
     } catch (error) {
         console.error("Error deleting collection:", error);

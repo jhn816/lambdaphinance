@@ -28,6 +28,7 @@ const Expenses = () => {
 
     const [netGain, setNetGain] = useState(0);
     const [netLoss, setNetLoss] = useState(0);
+    const [totalBalance, setTotalBalance] = useState(0);
     
     const [changedExpenses, setChangedExpenses] = useState(false);
     const [allExpenses, setAllExpenses] = useState([]);
@@ -81,6 +82,14 @@ const Expenses = () => {
                 return;
             }
             setAllCollections(result.collections);
+            let current_collection = result.collections.find(item => item.collectionName === expenseSheet);
+            try {
+                setNetGain(current_collection.netGain)
+                setNetLoss(current_collection.netLoss)
+                setTotalBalance(current_collection.totalBalance);
+            } catch (error) {
+                return;
+            }
         }) .catch((error) => {
             console.error("Error:", error);
         });
@@ -103,25 +112,11 @@ const Expenses = () => {
                 return;
             }
             setSortExpense("Sort By:");
-            setNetLoss(0);
-            setNetGain(0);
             setAllExpenses(result.expenses);
         }) .catch((error) => {
             console.error("Error:", error);
         });
     }, [changedExpenses, expenseSheet])
-
-    useEffect ( () => {
-        for (let expense of allExpenses) {
-            if (expense.collection === expenseSheet) {
-                if (expense.value < 0) {
-                    setNetLoss(prevLoss => prevLoss - expense.value);
-                } else {
-                    setNetGain(prevGain => prevGain + expense.value);
-                }
-            }
-        }
-    }, [allExpenses])
 
     const addExpense = (event) => {
         event.preventDefault();
@@ -449,7 +444,7 @@ const Expenses = () => {
                                     <header>
                                         <h3>Total Balance</h3>
                                     </header>
-                                    <p style={{"fontFamily": "Arial, Helvetica, sans-serif"}}>${netGain}{" - $"}{netLoss}{" = $"}{netGain - netLoss}</p>
+                                    <p style={{"fontFamily": "Arial, Helvetica, sans-serif"}}>${netGain}{" - $"}{netLoss}{" = $"}{totalBalance}</p>
                                 </div>  
                         </div>
                     </div>
