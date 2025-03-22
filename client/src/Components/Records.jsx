@@ -150,9 +150,11 @@ const Records = () => {
             method:"PUT",
             headers:{
                 "Content-Type":"application/json",
-            }, body: JSON.stringify({
+            },
+            body: JSON.stringify({
                 _id:item._id,
                 name: editCollectionName,
+                })
             }) .then ((res) => res.json() )
             .then ((result) => {
                 if (result.error) {
@@ -161,8 +163,9 @@ const Records = () => {
                 }
                 console.log ("message:", result.message);
                 console.log("editedCollection:", result.editedCollection);
+                setManageCollection(null);
+                getUserCollections(email);
             })
-        })
     }
 
     const openCollection = (item) => {

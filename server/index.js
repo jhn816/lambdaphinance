@@ -345,7 +345,7 @@ app.post("/api/addcollection", async (req, res) => {
 app.put("/api/collection", async (req,res) => {
     try {
         const {_id, name} = req.body;
-        const editedCollection = await Collection.findById({_id}, {collectionName:name}, {new:true})
+        const editedCollection = await Collection.findByIdAndUpdate({_id}, {collectionName:name}, {new:true})
 
         res.json({message:"Collection list edited:", editedCollection});
 
