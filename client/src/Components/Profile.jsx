@@ -65,7 +65,7 @@ const Profile = () => {
         })
         .then(res => res.json())
         .then(result => {
-            if (!result.user) {
+            if (result.error === "jwt verify" || !result.user) {
                 localStorage.removeItem("token");
                 navigate("/");
                 return;

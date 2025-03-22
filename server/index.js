@@ -247,7 +247,7 @@ app.get("/api/profile", async (req, res) => {
         });
     } catch (error) {
         console.error("JWT Verification Error:", error.message);
-        return res.status(403).json({ error: "Invalid or expired token" });
+        return res.json({error:"jwt verify"});
     }
 });
 

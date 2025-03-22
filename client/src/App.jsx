@@ -15,20 +15,24 @@ function App() {
   const token = localStorage.getItem("token");
   
   useEffect( () => {
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/profile`, {
-        method:"GET",
-        headers: {
-            "Authorization": `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type":"application/json"
-        }
-    }) .then( (res) => res.json() )
-    .then( (result) => {
-        if (!result.user) {
-            console.log("Profile not found");
-            localStorage.removeItem("token");
-            return;
-        }
-    })
+    try {
+      fetch(`${process.env.REACT_APP_API_BASE_URL}/api/profile`, {
+          method:"GET",
+          headers: {
+              "Authorization": `Bearer ${localStorage.getItem("token")}`,
+              "Content-Type":"application/json"
+          }
+      }) .then( (res) => res.json() )
+      .then( (result) => {
+          if (result.error === "jwt verify" || !result.user) {
+              console.log("Profile not found");
+              localStorage.removeItem("token");
+              return;
+          }
+      })
+    } catch (error) {
+      console.log ("Error:", error);
+    }
 }, [token]);;
 
   return (
