@@ -75,7 +75,6 @@ app.post("/api/friend", async (req, res) => {
             return;
         } else if (!sent.added) {
             if (sent.recipient === sender) {
-                res.json({ message: "They already sent a friend request!" });
                 const acceptedRequest = await Friend.findOneAndUpdate({sender:recipient, recipient:sender}, { added: true }, { new: true });
                 res.json({ message: "They already sent a friend request!", acceptedRequest });
             } else {

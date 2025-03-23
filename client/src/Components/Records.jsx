@@ -426,7 +426,7 @@ const Records = () => {
                         <h3>Friends List</h3>
                         <div className="friends">
                             {listFriends.map((item, index) => {
-                                return (<>
+                                return (
                                 <div key={index} className="friend-box">
                                     <img src={item.profileImage} alt="Profile" height= "90" />
                                     <div className="friend-information">
@@ -444,7 +444,6 @@ const Records = () => {
                                             </div>
                                         </div>
                                     </div>
-                                </>
                                 )
                             })}
                         </div>
