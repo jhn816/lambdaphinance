@@ -64,7 +64,7 @@ app.post("/api/friend", async (req, res) => {
             return;
         }
 
-        const sent = await Friend.findOne({sender, recipient});
+        const sent = await Friend.findOne({$or:[ {sender, recipient}, {sender:recipient, recipient:sender}]});
         if (!sent) {
             const new_friend = new Friend({sender, recipient, added: false});
             await new_friend.save();
@@ -74,7 +74,13 @@ app.post("/api/friend", async (req, res) => {
             res.json({ message: "Friend is already added!" });
             return;
         } else if (!sent.added) {
-            res.json({ message: "Friend request already sent" });
+            if (sent.recipient === sender) {
+                res.json({ message: "They already sent a friend request!" });
+                const acceptedRequest = await Friend.findOneAndUpdate({sender:recipient, recipient:sender}, { added: true }, { new: true });
+                res.json({ message: "They already sent a friend request!", acceptedRequest });
+            } else {
+                res.json({ message: "Friend request already sent" });
+            }
             return;
         }
     } catch (error) {
@@ -176,6 +182,19 @@ app.delete("/api/friend", async (req, res) => {
         res.json({message:"Friend request deleted/canceled:", deletedRequest});
     } catch (error) {
         console.error("Error rejecting/canceling friend:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+})
+
+// deleting a friend from a users list
+app.delete("/api/friends", async (req, res) => {
+    try {
+        const {recipient, sender} = req.body;
+        const deletedFriend = await Friend.findOneAndDelete({$or : [{recipient, sender, added:true}, {recipient:sender, sender:recipient, added:true}]});
+
+        res.json({message:"Friend deleted:", deletedFriend});
+    } catch (error) {
+        console.error("Error deleted friend:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 })

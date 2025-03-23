@@ -183,6 +183,7 @@ const Records = () => {
             setManageCollection(null);
         } else {
             setManageCollection(item.collectionName);
+            setManageFriend(null);
         }
     }
 
@@ -191,6 +192,7 @@ const Records = () => {
             setManageFriend(null);
         } else {
             setManageFriend(item._id);
+            setManageCollection(null);
         }
     }
 
@@ -216,6 +218,8 @@ const Records = () => {
             if (result.error) {
                 console.log(result.error);
                 return;
+            } else if (result.acceptedRequest) {
+                console.log("Request", result.acceptedRequest);
             }
             console.log("message",result.message);
             getUserFriends(email);
@@ -287,6 +291,29 @@ const Records = () => {
             }
             console.log("message",result.message);
             console.log("Request", result.deletedRequest)
+            getUserFriends(email);
+        })
+        .catch(error => console.error("Error:", error));
+    }
+
+    const deleteFriend = (item) => {
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/friends`, {
+            method:"DELETE",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                sender: email,
+                recipient: item.email
+            })
+        }) .then((res) => res.json() )
+        .then( (result) => {
+            if (result.error) {
+                console.log(result.error);
+                return;
+            }
+            console.log("message",result.message);
+            console.log("Request", result.deletedFriend)
             getUserFriends(email);
         })
         .catch(error => console.error("Error:", error));
@@ -411,7 +438,7 @@ const Records = () => {
                                                 <div className="friend-dropmenu">
                                                     <button style={{borderBottomLeftRadius:"0px", borderBottomRightRadius:"0px"}} id="favorite-friend">Favorite</button>
                                                     <button style={{borderRadius:"0px"}}id="share-friend">Share</button>
-                                                    <button style={{borderTopLeftRadius:"0px", borderTopRightRadius:"0px"}} id="delete-friend">Delete</button>
+                                                    <button onClick={() => (deleteFriend(item))} style={{borderTopLeftRadius:"0px", borderTopRightRadius:"0px"}} id="delete-friend">Delete</button>
                                                 </div>
                                                 }
                                             </div>

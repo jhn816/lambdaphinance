@@ -303,6 +303,8 @@ const Expenses = () => {
             let dropCategory = false;
             setDropCategory(dropCategory);
         }
+        setEditingExpense(null);
+        setDropSort(false);
     }
 
     const dropdownSavedCategory = (e) => {
@@ -318,6 +320,8 @@ const Expenses = () => {
             let dropSavedCategory = false;
             setSavedDropCategory(dropSavedCategory);
         }
+        setDropSort(false);
+        setDropCategory(false);
     }
 
     const selectSort = (e) => {
@@ -341,6 +345,8 @@ const Expenses = () => {
             const sortExpenses = allExpenses.sort ( (a,b) => new Date(a.date) - new Date(b.date));
             setAllExpenses(sortExpenses);
         }    
+        setEditingExpense(null);
+        setDropCategory(false);
     }
 
     return (
@@ -506,7 +512,7 @@ const Expenses = () => {
                                 </> 
                             )}             
                         <div className="edit-dropdown">    
-                            <button onClick={(e) => editExpense(item)} className="edit-expense">Edit</button>
+                            <button onClick={(e) => {editExpense(item); setDropCategory(false); setDropSort(false); setSavedDropCategory(false);}} className="edit-expense">Edit</button>
                             {editingExpense === item._id && (
                                 <div className="edit-menu">  
                                     <button className="edit-delete" onClick={() => deleteExpense(item)}>Delete </button>

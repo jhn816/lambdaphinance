@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./css/Signup.css"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Money from "../assets/money.jpg"
 
 const Signup = () => {
@@ -9,6 +9,7 @@ const Signup = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setErrors] = useState({});
+    const navigate = useNavigate();
 
     const submitAccount = (event) => {
         event.preventDefault();
@@ -22,7 +23,7 @@ const Signup = () => {
         } else if (password !== confirmPassword) {
             error.passwordmatch = "Passwords do not match!";
         }
-        if (error) {
+        if (Object.keys(error).length > 0) {
             setErrors(error);
             return;
         }
@@ -40,6 +41,7 @@ const Signup = () => {
         }) .then ((res) => res.json()) 
         .then((result) => {
             console.log(result);
+            navigate("/");
         })
         .catch(error => console.error("Error:", error));
     }
@@ -59,7 +61,7 @@ const Signup = () => {
                         <div className="signup-input">
                             <h4> Email </h4>
                             <input type="email" onChange= {(e) => setEmail(e.target.value)} placeholder="type here..." />
-                            {error.email && <p>{error.email}</p>}
+                            {error.email && <p style={{alignSelf:"flex-end"}}>{error.email}</p>}
                         </div>
 
                         <div className="signup-input">
@@ -67,20 +69,20 @@ const Signup = () => {
                             <input maxLength={15} type="text" onChange={(e)=> setUsername(e.target.value)} placeholder="type here..." />
                             <div className="input-info">
                                 <p id="character-count">{username.length}/15</p>
-                                {!error.username && <p>{error.username}</p>}
+                                {error.username && <p>{error.username}</p>}
                             </div>
                         </div>
 
                         <div className="signup-input">
                             <h4> Password </h4>
                             <input type="password" onChange={(e)=> setPassword(e.target.value)} placeholder="type here..." />
-                            {error.password && <p>{error.password}</p>}
+                            {error.password && <p style={{alignSelf:"flex-end"}}>{error.password}</p>}
                         </div>
 
                         <div className="signup-input">
                             <h4> Confirm Password </h4>
                             <input type="password" onChange={(e)=> setConfirmPassword(e.target.value)}placeholder="type here..." />
-                            {error.passwordmatch && <p>{error.passwordmatch}</p>}
+                            {error.passwordmatch && <p style={{alignSelf:"flex-end"}}>{error.passwordmatch}</p>}
 
                         </div>
 
