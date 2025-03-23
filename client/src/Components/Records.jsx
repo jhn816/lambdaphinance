@@ -200,7 +200,7 @@ const Records = () => {
     const makeFriend = (event) => {
         event.preventDefault();
 
-        if (friendInput === "") {
+        if (friendInput === "" || friendInput === email) {
             alert("Enter a friend's email!");
             return;
         }
