@@ -121,7 +121,7 @@ const Expenses = () => {
     const addExpense = (event) => {
         event.preventDefault();
 
-        if (expenseSheet === "Choose Expenses ▼") {
+        if (expenseSheet === "Create New +") {
             alert("Please select a collection");
             return;
         } else if (category === "Category↴") {
