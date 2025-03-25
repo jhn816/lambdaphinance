@@ -356,7 +356,7 @@ const Expenses = () => {
                     {(expenseSheet === "Choose Expenses ▼" || expenseSheet === "Create New +") ? ( <h4> Finance Book</h4>) : (<h4> {expenseSheet} Finance Book</h4>)}
                     <div className="dropdownmenu">
                         {expenseSheet === "Create New +" && <div className="collection-sheets"> 
-                            <input placeholder="Enter Collection Name..." onChange={(e) => (setCollectionName(e.target.value))} maxLength={10}/>
+                            <input placeholder="Enter Collection Name..." onChange={(e) => (setCollectionName(e.target.value))} maxLength={20}/>
                             <button type="button" onClick={submitCollection}>Create</button>
                             <button type="button" onClick={selectCollection} value="Choose Expenses ▼">Cancel</button>
                         </div>}
