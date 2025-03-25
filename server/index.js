@@ -237,7 +237,7 @@ app.post("/api/login", async (req,res) => {
     const token = jwt.sign(
         { id: existingUser._id, email: existingUser.email, user: existingUser.username}, 
         SECRET_KEY, 
-        { expiresIn: "1h" }
+        { expiresIn: "12h" }
     );
     
     const requestOrigin = req.headers.origin;
