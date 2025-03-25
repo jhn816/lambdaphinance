@@ -139,7 +139,7 @@ const Records = () => {
                 return;
             }
             getUserCollections(email);
-            if (result.collection.deletedCount == 1) {
+            if (result.collection.deletedCount === 1) {
                 console.log("deletedCollection",result.collection);
             }
         })

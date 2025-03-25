@@ -297,7 +297,7 @@ app.post("/api/addexpense", async (req, res) => {
         
 
         let new_value = value.replace(/,/g, "");
-        new_value = parseInt(new_value);
+        new_value = parseFloat(new_value);
         if (!gain) {
             new_value = new_value * -1;
         }

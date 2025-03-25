@@ -248,11 +248,21 @@ const Expenses = () => {
 
     const handleChange = (e) => {
         let rawValue = e.target.value.replace(/,/g, "");
-
-        if (/^\d*$/.test(rawValue)) {
-            setValue(Number(rawValue).toLocaleString());
+    
+        if (/^\d*\.?\d{0,2}$/.test(rawValue)) {
+            setValue(rawValue);
         }
     };
+
+    const handleDecimalChange = (e) => {
+        let value = e.target.value;
+    
+        if (!isNaN(value) && value.match(/^\d*\.?\d{0,2}$/)) {
+            setSavedValue(value);
+        }
+    };
+    
+    
 
     const selectCollection = (e) => {
         setExpenseSheet(e.target.value);
@@ -406,7 +416,10 @@ const Expenses = () => {
                                         <button type="button" onClick={dropdownCategory} value="Groceries">Groceries</button>
                                         <button type="button" onClick={dropdownCategory} value="Alcohol">Alcohol</button>
                                         <button type="button" onClick={dropdownCategory} value="Brotherhood">Brotherhood</button>
-                                        <button type="button" onClick={dropdownCategory} value="Rush">Rush</button>
+                                        <button type="button" onClick={dropdownCategory} value="Fundraiser">Fundraiser</button>
+                                        <button type="button" onClick={dropdownCategory} value="Dues">Dues</button>
+                                        <button type="button" onClick={dropdownCategory} value="Open">Open</button>
+                                        <button type="button" onClick={dropdownCategory} value="Misc.">Misc.</button>
                                     </span>}
                                 </div>
 
@@ -414,12 +427,22 @@ const Expenses = () => {
                             </div>
 
                             <div className="expense-inputs">
-                                <input type="text" placeholder="Enter amount..." value={value} onChange={handleChange} maxLength={6}
-                                    onKeyDown={(e) => {
-                                        if (["e", "E", "+", "-"].includes(e.key)) {
-                                            e.preventDefault();
-                                        }
-                                    }}/>
+                            <input 
+                                type="text" 
+                                placeholder="Enter amount..." 
+                                value={value} 
+                                onChange={handleChange} 
+                                maxLength={9} 
+                                onKeyDown={(e) => {
+                                    if (["e", "E", "+", "-"].includes(e.key)) {
+                                    e.preventDefault(); 
+                                    }
+                                    if (e.key === "." && value.includes(".")) {
+                                    e.preventDefault();
+                                    }
+                                }}
+                                />
+
                             </div>
                             
                             <div className="expense-inputs">
@@ -504,10 +527,20 @@ const Expenses = () => {
                                             <button type="button" onClick={dropdownSavedCategory} value="Groceries">Groceries</button>
                                             <button type="button" onClick={dropdownSavedCategory} value="Alcohol">Alcohol</button>
                                             <button type="button" onClick={dropdownSavedCategory} value="Brotherhood">Brotherhood</button>
-                                            <button type="button" onClick={dropdownSavedCategory} value="Rush">Rush</button>
+                                            <button type="button" onClick={dropdownSavedCategory} value="Fundraisers">Fundraisers</button>
+                                            <button type="button" onClick={dropdownSavedCategory} value="Dues">Dues</button>
+                                            <button type="button" onClick={dropdownSavedCategory} value="Open">Open</button>
+                                            <button type="button" onClick={dropdownSavedCategory} value="Misc.">Misc.</button>
                                         </span>}
                                     </div>
-                                    <input type="number" value={savedValue} onChange={(e) => setSavedValue(e.target.value)} />
+                                    <input 
+                                        type="number" 
+                                        value={savedValue} 
+                                        onChange={(e) => handleDecimalChange(e)} 
+                                        step="0.01"  // Allows input in increments of 0.01
+                                        min="0"       // Optional: Prevents negative numbers
+                                        placeholder="Enter amount..."
+                                    />
                                     <input value={savedPerson} onChange={(e) => setSavedPerson(e.target.value)}/>
                                 </> 
                             )}             
