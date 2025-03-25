@@ -461,21 +461,21 @@ const Expenses = () => {
                                     <header style={{"backgroundColor":"#c9ffd1"}}>
                                         <h3>Net Gain</h3>
                                     </header>
-                                    <p style={{ color: "green", "fontfamily": "Arial, Helvetica, sans-serif"}}>${netGain || "0"}</p>
+                                    <p style={{ color: "green", "fontfamily": "Arial, Helvetica, sans-serif"}}>${netGain ? netGain.toFixed(2) : "0.00"}</p>
                                 </div>
 
                                 <div className="expense-card">
                                     <header style={{"backgroundColor":"#ffc9c9"}}>
                                         <h3>Net Loss</h3>
                                     </header>
-                                    <p style={{ color: "red", "fontFamily": "Arial, Helvetica, sans-serif"}}>${netLoss || "0"}</p>
+                                    <p style={{ color: "red", "fontFamily": "Arial, Helvetica, sans-serif"}}>${netLoss ? netLoss.toFixed(2) : "0.00"}</p>
                                 </div>  
                             </div>
                             <div className="balance-card">
                                     <header>
                                         <h3>Total Balance</h3>
                                     </header>
-                                    <p style={{"fontFamily": "Arial, Helvetica, sans-serif"}}>${netGain ||"0"}{" - $"}{netLoss || "0"}{" = $"}{totalBalance || "0"}</p>
+                                    <p style={{"fontFamily": "Arial, Helvetica, sans-serif"}}>${netGain ? netGain.toFixed(2) : "0.00"}{" - $"}{netLoss ? netLoss.toFixed(2) : "0.00"}{" = $"}{totalBalance ? totalBalance.toFixed(2) : "0.00"}</p>
                                 </div>  
                         </div>
                     </div>
@@ -537,8 +537,8 @@ const Expenses = () => {
                                         type="number" 
                                         value={savedValue} 
                                         onChange={(e) => handleDecimalChange(e)} 
-                                        step="0.01"  // Allows input in increments of 0.01
-                                        min="0"       // Optional: Prevents negative numbers
+                                        step="0.01" 
+                                        min="0" 
                                         placeholder="Enter amount..."
                                     />
                                     <input value={savedPerson} onChange={(e) => setSavedPerson(e.target.value)}/>
