@@ -70,7 +70,7 @@ const Login = () => {
                             {error.match && <p>{error.match}</p>}
                         </div>
                     </div>      
-                    <button type="submit" > done</button> 
+                    <button type="submit" > Enter</button> 
                     <h6> Don't have an account? <Link to="/register"> Register</Link></h6> 
                 </div>
             </form>
