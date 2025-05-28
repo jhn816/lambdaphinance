@@ -429,6 +429,8 @@ const Expenses = () => {
                             <div className="expense-inputs">
                             <input 
                                 type="text" 
+                                inputMode="decimal"
+                                pattern="^\d*\.?\d{0,2}$"
                                 placeholder="Enter amount..." 
                                 value={value} 
                                 onChange={handleChange} 
