@@ -48,32 +48,44 @@ const Login = () => {
     }
 
     return (
-        <div className="login-containers">
-            <div className="login-titles">
-                <img src={Money} alt="money" className="money"/>
-                <h1> Lambda Phinance</h1>
-                <h3> track all your expenses</h3>
-            </div>
-            <form onSubmit={checkAccount}>
-                <div className="login-information">   
-                    <h2>LOGIN</h2>     
-                    <div className="login-box">
-
-                        <div className="login-input">
-                            <h4> Email </h4>
-                            <input type="email" onChange = {(e) => setEmail(e.target.value)} placeholder="type here..." />
-                        </div>
-
-                        <div className="login-input">
-                            <h4> Password </h4>
-                            <input type="password" onChange = {(e) => setPassword(e.target.value)} placeholder="type here..." />
-                            {error.match && <p>{error.match}</p>}
-                        </div>
-                    </div>      
-                    <button type="submit" > Enter</button> 
-                    <h6> Don't have an account? <Link to="/register"> Register</Link></h6> 
+        <div className="login-page">
+            <div className="login-containers">
+                <div className="login-titles">
+                    <img src={Money} alt="money" className="money"/>
+                    <h1> Lambda Phinance</h1>
+                    <h3> track all your expenses</h3>
                 </div>
-            </form>
+                <form onSubmit={checkAccount}>
+                    <div className="login-information">   
+                        <div className="login-box">
+                            <h2 style={{marginBottom:"10px"}}>LOG IN</h2>     
+
+                            <div className="login-input">
+                                <input name="emailInput" type="email" autocomplete="off" placeholder=""  onChange = {(e) => setEmail(e.target.value)} />
+                                <label className="login-label" for="emailInput"> Enter your email </label>
+                            </div>
+
+                            <div className="login-input" style={{marginBottom:"15px"}}>
+                                <input name="passwordInput" type="password" autocomplete="new-password" placeholder=" " onChange = {(e) => setPassword(e.target.value)} />
+                                <label className="login-label" for="passwordInput"> Enter your password </label>
+                            </div>
+
+                            <div style={{width:"100%"}}>
+                                <button type="submit" style={{marginBottom:"10px"}} > Enter</button> 
+                                <a type="button" href="/register" data-discover="true" id="login-register"> Sign Up </a> 
+                            </div>
+                        </div>      
+                    </div>
+                    {error.match && 
+                    <div id="modal-container">
+                        <div className="modal-header">
+                            <h3>Oh no!</h3>
+                        </div>
+                        <p>{error.match}</p>
+                        <button type="button" onClick={() => (setError({}))}> Close </button>
+                    </div>}
+                </form>
+            </div>
         </div>
     )
 }
