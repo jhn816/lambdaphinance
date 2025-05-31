@@ -9,10 +9,6 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [error,setError] = useState({});
 
-    useEffect( () => {
-        window.scrollTo(0, 0);
-    })
-
     const checkAccount = (event) => {
         event.preventDefault();
         

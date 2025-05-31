@@ -1,4 +1,4 @@
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect } from "react";
 import "./css/Expenses.css"
 import { Link, useNavigate } from "react-router-dom";
 import { clear } from "@testing-library/user-event/dist/clear";
