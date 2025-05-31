@@ -430,7 +430,6 @@ const Expenses = () => {
                             <input 
                                 type="text" 
                                 inputMode="decimal"
-                                pattern="^\d*\.?\d{0,2}$"
                                 placeholder="Enter amount..." 
                                 value={value} 
                                 onChange={handleChange} 
@@ -536,7 +535,8 @@ const Expenses = () => {
                                         </span>}
                                     </div>
                                     <input 
-                                        type="number" 
+                                        type="text" 
+                                        inputMode="decimal"
                                         value={savedValue} 
                                         onChange={(e) => handleDecimalChange(e)} 
                                         step="0.01" 
