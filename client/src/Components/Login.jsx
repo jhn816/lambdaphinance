@@ -61,18 +61,18 @@ const Login = () => {
                             <h2 style={{marginBottom:"10px"}}>LOG IN</h2>     
 
                             <div className="login-input">
-                                <input name="emailInput" type="email" autocomplete="off" placeholder=""  onChange = {(e) => setEmail(e.target.value)} />
-                                <label className="login-label" for="emailInput"> Enter your email </label>
+                                <input name="emailInput" type="email" autoComplete="new-email" placeholder=""  onChange = {(e) => setEmail(e.target.value)} />
+                                <label className="login-label" htmlFor="emailInput"> Enter your email </label>
                             </div>
 
                             <div className="login-input" style={{marginBottom:"15px"}}>
                                 <input name="passwordInput" type="password" autocomplete="new-password" placeholder=" " onChange = {(e) => setPassword(e.target.value)} />
-                                <label className="login-label" for="passwordInput"> Enter your password </label>
+                                <label className="login-label" htmlFor="passwordInput"> Enter your password </label>
                             </div>
 
                             <div style={{width:"100%"}}>
                                 <button type="submit" style={{marginBottom:"10px"}} > Enter</button> 
-                                <a type="button" href="/register" data-discover="true" id="login-register"> Sign Up </a> 
+                                <Link type="button" to="/register" data-discover="true" id="login-register"> Sign Up </Link> 
                             </div>
                         </div>      
                     </div>
