@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "./css/Login.css"
 import { Link } from "react-router-dom";
+import Money from "../assets/money.jpg"
 
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error,setError] = useState({});
-    const navigate = useNavigate();
- 
+
+    useEffect( () => {
+        window.scrollTo(0, document.body.scrollHeight);
+    })
+
     const checkAccount = (event) => {
         event.preventDefault();
         
@@ -28,7 +31,7 @@ const Login = () => {
         .then ( (result) => {
             if (result.token) {
                 localStorage.setItem("token", result.token);
-                navigate('/')
+                window.location.reload();
                 console.log("Login successful!");
             } else {
                 if (result.error){
@@ -45,43 +48,32 @@ const Login = () => {
     }
 
     return (
-        <div className="login-page">
-            <div className="login-containers">
-                <div className="login-titles">
-                    <h1> Lambda Phinance</h1>
-                    <h3> track all your expenses</h3>
-                </div>
-                <form onSubmit={checkAccount}>
-                    <div className="login-information">   
-                        <div className="login-box">
-                            <h2 style={{marginBottom:"10px"}}>LOG IN</h2>     
-
-                            <div className="login-input">
-                                <input id="emailInput" type="email" autoComplete="new-email" placeholder=""  onChange = {(e) => setEmail(e.target.value)} />
-                                <label className="login-label" htmlFor="emailInput"> Enter your email </label>
-                            </div>
-
-                            <div className="login-input" style={{marginBottom:"15px"}}>
-                                <input id="passwordInput" type="password" autoComplete="new-password" placeholder="" onChange = {(e) => setPassword(e.target.value)} />
-                                <label className="login-label" htmlFor="passwordInput"> Enter your password </label>
-                            </div>
-
-                            <div style={{width:"100%"}}>
-                                <button type="submit" style={{marginBottom:"10px"}} > Enter</button> 
-                                <Link to="/register" data-discover="true" id="login-register"> Sign Up </Link> 
-                            </div>
-                        </div>      
-                    </div>
-                    {error.match && 
-                    <div id="modal-container">
-                        <div className="modal-header">
-                            <h3>Oh no!</h3>
-                        </div>
-                        <p>{error.match}</p>
-                        <button type="button" onClick={() => (setError({}))}> Close </button>
-                    </div>}
-                </form>
+        <div className="login-containers">
+            <div className="login-titles">
+                <img src={Money} alt="money" className="money"/>
+                <h1> Lambda Phinance</h1>
+                <h3> track all your expenses</h3>
             </div>
+            <form onSubmit={checkAccount}>
+                <div className="login-information">   
+                    <h2>LOGIN</h2>     
+                    <div className="login-box">
+
+                        <div className="login-input">
+                            <h4> Email </h4>
+                            <input type="email" onChange = {(e) => setEmail(e.target.value)} placeholder="type here..." />
+                        </div>
+
+                        <div className="login-input">
+                            <h4> Password </h4>
+                            <input type="password" onChange = {(e) => setPassword(e.target.value)} placeholder="type here..." />
+                            {error.match && <p>{error.match}</p>}
+                        </div>
+                    </div>      
+                    <button type="submit" > done</button> 
+                    <h6> Don't have an account? <Link to="/register"> Register</Link></h6> 
+                </div>
+            </form>
         </div>
     )
 }
