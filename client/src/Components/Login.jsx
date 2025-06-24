@@ -28,7 +28,7 @@ const Login = () => {
         .then ( (result) => {
             if (result.token) {
                 localStorage.setItem("token", result.token);
-                navigate('/')
+                window.location.href = "/";
                 console.log("Login successful!");
             } else {
                 if (result.error){
