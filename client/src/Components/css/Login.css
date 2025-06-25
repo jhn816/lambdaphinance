@@ -36,7 +36,7 @@
 
 @font-face {
     font-family: 'UnageoBold';
-    src: url('../../assets/fonts/Unageo-ExtraBold.ttf') format('truetype');
+    src: url('/fonts/Unageo-ExtraBold.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
   }
