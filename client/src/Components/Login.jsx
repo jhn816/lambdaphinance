@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./css/Login.css"
+import "./css/Login.css";
 import { Link } from "react-router-dom";
-
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error,setError] = useState({});
+    const [error, setError] = useState({});
     const navigate = useNavigate();
- 
+
     const checkAccount = (event) => {
         event.preventDefault();
-        
+
         let error = {};
 
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/login`, { 
@@ -20,18 +19,16 @@ const Login = () => {
             headers: {
                 "Content-Type":"application/json"
             },
-            body: JSON.stringify({
-                email,
-                password
-            })
-        }) .then( (res) => res.json() )
-        .then ( (result) => {
+            body: JSON.stringify({ email, password })
+        })
+        .then(res => res.json())
+        .then(result => {
             if (result.token) {
                 localStorage.setItem("token", result.token);
-                window.location.href = "/";
+                navigate('/');
                 console.log("Login successful!");
             } else {
-                if (result.error){
+                if (result.error) {
                     console.log("Login failed:", result.error);
                     error.match = result.error;
                     setError(error);
@@ -48,42 +45,53 @@ const Login = () => {
         <div className="login-page">
             <div className="login-containers">
                 <div className="login-titles">
-                    <h1> Lambda Phinance</h1>
-                    <h3> track all your expenses</h3>
+                    <h1>Lambda Phinance</h1>
+                    <h3>track all your expenses</h3>
                 </div>
                 <form onSubmit={checkAccount}>
-                    <div className="login-information">   
+                    <div className="login-information">
                         <div className="login-box">
-                            <h2 style={{marginBottom:"10px"}}>LOG IN</h2>     
-
+                            <h2 style={{marginBottom:"10px"}}>LOG IN</h2>
                             <div className="login-input">
-                                <input id="emailInput" type="email" autoComplete="off" placeholder=""  onChange = {(e) => setEmail(e.target.value)} />
-                                <label className="login-label" htmlFor="emailInput"> Enter your email </label>
+                                {/* Static label for maximum compatibility */}
+                                <input
+                                    id="emailInput"
+                                    type="email"
+                                    autoComplete="username"
+                                    placeholder="Enter your email"
+                                    value={email}
+                                    onChange={e => setEmail(e.target.value)}
+                                />
                             </div>
-
                             <div className="login-input" style={{marginBottom:"15px"}}>
-                                <input id="passwordInput" type="password" autoComplete="off" placeholder="" onChange = {(e) => setPassword(e.target.value)} />
-                                <label className="login-label" htmlFor="passwordInput"> Enter your password </label>
+                                <input
+                                    id="passwordInput"
+                                    type="password"
+                                    autoComplete="current-password"
+                                    placeholder="Enter your password"
+                                    value={password}
+                                    onChange={e => setPassword(e.target.value)}
+                                />
                             </div>
-
                             <div style={{width:"100%"}}>
-                                <button type="submit" style={{marginBottom:"10px"}} > Enter</button> 
-                                <Link to="/register" data-discover="true" id="login-register"> Sign Up </Link> 
+                                <button type="submit" style={{marginBottom:"10px"}}>Enter</button>
+                                <Link to="/register" id="login-register">Sign Up</Link>
                             </div>
-                        </div>      
-                    </div>
-                    {error.match && 
-                    <div id="modal-container">
-                        <div className="modal-header">
-                            <h3>Oh no!</h3>
                         </div>
-                        <p>{error.match}</p>
-                        <button type="button" onClick={() => (setError({}))}> Close </button>
-                    </div>}
+                    </div>
+                    {error.match && (
+                        <div id="modal-container">
+                            <div className="modal-header">
+                                <h3>Oh no!</h3>
+                            </div>
+                            <p>{error.match}</p>
+                            <button type="button" onClick={() => setError({})}>Close</button>
+                        </div>
+                    )}
                 </form>
             </div>
         </div>
-    )
+    );
 }
 
 export default Login;
