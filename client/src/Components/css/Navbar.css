@@ -1,4 +1,4 @@
-.navigation-bar {
+.desktop-bar {
     background-color: #1a6be3;
     width: 100%;
     height:10vh;
@@ -6,27 +6,119 @@
     padding: 0px;
     margin: 0px;
     filter: drop-shadow(0px 0px 5px black);
-
+    display: block;
 }
 
-.navigation-bar ul a {
+.desktop-bar ul a {
     color:white;
     text-decoration: none;
     transition: .3s;
 }
 
-.navigation-bar ul a:hover {
+.desktop-bar ul a:hover {
     color:rgb(192, 192, 192);
 }
 
 .nav-links {
     display: flex;
     flex-direction: row;
-    padding: 30px;
-    padding-top: 3px;
-    gap: 30px
+    align-items: center;
+    padding: 0px 30px 0px 30px;
+    gap: 30px;
+    height: 100%;
+    margin: 0px;
 }
 
-.navigation-bar .nav-links .about-nav {
+.desktop-bar .nav-links .about-nav {
     margin-left: auto;
+}
+
+.mobile-bar {
+    display: none;
+    background-color: #1a6be3;
+    width: 100%;
+    height:10vh;
+    z-index: 1;
+    padding: 0px;
+    margin: 0px;
+    filter: drop-shadow(0px 0px 5px black);
+}
+
+.mobile-bar img {
+    height: 45%;
+    align-self: flex-end;
+    transition: .3s;
+    filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.132));
+
+}
+
+.mobile-bar img:hover {
+    filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.532));
+    cursor: pointer;
+}
+
+@keyframes slideInMenu {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+}
+
+@keyframes slideOutMenu {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+  }
+
+.hamburger-open {
+    background-color: #2a7dfa;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    z-index: 99;
+    width: 50vw;
+    animation: slideInMenu .7s;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 30px;
+}
+
+.hamburger-close {
+    background-color: #2a7dfa;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    z-index: 99;
+    width: 50vw;
+    animation: slideOutMenu 0.5s forwards;
+
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+  }
+
+.hamburger-open a, .hamburger-close a {
+    color: white;
+    text-decoration: none;
+}
+
+@media (max-width: 950px) {
+    .desktop-bar {
+        display: none;
+    }
+
+    .mobile-bar {
+        display: block;
+    }
 }
