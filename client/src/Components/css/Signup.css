@@ -224,4 +224,7 @@
         font-size: 13px;
         height: 20px;
     }
+    .signup-box {
+        width: 80%;
+    }
 }
