@@ -45,10 +45,6 @@ const Login = () => {
     return (
         <div className="login-page">
             <div className="login-containers">
-                <div className="login-titles">
-                    <h1>Lambda Phinance</h1>
-                    <h3>track all your expenses</h3>
-                </div>
                 <form onSubmit={checkAccount}>
                     <div className="login-information">
                         <div className="login-box">
@@ -74,7 +70,7 @@ const Login = () => {
                                     onChange={e => setPassword(e.target.value)}
                                 />
                             </div>
-                            <div style={{width:"100%"}}>
+                            <div className="login-buttons" style={{width:"100%"}}>
                                 <button type="submit" style={{marginBottom:"10px"}}>Enter</button>
                                 <Link to="/register" id="login-register">Sign Up</Link>
                             </div>

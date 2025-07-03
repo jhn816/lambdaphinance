@@ -29,7 +29,7 @@
     justify-content: center;
     flex-direction: column;
     background-color: rgb(255, 255, 255);
-    width: 50%;
+    width: 100%;
     gap: 15px;
     z-index: 2;
 }
@@ -62,7 +62,7 @@
     justify-content: center;
     align-items: center;
     border-radius: 10px;
-    width: 80%;
+    width: 70%;
     padding: 35px;
     background-color: rgba(255, 255, 255, 0.91);
     border: 1px solid rgb(146, 146, 146);
@@ -84,9 +84,9 @@ input[type="email"] , input[type="password"] {
     border: 1px solid transparent;
     border-radius: 5px;
     padding: 8px;
-    font-size: 17px;
+    font-size: 16px;
     border: 1px solid black;
-    font-family: 'Unageo', sans-serif;
+    font-family: 'UnageoReg', sans-serif;
 }
 
 input[type="email"]:focus, input[type="password"]:focus {
@@ -117,23 +117,23 @@ input[type="email"]:focus, input[type="password"]:focus {
     height: 40px;
     border: 1px solid rgb(68, 71, 78);
     color: white;
-    font-size: 14px;
-    font-weight: 1000;
+    font-size: 15px;
+    font-weight: 100;
     background-color: rgb(33, 62, 120);
     border-radius: 20px;
     transition: .3s;
+    font-family: 'UnageoReg', sans-serif;
 }
 
 .login-information button:hover{
     border: 1px solid rgb(21, 50, 106);
-    filter: drop-shadow(0 0 .4rem rgba(41, 42, 43, 0.456));
-    background-color: rgb(56, 93, 169);
-    transform: scale(1.01);
+    filter: drop-shadow(0 0 2px rgba(41, 42, 43, 0.956));
+    transform: translateY(-2px);
     cursor: pointer;
 }
 
 .login-information button:active{
-    transform: scale(.98);
+    transform: scale(.99);
 }
 
 .login-information a {
@@ -143,25 +143,25 @@ input[type="email"]:focus, input[type="password"]:focus {
     width: 100%;
     height: 40px;
     border: 1px solid rgb(68, 71, 78);
-    font-size: 14px;
-    color: rgb(33, 62, 120);
+    font-size: 15px;
+    /* color: rgb(33, 62, 120); */
+    color: black;
+    background-color: white;
     text-decoration: none;
-    font-weight: 1000;
-    background-color: transparent;
+    font-weight: 100;
     border-radius: 20px;
     transition: .3s;
+    font-family: 'UnageoReg', sans-serif;
 }
 
 .login-information a:hover{
-    filter: drop-shadow(0 0 .4rem rgba(41, 42, 43, 0.456));
-    background-color: rgb(33, 62, 120);
-    color: white;
-    transform: scale(1.01);
+    filter: drop-shadow(0 0 2px rgba(41, 42, 43, 0.956));
+    transform: translateY(-2px);
     cursor: pointer;
 }
 
 .login-information a:active{
-    transform: scale(.98);
+    transform: scale(.99);
 }
 
 form h6 {
@@ -280,9 +280,19 @@ form h6 a:hover{
     transform: scale(.98);
 }
 
+.login-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
 @media (max-width: 1439px) {
     .login-titles {
         display: none;
+    }
+
+    .login-box {
+        width: 80%;
     }
 
     .login-containers form {
@@ -290,16 +300,47 @@ form h6 a:hover{
     }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 860px) {
     .login-information {
         width: 90%;
     }
 
     .login-box {
-        height: 80%;
+        height: 70%;
     }
 
     .login-information h2 {
         margin-top: 0px;
     }
 }
+
+@media (max-width: 1024px) {
+    .login-buttons {
+        flex-direction: column;
+        gap: 0px;
+    }
+
+    .login-information a:hover{
+        filter: drop-shadow(0 0 .4rem rgba(41, 42, 43, 0.456));
+        transform: scale(1.005);
+        cursor: pointer;
+    }
+
+    .login-information button:hover{
+        border: 1px solid rgb(21, 50, 106);
+        filter: drop-shadow(0 0 5px rgba(41, 42, 43, 0.856));
+        transform: scale(1.005);
+        cursor: pointer;
+    }
+}
+
+@media (max-width:450px) {
+    .login-input {
+        padding: 20px 0px 20px 0px;
+    }
+    input[type="email"], input[type="password"] {
+        font-size: 12px;
+        height: 20px;
+    }
+}
+

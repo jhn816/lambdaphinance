@@ -7,30 +7,34 @@
 }
 
 .signup-information {
+    filter: drop-shadow(0px 2px 40px black);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background-image: linear-gradient(#7cdcff, #2776FF);
-    width: 50%;
+    background-color: rgb(255, 255, 255);
+    width: 100%;
     gap: 15px;
     z-index: 2;
-    filter: drop-shadow(20px 2px 19px black);
 }
 
 .signup-information h2 {
-    filter: drop-shadow(0 0 0.15rem black);
+    font-family: 'UnageoReg', sans-serif;
+    font-size: 34px;
     margin-bottom: 0px;
+    color: rgb(33, 62, 120);
+    text-shadow: 1px 3px 4px rgba(0, 0, 0, 0.437);
+    border-radius: 30px;
 }
 
 .signup-information form {
-    display:flex;
-    flex-direction: column;
+    display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     width: 50%;
-    height: 60%;
-    gap: 15px;
+    height: 80%;
+    gap: 45px
 }
 
 .signup-box {
@@ -39,37 +43,43 @@
     justify-content: center;
     align-items: center;
     border-radius: 10px;
-    width: 100%;
-    height: 100%;
-    background-color: white;
+    width: 70%;
+    padding: 35px;
+    background-color: rgba(255, 255, 255, 0.91);
+    border: 1px solid rgb(146, 146, 146);
     color: black;
-    gap: 25px;
+    gap: 5px;
 }
 
 .signup-input {
     display: flex;
     flex-direction: column;
-    width: 80%;
-    padding: 20px;
-    padding-bottom: 0px;
-    padding-top: 0px;
+    width: 100%;
+    padding: 5px 0px 5px 0px;
+}
+
+.signup-input input:focus {
+    outline: none;
 }
 
 .signup-input input {
     margin-top: 0px;
-    height: 30px;
-    background-color:#D9D9D9;
+    height: 25px;
+    background-color:#f5f4f4;
     border: 1px solid transparent;
     border-radius: 5px;
-    padding: 5px;
-    font-size: 20px;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid black;
+    font-family: 'UnageoReg', sans-serif;
 }
 
 .signup-input h4 {
     margin-top: 0px;
     margin-bottom: 5px;
-    font-size: 20px;
+    font-size: 14px;
     align-self: flex-start;
+    font-family: 'UnageoReg', sans-serif;
 }
 
 .signup-titles {
@@ -86,26 +96,6 @@
 
 .signup-titles h3 {
     font-weight: 100;
-}
-
-.signup-information button {
-    width: 300px;
-    height: 50px;
-    border: 1px solid transparent;
-    font-size: 15px;
-    font-weight: 100;
-    background-color: white;
-    border-radius: 20px;
-    transition: .3s;
-}
-
-.signup-information button:hover{
-    background-color: rgb(239, 239, 239);
-    transform: scale(1.05);
-}
-
-.signup-information button:active{
-    transform: scale(1);
 }
 
 .signup-box h6 {
@@ -160,4 +150,78 @@
     font-weight: 100;
     position:absolute;
     top: 50%;
+}
+
+.signup-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+}
+
+.signup-information button {
+    width: 100%;
+    height: 40px;
+    border: 1px solid rgb(68, 71, 78);
+    color: white;
+    font-size: 15px;
+    font-weight: 100;
+    background-color: rgb(33, 62, 120);
+    border-radius: 20px;
+    transition: .3s;
+    font-family: 'UnageoReg', sans-serif;
+}
+
+.signup-information a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 40px;
+    border: 1px solid rgb(68, 71, 78);
+    font-size: 15px;
+    /* color: rgb(33, 62, 120); */
+    color: black;
+    background-color: white;
+    text-decoration: none;
+    font-weight: 100;
+    border-radius: 20px;
+    transition: .3s;
+    font-family: 'UnageoReg', sans-serif;
+}
+
+.signup-information button:hover{
+    border: 1px solid rgb(21, 50, 106);
+    filter: drop-shadow(0 0 2px rgba(41, 42, 43, 0.956));
+    transform: translateY(-2px);
+    cursor: pointer;
+}
+
+.signup-information a:hover{
+    filter: drop-shadow(0 0 2px rgba(41, 42, 43, 0.956));
+    transform: translateY(-2px);
+    cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+    .signup-information form {
+        width:70%;
+    }
+}
+
+@media (max-width: 630px) {
+    .signup-information form {
+        width:90%;
+    }
+
+    .signup-buttons {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 425px) {
+    .signup-input input {
+        font-size: 13px;
+        height: 20px;
+    }
 }

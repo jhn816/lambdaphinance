@@ -48,16 +48,10 @@ const Signup = () => {
 
     return (
         <div className="signup-containers">
-            <div className="signup-titles">
-                <img src={Money} alt="money" className="money"/>
-                <h1> Lambda Phinance</h1>
-                <h3>a nu chapter</h3>
-            </div>
-
             <div className="signup-information">   
-                <h2>REGISTER</h2>     
                 <form onSubmit={submitAccount}>
                     <div className="signup-box">
+                        <h2 style={{marginBottom:"10px"}}>REGISTER</h2>
                         <div className="signup-input">
                             <h4> Email </h4>
                             <input type="email" onChange= {(e) => setEmail(e.target.value)} placeholder="type here..." />
@@ -68,7 +62,7 @@ const Signup = () => {
                             <h4> Username </h4>
                             <input maxLength={15} type="text" onChange={(e)=> setUsername(e.target.value)} placeholder="type here..." />
                             <div className="input-info">
-                                <p id="character-count">{username.length}/15</p>
+                                <p id="character-count" style={{marginBottom:"0px"}}>{username.length}/15</p>
                                 {error.username && <p>{error.username}</p>}
                             </div>
                         </div>
@@ -79,16 +73,18 @@ const Signup = () => {
                             {error.password && <p style={{alignSelf:"flex-end"}}>{error.password}</p>}
                         </div>
 
-                        <div className="signup-input">
+                        <div className="signup-input" style={{marginBottom:"15px"}}>
                             <h4> Confirm Password </h4>
                             <input type="password" onChange={(e)=> setConfirmPassword(e.target.value)}placeholder="type here..." />
                             {error.passwordmatch && <p style={{alignSelf:"flex-end"}}>{error.passwordmatch}</p>}
+                        </div>
 
+                        <div className="signup-buttons">
+                            <button type="submit"> Sign Up</button>  
+                            <Link to="/" id="login-register">Log In</Link>
                         </div>
 
                     </div>          
-                    <button type="submit"> create</button>  
-                    <h6> Already have an account? <Link to="/"> Login</Link></h6>
 
                 </form>
             </div>
