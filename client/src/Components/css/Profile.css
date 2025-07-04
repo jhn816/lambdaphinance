@@ -44,7 +44,7 @@
     width: 60%;
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 50px;
 }
 
 .user-inputs {
@@ -83,18 +83,37 @@
     gap: 5px;
     width: 100%;
 }
+
 .site-button {
+    display: flex;
+    flex-direction: row;
+    gap: 2px;
+    border: 0px;
+    background-color: transparent;
+    transition: .3s;
+    padding: 0px;
+    max-width: 400px;
+}
+
+.site-button-mark {
+    background-color: rgb(57, 57, 57);
+    border: 1px solid black;
+    border-radius: 15px 0px 0px 15px;
+    width: 5%;
+}
+
+.site-button h4 {
     border: 1px solid black;
     padding: 10px 0px 10px 0px;
-    border-radius: 15px;
+    border-radius: 0px 15px 15px 0px;
     font-size: 16px;
-    width: 350px;
+    font-weight: 100;
+    width: 95%;
     text-align: left;
     margin: 0px;
     background-color: rgb(55, 92, 167);
     color: white;
     text-align: center;
-    transition: .3s;
 }
 
 .site-button:hover {
@@ -112,7 +131,8 @@
 }
 
 #user-picture {
-    clip-path: circle(100px at 50% 50%);
+    width: 300px;
+    clip-path: circle(150px at 50% 50%);
 }
 
 #saved-picture {
@@ -157,6 +177,19 @@ h1::after {
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
+    position: relative;
+}
+
+.profile-section::after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: -25px; /* Adjust spacing below h1 */
+    width: 350px;
+    height: 1px;    /* Thickness of the line */
+    background: black;
+    border-radius: 2px;
 }
 
 .account-information p {
@@ -170,7 +203,7 @@ h1::after {
 }
 
 .logout {
-    width: 150px;
+    width: 195px;
     height: 40px;
     font-size: 14px;
     font-weight: 100;
@@ -182,7 +215,7 @@ h1::after {
 }
 
 .delete {
-    width: 150px;
+    width: 195px;
     height: 40px;
     font-size: 14px;
     font-weight: 100;
@@ -207,3 +240,25 @@ h1::after {
 .information-container .logout:active {
     transform: scale(1);
 }    
+
+@media (max-width:768px) {
+    .information-inputs {
+        flex-direction: column;
+    }
+
+    .profile-page {
+        height: auto;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .input-text {
+        width: 100%;
+    }
+
+    .user-box {
+        width: calc(100% - 32px);
+    }
+}

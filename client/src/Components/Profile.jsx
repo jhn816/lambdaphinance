@@ -96,7 +96,7 @@ const Profile = () => {
                                     <p className="input-text">{email}</p>
                                 </div>
                                 <div className="input-box">
-                                    <p className="input-header">Username</p>
+                                    <p className="input-header">Displayed Username</p>
                                     <p className="input-text">{username}</p>
                                 </div>
                             </div>
@@ -107,10 +107,32 @@ const Profile = () => {
                         </div>
 
                         <div className="site-features">
-                            <button className="site-button">Finance Statistics</button>
-                            <button className="site-button">Collection Permissions</button>
-                            <button className="site-button">Debt Permissions</button>
-                            <button className="site-button">View Blocked Users</button>
+
+                            <button className="site-button">
+                                <div className="site-button-mark">  </div>
+                                <h4>Your Groups</h4>
+                            </button>
+
+                            <button className="site-button">
+                                <div className="site-button-mark">  </div>
+                                <h4>Finance Statistics</h4>
+                            </button>
+
+                            <button className="site-button">
+                                <div className="site-button-mark">  </div>
+                                <h4>Collection Permissions</h4>
+                            </button>
+
+                            <button className="site-button">
+                                <div className="site-button-mark">  </div>
+                                <h4>Debts Permissions</h4>
+                            </button>
+
+                            <button className="site-button">
+                                <div className="site-button-mark">  </div>
+                                <h4>View Blocked Users</h4>
+                            </button>
+
                         </div>
 
                     </div>
@@ -119,7 +141,7 @@ const Profile = () => {
                         <div className="image-info">
                             <div className="image-buttons">
                                 <div className="picture-box">
-                                    <img id="user-picture" src={uploaded} alt="Profile" width="200" />
+                                    <img id="user-picture" src={uploaded} alt="Profile" />
                                     {savedImage && <p id="saved-picture">Picture Saved</p>}
                                 </div>
                                 <div className="picture-buttons"> 

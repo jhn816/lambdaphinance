@@ -336,9 +336,6 @@ const Records = () => {
                                          <div className="div-balance">
                                              <p className="collection-balance" style={{"color":"green"}}> Balance ${item.totalBalance}</p>
                                          </div>
-                                         <div className="div-indices">
-                                             <p className="collection-indices">({item.indices})</p>
-                                         </div>
                                          <div className="div-manage">
                                              <button className="collection-manage" onClick={(e) => { openCollection(item); setEditCollectionName(item.collectionName); }}> Manage {item.collectionName}</button>
                                          </div>
@@ -428,7 +425,7 @@ const Records = () => {
                             {listFriends.map((item, index) => {
                                 return (
                                 <div key={index} className="friend-box">
-                                    <img src={item.profileImage} alt="Profile" height= "90" />
+                                    <img src={item.profileImage} alt="Profile"/>
                                     <div className="friend-information">
                                         <p>user: {item.username}</p>
                                         <div className="friend-buttons">
