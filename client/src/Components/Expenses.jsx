@@ -374,7 +374,7 @@ const Expenses = () => {
                 </div>
                 <div className="tracker-content">
                     <div className="left-add">
-                        <p className="header-collection">Your Collections</p>
+                        <p className="header-collection" style={{borderTop:"0px"}}>Your Collections</p>
                         <div className="your-collection">
                             <div className="expense-sheets">
                                 <div className="scroll-collection">

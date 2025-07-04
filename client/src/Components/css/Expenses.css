@@ -13,9 +13,9 @@
 .add-container {
     display: flex;
     flex-direction: column;
-    background-color: #fdf3e5;
+    border: 1px solid #929292;
+    background-color: #f6f6f6;
     border-radius: 20px;
-    filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.376));
     width: 45%;
     height: 90%;
     overflow: hidden;
@@ -34,7 +34,7 @@
 }
 
 .left-add {
-    background-color: rgb(236, 236, 236);    ;
+    background-color: white;    ;
     width: 30%;
 }
 .expense-sheet {
@@ -42,9 +42,8 @@
     flex-direction: column;
     border-radius: 20px;
     overflow:hidden;
-    background-color: #fdf3e5;
-    filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.376));
-    border: 5px solid rgb(234, 234, 234);
+    background-color: #f6f6f6;
+    border: 1px solid #929292;
     width: 40%;
     height: 90%;
 }
@@ -57,11 +56,10 @@
     justify-content: space-between;
     padding-left: 30px;
     padding-right: 30px;
-    background-image: linear-gradient(#2763e4, #0449c9);
+    background-color: rgb(55, 92, 167);
     font-size: 35px;
     height: 15%;
-    filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.876));
-    border-bottom: 1px solid black;
+    /* filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.876)); */
 }
 
 .expense-information {
@@ -255,7 +253,7 @@
     display: flex;
     flex-direction: column;
     z-index: 10;
-    width: 100px;
+    width: 120px;
     top: 105%;
     position: absolute;
     overflow: hidden;
@@ -308,7 +306,7 @@
     padding-bottom: 10px;
     border-bottom: 1px solid black;
     border-top: 1px solid black;
-    background-color: rgb(221, 221, 221);
+    background-color: transparent;
 }
 
 .scroll-collection {
@@ -318,9 +316,9 @@
 }
 
 .expense-sheets .scroll-collection button {
-    background-color: rgb(236, 236, 236);
+    background-color: transparent;
     border: 0px;
-    border-bottom: 1px solid rgb(223, 223, 223);
+    border-bottom: 1px solid black;
     padding: 5px;
     color: black;
     font-size: 18px;
@@ -365,16 +363,14 @@
 .sheet-headers {
     display: flex;
     flex-direction: row;
-    background-color: rgb(137, 107, 78);
+    background-color: rgb(206, 184, 164);
 }
 
 .sheet-headers p{
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 1000;
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    color: rgb(255, 255, 255);
+    color: black;
     width: 20%;
     max-width: 25%;
     height: 40px;
@@ -387,9 +383,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 1000;
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    color: rgb(255, 255, 255);
+    color: black;
     width: 32%;
     max-width: 25%;
     height: 40px;
@@ -662,4 +656,16 @@
 .edit-save:hover {
     background-color: rgb(117, 255, 117);
     cursor: pointer;
+}
+
+@media (max-width:768px) {
+    .expense-page {
+        flex-direction: column;
+        margin-top: 20px;
+        height: auto;
+    }
+
+    .add-container, .expense-sheet {
+        width: 80%;
+    }
 }

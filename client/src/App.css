@@ -7,6 +7,10 @@ body {
 
 }
 
+button {
+  font-family: 'UnageoReg', sans-serif;
+}
+
 .App {
   text-align: center;
 }
