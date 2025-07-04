@@ -83,29 +83,54 @@ const Profile = () => {
     };
 
     return (
-        <div className="profile-container">
-            <div className="information-container">
-                <div className="account-information">
-                    <h1> Profile Information</h1>
-                    <div className="information-inputs">
-                        <div className="picture-box">
-                            <img id="user-picture" src={uploaded} alt="Profile" width="200" />
-                            {savedImage && <p id="saved-picture">Picture Saved</p>}
+        <div className="profile-page">
+            <div className="profile-information-container">
+                <div className="information-inputs">
+                    <div className="user-box">
+
+                        <div className="profile-section">
+                            <h1> Profile Information</h1>
+                            <div className="user-inputs">
+                                <div className="input-box">
+                                    <p className="input-header">Email</p>
+                                    <p className="input-text">{email}</p>
+                                </div>
+                                <div className="input-box">
+                                    <p className="input-header">Username</p>
+                                    <p className="input-text">{username}</p>
+                                </div>
+                            </div>
+                            <div className="account-functions">
+                                <button className="logout" onClick={logOut}> Log Out </button>
+                                <button className="delete" onClick={() => {}}> Delete Account </button>
+                            </div>
                         </div>
-                        <div className="information-box">
-                            <div className="image-info">
-                                <p>User Picture</p>
-                                <div className="image-buttons">
+
+                        <div className="site-features">
+                            <button className="site-button">Finance Statistics</button>
+                            <button className="site-button">Collection Permissions</button>
+                            <button className="site-button">Debt Permissions</button>
+                            <button className="site-button">View Blocked Users</button>
+                        </div>
+
+                    </div>
+
+                    <div className="information-box"> 
+                        <div className="image-info">
+                            <div className="image-buttons">
+                                <div className="picture-box">
+                                    <img id="user-picture" src={uploaded} alt="Profile" width="200" />
+                                    {savedImage && <p id="saved-picture">Picture Saved</p>}
+                                </div>
+                                <div className="picture-buttons"> 
                                     <input type="file" onChange={changeImage} />
                                     <button onClick={handleUpload}>Upload</button>
                                 </div>
                             </div>
-                            <p>Email: {email}</p>
-                            <p>Username: {username}</p>
                         </div>
                     </div>
+                    
                 </div>
-                <button className="logout" onClick={logOut}> Log Out </button>
             </div>
         </div>
     )

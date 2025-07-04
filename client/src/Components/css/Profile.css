@@ -1,41 +1,34 @@
-.profile-container {
+.profile-page {
     display: flex;
     justify-content: center;
     background-color: white;
     color:black;
     width: 100%;
-    height: 90vh;
+    height: calc(93vh - 80px);
+    margin: 40px;
 }
 
-.account-information {
-    display: flex;
-    flex-direction: column;
+.profile-information-container {
     align-items: center;
-    width: 100%;
-    height: 70%;
-    border-radius: 20px;
-    gap: 20px;
-}
+    background-color: white;
+    border: 1px solid #929292;
+    border-radius: 10px;
+    color: #000;
+    justify-content: center;
+    padding: 35px;
+    width: 70%;
 
-.information-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 60%;
-    height: 100%;
-    border-radius: 20px;
-    gap: 20px;
 }
 
 .information-inputs {
-    filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.376));
-    background-color: #dadada;
+    background-color: white;
     display: flex;
-    flex-direction: column;
-    height: 80%;
-    width: 50%;
-    padding: 20px;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
     border-radius: 10px;
+    margin: 50px;
 }
 
 .picture-box {
@@ -47,14 +40,75 @@
     filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.376));
 }
 
-.information-box {
+.user-box {
+    width: 60%;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-end;
-    gap: 10px;
-    height: 35%;
-    border-top: 1px solid black;
+    gap: 40px;
+}
+
+.user-inputs {
+    width: 100%;
+}
+
+.input-box {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0px 10px 0px;
+    gap: 5px;
+}
+
+.input-header {
+    margin: 0px;
+    text-align: left;
+    font-family: UnageoReg, sans-serif;
+    font-size: 20px;
+}
+
+.input-text {
+    border: 1px solid #213e78;
+    padding: 12px 16px 12px 16px;
+    border-radius: 5px;
+    font-size: 16px;
+    width: calc(60%);
+    text-align: left;
+    margin: 0px;
+    background-color: #ebebeb;
+    color: #414141;
+}
+
+.site-features {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+}
+.site-button {
+    border: 1px solid black;
+    padding: 10px 0px 10px 0px;
+    border-radius: 15px;
+    font-size: 16px;
+    width: 350px;
+    text-align: left;
+    margin: 0px;
+    background-color: rgb(55, 92, 167);
+    color: white;
+    text-align: center;
+    transition: .3s;
+}
+
+.site-button:hover {
+    cursor: pointer;
+    transform: translateX(10px);
+    filter: drop-shadow(-10px 0px 5px rgba(0, 0, 0, .376));
+}
+
+.site-button:active {
+    transform: translateX(0px);
+}
+
+.information-box {
+    width: 40%;
 }
 
 #user-picture {
@@ -71,29 +125,79 @@
 }
 
 h1 {
-    margin-bottom: 0px;
+    color: #213e78;
+    font-family: UnageoReg, sans-serif;
+    font-weight: 1000;
+    font-size: 34px;
+    margin-bottom: 0;
+    text-shadow: rgba(0, 0, 0, 0.221) 1px 0 8px;
+    position: relative;
+    text-align: left;
 }
-
+h1::after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: -5px; /* Adjust spacing below h1 */
+    width: 350px;
+    height: 3px;    /* Thickness of the line */
+    background: #213e78;
+    border-radius: 2px;
+  }
 .image-info {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
 
+.profile-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
 .account-information p {
     margin: 0px;
 }
 
-.information-container .logout{
-    width: 150px;
-    height: 50px;
-    font-size: 20px;
-    font-weight: 1000;
-    border-radius: 20px;
-    transition: .3s;
-    background-color: #458fff;
+.account-functions {
+    display: flex;
+    flex-direction: row;
+    gap: 10px
 }
 
+.logout {
+    width: 150px;
+    height: 40px;
+    font-size: 14px;
+    font-weight: 100;
+    border-radius: 20px;
+    transition: .3s;
+    color: white;
+    background-color: rgb(55, 92, 167);
+    border: 1px solid black;
+}
+
+.delete {
+    width: 150px;
+    height: 40px;
+    font-size: 14px;
+    font-weight: 100;
+    border-radius: 20px;
+    transition: .3s;
+    color: white;
+    background-color: #8a8a8a;
+    border: 1px solid black;
+}
+
+.delete:hover, .logout:hover {
+    cursor: pointer;
+    filter: drop-shadow(0 0 5px rgba(41, 42, 43, 0.356));
+    transform: translateY(-2px);
+}
 .information-container .logout:hover {
     cursor: pointer;
     transform: scale(1.04);
