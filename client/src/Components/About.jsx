@@ -15,7 +15,7 @@ const About = () => {
 
     return (
         <div style={{color:"black"}}> 
-            <p>Made by Justin "M.E.T.A." Nguyen</p>
+            <p>Made by Justin "M.E.T.A." Nguyen of the D.O.G. Family</p>
             <p>Crossed in Fall 2022 with the Beta Theta Battalion</p>
         </div>
     )

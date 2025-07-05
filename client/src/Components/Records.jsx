@@ -323,44 +323,7 @@ const Records = () => {
         <div className="wholerecords">
             <div className="records-page">
                 <div className="record-container">
-                    <div className="records">
-                        <h2>Your Collections</h2>
-                        <div className="collections">
-                        { allCollections.length === 0 && <div className="collection-box"> Get started in Expenses!</div>}
-                        { allCollections.map((item, index) => (
-                            <div key={index} className="collection-box"> 
-                                {(manageCollection !== item.collectionName) ? 
-                                    (<p className="collection-name">{item.collectionName}</p>)
-                                        : (<input type="text" maxLength={20} onChange={(e) => setEditCollectionName(e.target.value)} value={editCollectionName}/>)}
-                                     {(manageCollection !== item.collectionName) ? ( <div className="collection-details">
-                                         <div className="div-balance">
-                                             <p className="collection-balance" style={{"color":"green"}}> Balance ${item.totalBalance}</p>
-                                         </div>
-                                         <div className="div-manage">
-                                             <button className="collection-manage" onClick={(e) => { openCollection(item); setEditCollectionName(item.collectionName); }}> Manage {item.collectionName}</button>
-                                         </div>
-                                     </div>
-                                     ) : ( <div className="edit-details">
-                                             <button onClick={() => (changeCollection(item))}> Edit Name </button>
-                                             <button onClick={() => (deleteCollection(item))}> Delete </button>
-                                             <button> Share </button>
-                                             <button onClick={() => (setManageCollection(null))}> Cancel </button>
-                                         </div>
-                                     )}
-                            </div>
-                        ))}
-                        </div>
-                    </div>
-                        
-                    <div className="records-debts">
-                        <h2>Your Debts</h2>
-                        <div className="debts">
 
-                        </div>
-                    </div>
-                </div>
-
-                <div className="friends-container">
                     <div className="makefriend">
                         <div className="addinfo">
                             <form onSubmit={makeFriend}>
@@ -372,6 +335,48 @@ const Records = () => {
                             </form>
                         </div>
                     </div>
+
+                    <div className="collections-and-debts">
+                        <div className="records">
+                            <h2>Your Collections</h2>
+                            <div className="collections">
+                            { allCollections.length === 0 && <div className="collection-box"> Get started in Expenses!</div>}
+                            { allCollections.map((item, index) => (
+                                <div key={index} className="collection-box"> 
+                                    {(manageCollection !== item.collectionName) ? 
+                                        (<p className="collection-name">{item.collectionName}</p>)
+                                            : (<input type="text" maxLength={20} onChange={(e) => setEditCollectionName(e.target.value)} value={editCollectionName}/>)}
+                                        {(manageCollection !== item.collectionName) ? ( <div className="collection-details">
+                                            <div className="div-balance">
+                                                <p className="collection-balance" style={{"color":"green"}}> Balance ${item.totalBalance}</p>
+                                            </div>
+                                            <div className="div-manage">
+                                                <button className="collection-manage" onClick={(e) => { openCollection(item); setEditCollectionName(item.collectionName); }}> Manage {item.collectionName}</button>
+                                            </div>
+                                        </div>
+                                        ) : ( <div className="edit-details">
+                                                <button onClick={() => (changeCollection(item))}> Edit Name </button>
+                                                <button onClick={() => (deleteCollection(item))}> Delete </button>
+                                                <button> Share </button>
+                                                <button onClick={() => (setManageCollection(null))}> Cancel </button>
+                                            </div>
+                                        )}
+                                </div>
+                            ))}
+                            </div>
+                        </div>
+                            
+                        <div className="records-debts">
+                            <h2>Your Debts</h2>
+                            <div className="debts">
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div className="friends-container">
 
                     <div className="request-container">
                         <div className="addinfo">

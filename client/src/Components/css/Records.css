@@ -21,7 +21,7 @@
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
-    height: 40%;
+    height: 45%;
 }
 
 .records-debts {
@@ -29,7 +29,7 @@
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
-    height: 60%;
+    height: 40%;
 }
 
 .record-container {
@@ -38,6 +38,17 @@
     width: 50%;
     height: 100%;
     gap:20px;
+}
+
+.collections-and-debts {
+    height: 85%;
+    padding: 25px;
+    width: calc(95% - 50px);
+    border: 1px solid #929292;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .records h2 {
@@ -63,16 +74,17 @@
 }
 
 .friendslist {
-    padding: 2.5%;
-    filter: drop-shadow(0px 0px 5px rgba(0, 0, 10, 0.462));
-    background-image: linear-gradient(rgb(52 52 52), rgb(75 75 75));
-    color:rgb(244, 241, 241);
-    height: 57%;
-    width: 95%;
+    padding: 25px;
+    background-color: rgb(57, 57, 57);
+    border: 1px solid #929292;
+    color:white;
+    height: 80%;
+    width: calc(100% - 50px);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+
 }
 .friendslist h3 {
     margin-bottom: 2%;
@@ -81,18 +93,18 @@
 }
 
 .friends {
-    background-image: linear-gradient(rgb(255, 255, 255), rgb(241, 241, 241));
+    background-color: white;
     display: flex;
     flex-direction: row;
     border-radius: 5px;
     padding: 3%;
     gap: 4%;
-    row-gap: 4%;
+    row-gap: 15px;
     width: 94%;
     height: 85%;
     flex-wrap: wrap;
     overflow: scroll;
-    box-shadow: inset 0px 0px 10px #000000;
+    /* box-shadow: inset 0px 0px 10px #000000; */
 }
 
 .friend-box {
@@ -101,7 +113,7 @@
     align-items: center;
     justify-content: center;
     padding: 3%;
-    background-color: #498bfc;
+    background-color: rgb(55, 92, 167);
     box-shadow: 0px 0px 10px #00000063;
     width: 42%;
     height: 80px;
@@ -150,6 +162,8 @@
     height: 30px;
     border-radius: 5px;
     transition: .3s;
+    border: 0px;
+    filter: drop-shadow(0px 0px 3px rgba(0, 0, 10, 0.262));
 }
 
 .friend-information button:hover {
@@ -212,56 +226,54 @@
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
     font-size: 15px;
-    background-image: linear-gradient(rgb(208, 206, 206), rgb(175, 173, 173));
+    background-color: #e1e1e1;
     margin: 0px;
     transition: .3s;
 
 }
 
 #received-request:hover, #sent-request:hover {
-    background-image: linear-gradient(rgb(199, 197, 197), rgb(165, 163, 163));
+    background-color: #d1d1d1;
     cursor: pointer;
-    transform: scale(1.01);
+    transform: scale(1.005);
 }
 
 #received-request:active, #sent-request:active {
-    transform: scale(.98);
+    transform: scale(.995);
 }
 
 .addinfo {
-    width: 95%;
-    height: 88%;
+    width: 100%;
+    height: auto;
 }
 
 .makefriend {
-    display: flex;
+    display: flex;  
     align-items: center;
     justify-content: center;
-    background-image: linear-gradient(rgb(218, 218, 218), rgb(237, 237, 237));
-    filter: drop-shadow(0px 0px 5px rgba(0, 0, 10, 0.462));
     border-radius: 10px;
-    width: 100%;
+    border: 1px solid #929292;
+    padding: 25px;
+    width: calc(95% - 50px);
     height: 15%;
 }
 
 .request-container {
-    background-image: linear-gradient(rgb(52 52 52), rgb(75 75 75));
-    filter: drop-shadow(0px 0px 5px rgba(0, 0, 10, 0.462));
+    background-color: rgb(57, 57, 57);
     border-radius: 10px;
+    border: 1px solid #929292;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 28%;
-    max-height: 176px;
+    width: calc(100% - 50px);
+    height: 20%;
+    padding: 25px;
 }
 .addinfo form h2 {
     margin-bottom: 0px;
     margin-top: 0px;
     font-size: 30px;
     font-weight: 1000;
-    font-family: 'UnageoBold', sans-serif;
-
 }
 .addinfo form {
     display: flex;
@@ -270,7 +282,7 @@
     align-items: flex-start;
     justify-content: center;
     width: 100%;
-    height: 100%;
+    height: auto;
 }
 
 .request-box {
@@ -282,8 +294,8 @@
     flex-wrap: wrap;
     overflow: scroll;
     row-gap: 10px;
-    background-color: rgb(235, 235, 235);
-    box-shadow: inset 0px 0px 5px #000000;
+    background-color: white;
+    /* box-shadow: inset 0px 0px 5px #000000; */
     padding: 2%;
     border-radius: 5px;
     border-top-left-radius: 0px;
@@ -410,9 +422,8 @@
 }
 
 .collections {
-    width: 95%;
-    border-radius: 10px;
-    height: 250px;
+    width: 100%;
+    height: 100%;
     overflow: scroll;
     display: flex;
     flex-direction: column;
@@ -425,8 +436,8 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.562));
-    background-image: linear-gradient(#498bfc, #4ca9ff);
+    border: 1px solid #929292;
+    background-color: rgb(55, 92, 167);
     padding-left: 20px;
     border-radius: 40px;
     width: 95%;
@@ -436,7 +447,7 @@
 .collection-name {
     margin: 0px;
     font-size:20px;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: white;
     padding-left: 20px;
 }
 
@@ -444,15 +455,16 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding-right: 20px;
+    padding-right: 25px;
     padding-left: 20px;
-    background-image: linear-gradient(#e1e1e1, #fdfdfd);
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
+    background-color: white;
+    
     justify-content: space-between;
     width: 50%;
     font-size: 15px;
     height: 50px;
+    border-top-right-radius: 40px;
+    border-bottom-right-radius: 40px;
 }
 
 .collection-details button {
@@ -466,6 +478,7 @@
 
 .collection-details button:hover {
     background-color:#f1f1f1;
+    filter: drop-shadow(0px 0px 3px rgba(0, 0, 10, 0.262));
     cursor: pointer;
 }
 
@@ -495,6 +508,12 @@
     align-items: flex-end;
 }
 
+.collection-box input {
+    border-radius: 5px;
+    border: 1px solid black;
+    padding: 5px;
+}
+
 .edit-details {
     display: flex;
     flex-direction: row;
@@ -502,9 +521,9 @@
     justify-content: flex-end;
     padding-right: 20px;
     padding-left: 20px;
-    background-image: linear-gradient(#e1e1e1, #fdfdfd);
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
+    background-color: white;
+    border-top-right-radius: 40px;
+    border-bottom-right-radius: 40px;
     width: 60%;
     height: 50px;
     gap: 10px;
