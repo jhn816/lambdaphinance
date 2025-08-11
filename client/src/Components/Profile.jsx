@@ -125,7 +125,7 @@ const Profile = () => {
 
                             <button className="site-button">
                                 <div className="site-button-mark">  </div>
-                                <h4>Debts Permissions</h4>
+                                <h4>Debt Permissions</h4>
                             </button>
 
                             <button className="site-button">

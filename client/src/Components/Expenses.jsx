@@ -247,12 +247,12 @@ const Expenses = () => {
     }
 
     const handleChange = (e) => {
-        let rawValue = e.target.value.replace(/,/g, "");
-    
+        let rawValue = e.target.value.replace(/[^0-9.]/g, "");
+      
         if (/^\d*\.?\d{0,2}$/.test(rawValue)) {
-            setValue(rawValue);
+          setValue(rawValue);
         }
-    };
+      };
 
     const handleDecimalChange = (e) => {
         let value = e.target.value;
@@ -399,14 +399,26 @@ const Expenses = () => {
                     <div className="right-add">
                         <form onSubmit={addExpense}>
                             <div className="expense-amount">
-                                <h3>Amount to add:</h3>
-                            </div>
-                            <div className="expense-amount">
+                                <h3 style={{fontSize:"22px"}}>Amount to add:</h3>
                                 <div className="amount-box">
-                                    { gain ? ( <h3 style={{ color: "green" }}> ${value || "0"} </h3> )
-                                    : <h3 style={{ color: "red" }}> -${value || "0"} </h3>}
+                                    <input 
+                                        type="text" 
+                                        placeholder="Enter amount..." 
+                                        value={value ? `$${value}` : ""} 
+                                        onChange={handleChange} 
+                                        maxLength={10} 
+                                        style={{color: gain ? "green" : "red"}}
+                                        onKeyDown={(e) => {
+                                            if (["e", "E", "+", "-"].includes(e.key)) {
+                                            e.preventDefault(); 
+                                            }
+                                            if (e.key === "." && value.includes(".")) {
+                                            e.preventDefault();
+                                            }
+                                        }}
+                                    />
                                 </div>
-                            </div>
+                                </div>
 
                             <div className="expense-inputs">
                                 <div className="dropdownmenu">
@@ -425,33 +437,14 @@ const Expenses = () => {
 
                                 <button type="button" value="true" className="customize-expense" onClick={() => setGain(!gain)}> + / -</button>
                             </div>
-
-                            <div className="expense-inputs">
-                            <input 
-                                type="text" 
-                                placeholder="Enter amount..." 
-                                value={value} 
-                                onChange={handleChange} 
-                                maxLength={9} 
-                                onKeyDown={(e) => {
-                                    if (["e", "E", "+", "-"].includes(e.key)) {
-                                    e.preventDefault(); 
-                                    }
-                                    if (e.key === "." && value.includes(".")) {
-                                    e.preventDefault();
-                                    }
-                                }}
-                                />
-
-                            </div>
                             
                             <div className="expense-inputs">
                                 <input type="text" placeholder="From/to who (optional)" value={person} onChange={(e) => (setPerson(e.target.value))} />
                             </div>
                             
                             <div className="form-buttons">
-                                <button type="submit" className="class-submit">Add Expense</button>
                                 <button type="button" onClick={clearExpense} className="class-clear">Clear Expense</button>
+                                <button type="submit" className="class-submit">Add Expense</button>
                             </div>
                         
                         </form>
@@ -461,21 +454,21 @@ const Expenses = () => {
                                     <header style={{"backgroundColor":"#c9ffd1"}}>
                                         <h3>Net Gain</h3>
                                     </header>
-                                    <p style={{ color: "green", "fontfamily": "Arial, Helvetica, sans-serif"}}>${netGain ? netGain.toFixed(2) : "0.00"}</p>
+                                    <p style={{ color: "green"}}>${netGain ? netGain.toFixed(2) : "0.00"}</p>
                                 </div>
 
                                 <div className="expense-card">
                                     <header style={{"backgroundColor":"#ffc9c9"}}>
                                         <h3>Net Loss</h3>
                                     </header>
-                                    <p style={{ color: "red", "fontFamily": "Arial, Helvetica, sans-serif"}}>${netLoss ? netLoss.toFixed(2) : "0.00"}</p>
+                                    <p style={{ color: "red"}}>${netLoss ? netLoss.toFixed(2) : "0.00"}</p>
                                 </div>  
                             </div>
                             <div className="balance-card">
                                     <header>
-                                        <h3>Total Balance</h3>
+                                        <h3>Balance</h3>
                                     </header>
-                                    <p style={{"fontFamily": "Arial, Helvetica, sans-serif"}}>${netGain ? netGain.toFixed(2) : "0.00"}{" - $"}{netLoss ? netLoss.toFixed(2) : "0.00"}{" = $"}{totalBalance ? totalBalance.toFixed(2) : "0.00"}</p>
+                                    <p>${totalBalance ? totalBalance.toFixed(2) : "0.00"}</p>
                                 </div>  
                         </div>
                     </div>

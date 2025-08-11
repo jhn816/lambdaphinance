@@ -16,7 +16,7 @@
     border: 1px solid #929292;
     background-color: #f6f6f6;
     border-radius: 20px;
-    width: 45%;
+    width: 35%;
     height: 90%;
     overflow: hidden;
 }
@@ -31,6 +31,7 @@
     width: 70%;
     height: 100%;
     border-left: 1px solid black;
+    padding: 50px;
 }
 
 .left-add {
@@ -44,7 +45,7 @@
     overflow:hidden;
     background-color: #f6f6f6;
     border: 1px solid #929292;
-    width: 40%;
+    width: 50%;
     height: 90%;
 }
 
@@ -99,15 +100,20 @@
 }
 
 .expense-card p, .balance-card p{
-    margin-top: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0px;
     font-weight: 1000;
+    font-size: 18px;
+    height: 60%;
 }
 
 .expense-card h3, .balance-card h3 {
     color:black;
     cursor: default;
     font-weight: 100;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .expense-card header, .balance-card header{
@@ -129,18 +135,18 @@
 }
 
 .customize-expense {
-    width: 120px;
-    height: 30px;
-    background-color: rgb(206, 184, 164);
-    color: black;
-    border: 0px solid transparent;
+    background-color: #f6f6f6;
+    border: 1px solid black;
+    width: 150px;
+    font-size: 12px;
     border-radius: 10px;
+    padding: 10px;
     transition: .3s;
 }
 
 .customize-expense:hover{
-    background-color: rgb(190, 170, 150);
-    transform: scale(1.03);
+    background-color: #e4e4e4;
+    transform: scale(1.01);
     cursor: pointer;
 }
 
@@ -148,14 +154,24 @@
     transform: scale(1);
 }
 
-.expense-inputs input {
-    font-size: 20px;
-    width: 70%;
-    height: 30px;
-    border-radius: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
+.expense-amount input {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px 10px 15px;
+    background-color: white; 
+    border-radius: 10px;
+    width: 100%;
+    font-size: 16px;
+    border: 1px solid black;
 }
+
+.expense-amount input:focus {
+    outline: none;
+  }
+
+.amount-box input::placeholder {
+    font-size: 16px;
+  }
 
 .add-container form h3 {
     font-weight: 200;
@@ -167,16 +183,17 @@
 }
 
 .class-submit {
-    background-color:#80fe99;
-    height: 30px;
-    width: 70%;
+    background-color:rgb(55, 92, 167);
+    color: white;
+    height: 35px;
+    width: 80%;
     border-radius: 10px;
     border: 0px;
     transition: .3s;
 }
 
 .class-submit:hover {
-    background-color:#7df595;
+    background-color:rgb(74, 110, 181);
     transform: scale(1.01);
     cursor: pointer;
 }
@@ -186,25 +203,27 @@
 }
 
 .class-clear {
-    background-color:#ff9393;
-    height: 30px;
-    width: 70%;
+    background-color:#8a8a8a;
+    color: white;
+    height: 35px;
+    width: 80%;
     border-radius: 10px;
     border: 0px;
     transition: .3s;
 }
 
 .class-clear:hover {
-    background-color:#fb8383;
+    background-color:#9e9d9d;
     transform: scale(1.01);
     cursor: pointer;
 }
 
 .form-buttons{
+    margin-top: 30px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
     justify-content: center;
 }
 
@@ -219,16 +238,14 @@
 .amount-box {
     display: flex;
     align-items: center;
-    padding: 15px;
-    background-color: white; 
-    border: 1px solid #e3e3e3;
+    border: 0px;
     border-radius: 10px;
-    width: 50%;
-    height: 20px;
+    width: 45%;
 }
 
 .dropdownmenu {
     position: relative;
+    font-size: 23px;
 }
 
 .dropdownmenu p {
@@ -253,23 +270,24 @@
     display: flex;
     flex-direction: column;
     z-index: 10;
-    width: 120px;
-    top: 105%;
+    width: 150px;
+    top: 115%;
     position: absolute;
     overflow: hidden;
+    border: 1px solid black;
 }
 
 .categories button {
-    width: 100%;
+    width: 150px;
     height: 40px;
-    background-color: rgb(236, 217, 200);
+    background-color: white;
     border: 0px;
     transition: .3s;
 }
 
 .categories button:hover {
     transform: scale(1);
-    background-color: rgb(183, 162, 144);
+    background-color: #e4e4e4;
     cursor: pointer;
 }
 
@@ -363,14 +381,14 @@
 .sheet-headers {
     display: flex;
     flex-direction: row;
-    background-color: rgb(206, 184, 164);
+    background-color: rgb(55, 92, 167);
 }
 
 .sheet-headers p{
     display: flex;
     align-items: center;
     justify-content: center;
-    color: black;
+    color: white;
     width: 20%;
     max-width: 25%;
     height: 40px;
@@ -383,7 +401,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: black;
+    color: white;
     width: 32%;
     max-width: 25%;
     height: 40px;
