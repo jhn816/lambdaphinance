@@ -82,6 +82,9 @@ const Expenses = () => {
                 return;
             }
             setAllCollections(result.collections);
+            if (expenseSheet === "Choose Expenses ▼") {
+                setExpenseSheet(result.collections[0].collectionName);
+            }
             let current_collection = result.collections.find(item => item.collectionName === expenseSheet);
             try {
                 setNetGain(current_collection.netGain)
@@ -134,11 +137,17 @@ const Expenses = () => {
 
         const timestamp = Date.now();
         const date = new Date(timestamp);
-        const formattedTimestamp = date.toLocaleDateString("en-US", {
+        const formattedDate = date.toLocaleDateString("en-US", {
             month: "short",
             day: "2-digit",
             year: "numeric"
           });
+
+        const formattedTime = date.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true // remove if you want 24-hour format
+        });
 
         const finalPerson = person.trim() === "" ? "None" : person;
 
@@ -154,7 +163,7 @@ const Expenses = () => {
                 category,
                 gain,
                 person: finalPerson,
-                formattedTimestamp,
+                formattedTimestamp: `${formattedDate} ${formattedTime}`,
             })
         }).then((res) => res.json() )
         .then( (result) => {
@@ -368,7 +377,7 @@ const Expenses = () => {
             <div className="add-container">
                 <div className="tracker-headers">
                     {(expenseSheet === "Choose Expenses ▼" || expenseSheet === "Create New +") ? ( <h4> Finance Book</h4>) : (<h4> {expenseSheet} Finance Book</h4>)}
-                    <div className="dropdownmenu">
+                    <div className="dropdownmenu" style={{width:"55%"}}>
                         {expenseSheet === "Create New +" && <div className="collection-sheets"> 
                             <input placeholder="Enter Collection Name..." onChange={(e) => (setCollectionName(e.target.value))} maxLength={20}/>
                             <button type="button" onClick={submitCollection}>Create</button>
@@ -403,14 +412,14 @@ const Expenses = () => {
                     <div className="right-add">
                         <form onSubmit={addExpense}>
                             <div className="expense-amount">
-                                <h3 style={{fontSize:"22px"}}>Amount to add:</h3>
+                                <h3 style={{fontSize:"20px"}}>Amount to add:</h3>
                                 <div className="amount-box">
                                     <input 
                                         type="text" 
                                         placeholder="Enter amount..." 
                                         value={value ? `$${value}` : ""} 
                                         onChange={handleChange} 
-                                        maxLength={10} 
+                                        maxLength={9} 
                                         style={{color: gain ? "green" : "red"}}
                                         onKeyDown={(e) => {
                                             if (["e", "E", "+", "-"].includes(e.key)) {
@@ -439,7 +448,7 @@ const Expenses = () => {
                                     </span>}
                                 </div>
 
-                                <button type="button" value="true" className="customize-expense" onClick={() => setGain(!gain)}> + / -</button>
+                                <button type="button" value="true" className="customize-expense" onClick={() => setGain(!gain)} style={{width:"45%"}}> + / -</button>
                             </div>
                             
                             <div className="expense-inputs">
@@ -453,27 +462,20 @@ const Expenses = () => {
                         
                         </form>
                         <div className="expense-information">
-                            <div className="net-expenses">
-                                <div className="expense-card">
-                                    <header style={{"backgroundColor":"#c9ffd1"}}>
-                                        <h3>Net Gain</h3>
-                                    </header>
-                                    <p style={{ color: "green"}}>${netGain ? netGain.toFixed(2) : "0.00"}</p>
-                                </div>
-
-                                <div className="expense-card">
-                                    <header style={{"backgroundColor":"#ffc9c9"}}>
-                                        <h3>Net Loss</h3>
-                                    </header>
-                                    <p style={{ color: "red"}}>${netLoss ? netLoss.toFixed(2) : "0.00"}</p>
-                                </div>  
+                            <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", margin:"5px", padding:"15px 20px 15px 20px",  backgroundColor: "rgb(190 255 190)", borderRadius:"20px", filter: "drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.10))"}}>
+                                <h4 style={{margin:"0px", fontSize:"20px"}}>Income</h4>
+                                <p style={{margin:"0px", fontSize: "28px"}}>${netGain ? netGain.toFixed(2) : "0.00"}</p>
                             </div>
-                            <div className="balance-card">
-                                    <header>
-                                        <h3>Balance</h3>
-                                    </header>
-                                    <p>${totalBalance ? totalBalance.toFixed(2) : "0.00"}</p>
-                                </div>  
+
+                            <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", margin:"5px", padding:"15px 20px 15px 20px",  backgroundColor: "rgb(255 190 192)", borderRadius:"20px", filter: "drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.10))"}}>
+                                <h4 style={{margin:"0px", fontSize:"20px"}}>Expenses</h4>
+                                <p style={{ margin:"0px", fontSize: "28px"}}>${netLoss ? netLoss.toFixed(2) : "0.00"}</p>
+                            </div>  
+
+                            <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", margin:"5px", padding:"15px 20px 15px 20px",  backgroundColor: "rgb(200 218 255)", borderRadius:"20px", filter: "drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.10))"}}>
+                                <h4 style={{margin:"0px", fontSize:"22px"}}>Balance</h4>
+                                <p style={{margin:"0px", fontSize: "28px"}}>${totalBalance ? totalBalance.toFixed(2) : "0.00"}</p>
+                            </div>  
                         </div>
                     </div>
                 </div>
@@ -490,19 +492,19 @@ const Expenses = () => {
                             </div>
                     </div>
                     <div className="transaction-data-block">
-                            <div className="transaction-data-header">
-                            <p>Total Balances</p>
+                            <div className="transaction-data-header" style={{height:"25%"}}>
+                            <p>Net Income in Each Month</p>
                             </div>
                             <div className="transaction-data" style={{height:"75%"}}> 
                                 <HelloChart expenses={allExpenses} type={"total"} />
                             </div>
                     </div>
                     <div className="transaction-data-block">
-                            <div className="transaction-data-header">
+                            <div className="transaction-data-header" style={{height:"25%"}}>
                                 <p>Spending in Each Category</p>
                             </div>
                             <div className="transaction-data" style={{height:"75%"}}> 
-                                <HelloChart expenses={allExpenses} type={"total"} />
+                                <HelloChart expenses={allExpenses} type={"category"} />
                             </div>
                     </div>
                 </div>
@@ -514,8 +516,8 @@ const Expenses = () => {
                             <p className="sort-dropdown">
                                 <button className="sort-expense" onClick={selectSort} value="Sort By:"> {sortExpense}</button>
                                 {dropSort && <span className="sort-dropmenu">
-                                    <button type="button" onClick={selectSort} value="Time (Latest)"> Time (Latest)</button>
-                                    <button type="button" onClick={selectSort} value="Time (Oldest)"> Time (Oldest)</button>
+                                    <button type="button" onClick={selectSort} value="Time (Latest)"> Time (Oldest)</button>
+                                    <button type="button" onClick={selectSort} value="Time (Oldest)"> Time (Latest)</button>
                                     <button type="button" onClick={selectSort} value="Category (A to Z)"> Category (A to Z)</button>
                                     <button type="button" onClick={selectSort} value="Value (L to H)"> Value (Low to High)</button>
                                     <button type="button" onClick={selectSort} value="From/To (A to Z)"> From/To (A to Z)</button>
@@ -530,19 +532,20 @@ const Expenses = () => {
                                 {allExpenses.length === 0 && <p>No Expenses Found</p>}
                             </>) }
                             
-                            {allExpenses.map((item, index) => (
-                                <div key={index} className="expense-row" style={{borderBottom: "1px solid gray", margin:"0px 15px 0px 15px"}}>
+                            {allExpenses.slice().reverse().map((item, index) => (
+                                <div key={index} className="expense-row" style={{ borderBottom: index !== allExpenses.length - 1 ? "1px solid gray" : "0px", margin:"0px 15px 0px 15px"}}>
                                     { (editingExpense !== item._id) ? (
                                         <>
-                                        <div className="transaction-category-time-stamp" style={{display:"flex", flexDirection:"column", width:"60%", textAlign:"left", margin:"15px"}}>
+                                        <div className="transaction-category-time-stamp" style={{display:"flex", flexDirection:"column", width:"70%", textAlign:"left", margin:"15px"}}>
                                             {item.value < 0? (<p style={{margin:"0px", fontSize:"18px", fontWeight:"1000"}}>Payment to {item.person}</p>) : (<p style={{margin:"0px", fontSize:"18px", fontWeight:"1000"}}> Payment from {item.person}</p>) }
-                                            <p style={{margin:"0px", fontSize:"14px"}}className="date-expense">{item.date || "none"}, {item.category}</p>
+                                            <p style={{margin:"0px", fontSize:"14px"}}className="date-expense">{item.date || "none"}</p>
+                                            <p style={{margin:"0px", fontSize:"14px"}}className="date-expense">{item.category}</p>
                                         </div>
-                                        {item.value < 0 ? (<p style={{color:"#f35858", margin:"0px 35px 0px 35px", display:"flex", alignItems:"center", fontSize:"22px", width:"35%", justifyContent:"flex-end"}}>{String(item.value).replace('-', '-$')}</p>) : (
-                                            <p style={{color:"#12b412", margin:"0px 35px 0px 35px", display:"flex", alignItems:"center", fontSize:"22px", width:"35%", justifyContent:"flex-end"}}>+${item.value}</p>
+                                        {item.value < 0 ? (<p style={{color:"#f35858", margin:"0px 35px 0px 35px", display:"flex", alignItems:"center", fontSize:"22px", width:"25%", justifyContent:"flex-end"}}>{String(item.value).replace('-', '-$')}</p>) : (
+                                            <p style={{color:"#12b412", margin:"0px 35px 0px 35px", display:"flex", alignItems:"center", fontSize:"22px", width:"25%", justifyContent:"flex-end"}}>+${item.value}</p>
                                         ) }
 
-                                        <button onClick={(e) => {editExpense(item); setDropCategory(false); setDropSort(false); setSavedDropCategory(false);}} style={{fontSize:"16px", border:"1px solid black", width:"125px", borderRadius:"10px", padding:"5px 10px 5px 10px", transition:".3s"}} className="transaction-edit">Edit</button>
+                                        <button onClick={(e) => {editExpense(item); setDropCategory(false); setDropSort(false); setSavedDropCategory(false);}} style={{fontSize:"16px", border:"1px solid black", width:"125px", borderRadius:"10px", padding:"5px 10px 5px 10px", transition:".3s", margin:"15px"}} className="transaction-edit">Edit</button>
                                             {editingExpense === item._id && (
                                                 <div className="edit-menu">  
                                                     <button className="edit-delete" onClick={() => deleteExpense(item)}>Delete </button>
