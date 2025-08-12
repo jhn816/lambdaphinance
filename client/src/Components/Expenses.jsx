@@ -1,8 +1,8 @@
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect } from "react";
 import "./css/Expenses.css"
 import { Link, useNavigate } from "react-router-dom";
-import { clear } from "@testing-library/user-event/dist/clear";
 
+import HelloChart from "./ExpenseCharts.jsx";
 
 const Expenses = () => {
     // expense arguments
@@ -134,7 +134,11 @@ const Expenses = () => {
 
         const timestamp = Date.now();
         const date = new Date(timestamp);
-        const formattedTimestamp = date.toLocaleString()
+        const formattedTimestamp = date.toLocaleDateString("en-US", {
+            month: "short",
+            day: "2-digit",
+            year: "numeric"
+          });
 
         const finalPerson = person.trim() === "" ? "None" : person;
 
@@ -338,25 +342,25 @@ const Expenses = () => {
         let sort = e.target.value;
         setDropSort(!dropSort);
         setSortExpense(sort);
-
-        if (sort === "Category (A to Z)") {
-            const sortExpenses = allExpenses.sort ( (a,b) => a.category.localeCompare(b.category));
-            setAllExpenses(sortExpenses);
-        } else if (sort === "Value (L to H)") {
-            const sortExpenses = allExpenses.sort ( (a,b) => a.value - b.value);
-            setAllExpenses(sortExpenses);
-        } else if (sort === "From/To (A to Z)") {
-            const sortExpenses = allExpenses.sort ( (a,b) => a.person.localeCompare(b.person));
-            setAllExpenses(sortExpenses);
-        }  else if (sort === "Time (Latest)") {
-            const sortExpenses = allExpenses.sort ( (a,b) => new Date(b.date) - new Date(a.date));
-            setAllExpenses(sortExpenses);
-        }  else if (sort === "Time (Oldest)") {
-            const sortExpenses = allExpenses.sort ( (a,b) => new Date(a.date) - new Date(b.date));
-            setAllExpenses(sortExpenses);
-        }    
-        setEditingExpense(null);
-        setDropCategory(false);
+        setAllExpenses(prev => {
+            const arr = [...prev];
+        
+            if (sort === "Category (A to Z)") {
+              arr.sort((a,b) => (a.category || "").localeCompare(b.category || ""));
+            } else if (sort === "Value (L to H)") {
+              arr.sort((a,b) => Number(a.value) - Number(b.value));
+            } else if (sort === "From/To (A to Z)") {
+              arr.sort((a,b) => (a.person || "").localeCompare(b.person || ""));
+            } else if (sort === "Time (Latest)") {
+              arr.sort((a,b) => new Date(b.date || b.formattedTimestamp) - new Date(a.date || a.formattedTimestamp));
+            } else if (sort === "Time (Oldest)") {
+              arr.sort((a,b) => new Date(a.date || a.formattedTimestamp) - new Date(b.date || b.formattedTimestamp));
+            }
+            return arr;
+          });
+        
+          setEditingExpense(null);
+          setDropCategory(false);
     }
 
     return (
@@ -474,82 +478,120 @@ const Expenses = () => {
                     </div>
                 </div>
             </div>
-
-            <div className="expense-sheet">
-                <div className="sheet-headers">
-                    <p className="date-expense">Date</p>
-                    <p>Category</p>
-                    <p>Value</p>
-                    <p>From/To</p>
-                    <p className="sort-dropdown">
-                        <button className="sort-expense" onClick={selectSort} value="Sort By:"> {sortExpense}</button>
-                        {dropSort && <span className="sort-dropmenu">
-                            <button type="button" onClick={selectSort} value="Time (Latest)"> Time (Latest)</button>
-                            <button type="button" onClick={selectSort} value="Time (Oldest)"> Time (Oldest)</button>
-                            <button type="button" onClick={selectSort} value="Category (A to Z)"> Category (A to Z)</button>
-                            <button type="button" onClick={selectSort} value="Value (L to H)"> Value (Low to High)</button>
-                            <button type="button" onClick={selectSort} value="From/To (A to Z)"> From/To (A to Z)</button>
-                        </span>
-                        }
-                    </p>
-                </div>
-                <div className="scroll-chart">
-                    {expenseSheet === "Choose Expenses ▼" ? 
-                        (<h3> Select a Collection of Expenses</h3>) :
-                    (<>
-                        {allExpenses.length === 0 && <p>No Expenses Found</p>}
-                    </>) }
-                    
-                    {allExpenses.map((item, index) => (
-                        <div key={index} className="expense-row">
-                            { (editingExpense !== item._id) ? (
-                                <>
-                                <p className="date-expense">{item.date || "none"}</p>
-                                <p>{item.category}</p>
-                                {item.value < 0 ? (<p style={{color:"red"}}>${item.value}</p>) : (
-                                    <p style={{color:"green"}}>${item.value}</p>
-                                ) }
-                                <p>{item.person}</p>
-                                </>
-                            ):(
-                                <>
-                                    <p className="date-expense">{item.date || "none"}</p>
-                                    <div className="save-category-dropdown">
-                                        <button type="button" onClick={dropdownSavedCategory} className="saved-category">{savedCategory}</button>
-                                        {dropSavedCategory && <span className="save-category-menu">
-                                            <button type="button" onClick={dropdownSavedCategory} value="Groceries">Groceries</button>
-                                            <button type="button" onClick={dropdownSavedCategory} value="Alcohol">Alcohol</button>
-                                            <button type="button" onClick={dropdownSavedCategory} value="Brotherhood">Brotherhood</button>
-                                            <button type="button" onClick={dropdownSavedCategory} value="Fundraisers">Fundraisers</button>
-                                            <button type="button" onClick={dropdownSavedCategory} value="Dues">Dues</button>
-                                            <button type="button" onClick={dropdownSavedCategory} value="Open">Open</button>
-                                            <button type="button" onClick={dropdownSavedCategory} value="Misc.">Misc.</button>
-                                        </span>}
-                                    </div>
-                                    <input 
-                                        type="number" 
-                                        value={savedValue} 
-                                        onChange={(e) => handleDecimalChange(e)} 
-                                        step="0.01" 
-                                        min="0" 
-                                        placeholder="Enter amount..."
-                                    />
-                                    <input value={savedPerson} onChange={(e) => setSavedPerson(e.target.value)}/>
-                                </> 
-                            )}             
-                        <div className="edit-dropdown">    
-                            <button onClick={(e) => {editExpense(item); setDropCategory(false); setDropSort(false); setSavedDropCategory(false);}} className="edit-expense">Edit</button>
-                            {editingExpense === item._id && (
-                                <div className="edit-menu">  
-                                    <button className="edit-delete" onClick={() => deleteExpense(item)}>Delete </button>
-                                    <button className="edit-save" type="button" onClick={() => (saveExpense(item))}>Save</button>
-                                    <button className="edit-cancel" type="button" onClick={() => setEditingExpense(null)}>Cancel</button>
-                                </div>
-                            )}
+            
+            <div className="transaction-information">
+                <div className="transaction-sheet">
+                    <div className="transaction-data-block">
+                            <div className="transaction-data-header" style={{height:"25%"}}>
+                                <p>Recent Revenue/Spending</p>
                             </div>
-                        </div>
-                    ))}
+                            <div className="transaction-data" style={{height:"75%"}}> 
+                                <HelloChart expenses={allExpenses} type={"gainloss"} />
+                            </div>
+                    </div>
+                    <div className="transaction-data-block">
+                            <div className="transaction-data-header">
+                            <p>Total Balances</p>
+                            </div>
+                            <div className="transaction-data" style={{height:"75%"}}> 
+                                <HelloChart expenses={allExpenses} type={"total"} />
+                            </div>
+                    </div>
+                    <div className="transaction-data-block">
+                            <div className="transaction-data-header">
+                                <p>Spending in Each Category</p>
+                            </div>
+                            <div className="transaction-data" style={{height:"75%"}}> 
+                                <HelloChart expenses={allExpenses} type={"total"} />
+                            </div>
+                    </div>
                 </div>
+
+                <div className="expense-sheet">
+                    <div className="transaction-chart">
+                        <div className="sheet-headers">
+                            <p className="date-expense">All Transactions</p>
+                            <p className="sort-dropdown">
+                                <button className="sort-expense" onClick={selectSort} value="Sort By:"> {sortExpense}</button>
+                                {dropSort && <span className="sort-dropmenu">
+                                    <button type="button" onClick={selectSort} value="Time (Latest)"> Time (Latest)</button>
+                                    <button type="button" onClick={selectSort} value="Time (Oldest)"> Time (Oldest)</button>
+                                    <button type="button" onClick={selectSort} value="Category (A to Z)"> Category (A to Z)</button>
+                                    <button type="button" onClick={selectSort} value="Value (L to H)"> Value (Low to High)</button>
+                                    <button type="button" onClick={selectSort} value="From/To (A to Z)"> From/To (A to Z)</button>
+                                </span>
+                                }
+                            </p>
+                        </div>
+                        <div className="scroll-chart">
+                            {expenseSheet === "Choose Expenses ▼" ? 
+                                (<h3> Select a Collection of Expenses</h3>) :
+                            (<>
+                                {allExpenses.length === 0 && <p>No Expenses Found</p>}
+                            </>) }
+                            
+                            {allExpenses.map((item, index) => (
+                                <div key={index} className="expense-row" style={{borderBottom: "1px solid gray", margin:"0px 15px 0px 15px"}}>
+                                    { (editingExpense !== item._id) ? (
+                                        <>
+                                        <div className="transaction-category-time-stamp" style={{display:"flex", flexDirection:"column", width:"60%", textAlign:"left", margin:"15px"}}>
+                                            {item.value < 0? (<p style={{margin:"0px", fontSize:"18px", fontWeight:"1000"}}>Payment to {item.person}</p>) : (<p style={{margin:"0px", fontSize:"18px", fontWeight:"1000"}}> Payment from {item.person}</p>) }
+                                            <p style={{margin:"0px", fontSize:"14px"}}className="date-expense">{item.date || "none"}, {item.category}</p>
+                                        </div>
+                                        {item.value < 0 ? (<p style={{color:"#f35858", margin:"0px 35px 0px 35px", display:"flex", alignItems:"center", fontSize:"22px", width:"35%", justifyContent:"flex-end"}}>{String(item.value).replace('-', '-$')}</p>) : (
+                                            <p style={{color:"#12b412", margin:"0px 35px 0px 35px", display:"flex", alignItems:"center", fontSize:"22px", width:"35%", justifyContent:"flex-end"}}>+${item.value}</p>
+                                        ) }
+
+                                        <button onClick={(e) => {editExpense(item); setDropCategory(false); setDropSort(false); setSavedDropCategory(false);}} style={{fontSize:"16px", border:"1px solid black", width:"125px", borderRadius:"10px", padding:"5px 10px 5px 10px", transition:".3s"}} className="transaction-edit">Edit</button>
+                                            {editingExpense === item._id && (
+                                                <div className="edit-menu">  
+                                                    <button className="edit-delete" onClick={() => deleteExpense(item)}>Delete </button>
+                                                    <button className="edit-save" type="button" onClick={() => (saveExpense(item))}>Save</button>
+                                                    <button className="edit-cancel" type="button" onClick={() => setEditingExpense(null)}>Cancel</button>
+                                                </div>
+                                            )}
+                                        </>
+                                    ):(
+                                        <>
+                                            <p className="date-expense">{item.date || "none"}</p>
+                                            <div className="save-category-dropdown">
+                                                <button type="button" onClick={dropdownSavedCategory} className="saved-category">{savedCategory}</button>
+                                                {dropSavedCategory && <span className="save-category-menu">
+                                                    <button type="button" onClick={dropdownSavedCategory} value="Groceries">Groceries</button>
+                                                    <button type="button" onClick={dropdownSavedCategory} value="Alcohol">Alcohol</button>
+                                                    <button type="button" onClick={dropdownSavedCategory} value="Brotherhood">Brotherhood</button>
+                                                    <button type="button" onClick={dropdownSavedCategory} value="Fundraisers">Fundraisers</button>
+                                                    <button type="button" onClick={dropdownSavedCategory} value="Dues">Dues</button>
+                                                    <button type="button" onClick={dropdownSavedCategory} value="Open">Open</button>
+                                                    <button type="button" onClick={dropdownSavedCategory} value="Misc.">Misc.</button>
+                                                </span>}
+                                            </div>
+                                            <input 
+                                                type="number" 
+                                                value={savedValue} 
+                                                onChange={(e) => handleDecimalChange(e)} 
+                                                step="0.01" 
+                                                min="0" 
+                                                placeholder="Enter amount..."
+                                            />
+                                            <input value={savedPerson} onChange={(e) => setSavedPerson(e.target.value)}/>
+
+                                            <button onClick={(e) => {editExpense(item); setDropCategory(false); setDropSort(false); setSavedDropCategory(false);}} style={{fontSize:"16px", border:"1px solid black", width:"125px", borderRadius:"10px", padding:"5px 10px 5px 10px", transition:".3s"}} className="transaction-edit">Edit</button>
+                                            {editingExpense === item._id && (
+                                                <div className="edit-menu">  
+                                                    <button className="edit-delete" onClick={() => deleteExpense(item)}>Delete </button>
+                                                    <button className="edit-save" type="button" onClick={() => (saveExpense(item))}>Save</button>
+                                                    <button className="edit-cancel" type="button" onClick={() => setEditingExpense(null)}>Cancel</button>
+                                                </div>
+                                            )}
+                                        </> 
+                                    )}             
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
         </div>

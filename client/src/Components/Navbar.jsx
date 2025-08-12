@@ -4,6 +4,8 @@ import userEvent from "@testing-library/user-event";
 import { Link, useLocation} from "react-router-dom";
 import Hamburger from "../assets/hamburg.png";
 import Close from "../assets/closeham.png";
+import Logo from "../assets/logo.png";
+
 
 
 const Navbar = () => {
@@ -23,6 +25,14 @@ const Navbar = () => {
     return ( <>
         <div className="desktop-bar">
             <ul className = "nav-links">
+                <Link to="/">
+                    <img 
+                    src={Logo} 
+                    alt="Home" 
+                    style={{ height: "50px", cursor: "pointer" }} 
+                    />
+                </Link>
+
                 <a href="/" style={{textDecoration: location.pathname === "/" ? "underline" : "none", textUnderlineOffset: "5px", textDecorationThickness: "1px"}}>Home</a>
 
                 {/* expenses tracker of your own account, with total amounts and separate net gain/loss*/}
@@ -45,6 +55,13 @@ const Navbar = () => {
         </div>
 
         { ham && <div className={closing ? "hamburger-close" : "hamburger-open"}>
+        <Link to="/">
+            <img 
+            src="../assets/logo.png" 
+            alt="Home" 
+            style={{ height: "40px", cursor: "pointer" }} 
+            />
+        </Link>
         <a href="/">Home</a>
         {/* expenses tracker of your own account, with total amounts and separate net gain/loss*/}
         <a href="expenses">Expenses</a>
