@@ -1,15 +1,39 @@
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 import "./css/Modal.css"
 
-export default function Modal({header, content, type, onClose, onAnswer}) {
+export default function Modal({status, header, content, type, onClose, onAnswer}) {
     // expense page
     const [collectionName, setCollectionName] = useState("");
     const temp = Array.isArray(content) ? content.join(", ") : "";
-    console.log(temp);
+
+    // animation 
+    const [animate, setAnimate] = useState(status); // not none
+    const [visible, setVisible] = useState(false);
+    const [action, setAction] = useState("");
+
+    useEffect( ()=> {
+        if (animate !== "none") {
+            setVisible(true);
+        } else {
+            setVisible(false)
+
+            if (action === "true") {
+                const j = setTimeout( () => {onAnswer(true)}, 800);
+                return () => clearTimeout(j);
+            } else if (action === "collection") {
+                const j = setTimeout( () => {onAnswer(collectionName)}, 800);
+                return () => clearTimeout(j);
+            } else {
+                const j = setTimeout( () => {onClose()}, 800);
+                return () => clearTimeout(j);
+            }
+        }
+    }, [animate, visible])
+
 
     return (
-        <div className="modal-cover-page">
-            <div className="modal-container-box">
+        <div className={`modal-cover-page ${visible ? "modal-fade-in" : "modal-fade-out"}`}>
+            <div className={`modal-container-box ${visible ? "modal-fade-in" : "modal-fade-out"}`}>
                 <div className="modal-main-content">
                     <h3> {header} </h3>
                     {Array.isArray(content) ? 
@@ -23,18 +47,18 @@ export default function Modal({header, content, type, onClose, onAnswer}) {
             
                 <div className="modal-buttons">
                     {type === "YesNo" && <>
-                        <button onClick={onClose}> No</button>
-                        <button onClick={() => onAnswer(true)}> Yes</button>
+                        <button onClick={() => setAnimate("none")}> No</button>
+                        <button onClick={() => {setAnimate("none"); setAction("true");}}> Yes</button>
 
                     </>}
 
                     {type === "Okay" && <>
-                        <button onClick={onClose}> Okay</button>
+                        <button onClick={() => setAnimate("none")}> Okay</button>
                     </>}
 
                     {type === "Create" && <>
-                        <button onClick={onClose}> Cancel</button>
-                        <button onClick={() => onAnswer(collectionName)}> Create</button>
+                        <button onClick={() => setAnimate("none")}> Cancel</button>
+                        <button onClick={() => {setAnimate("none"); setAction("collection");}}> Create</button>
                     </>}
                 </div>
             </div>

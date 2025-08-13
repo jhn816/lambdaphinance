@@ -6,8 +6,8 @@
     background-color: white;
     color: black;
     height: 90vh;
-    width: 95%;
-    gap: 20px;
+    width: 85%;
+    gap: 40px;
 }
 
 .add-container {
@@ -15,7 +15,7 @@
     flex-direction: column;
     border: 1px solid #929292;
     background-color: #f6f6f6;
-    border-radius: 20px;
+    border-radius: 10px;
     width: 35%;
     height: 90%;
     overflow: hidden;
@@ -44,7 +44,7 @@
 .expense-sheet {
     display: flex;
     flex-direction: column;
-    border-radius: 20px;
+    border-radius: 10px;
     overflow:hidden;
     width: 60%;
     border: 1px solid #929292;
@@ -60,7 +60,7 @@
 .transaction-information {
     display: flex;
     flex-direction: row;
-    gap: 20px;
+    gap: 40px;
     width: 60%;
     height: 90%;
 }
@@ -94,7 +94,7 @@
 .customize-expense {
     background-color: #f6f6f6;
     border: 1px solid gray;
-    width: 150px;
+    width: 100%;
     font-size: 12px;
     border-radius: 10px;
     padding: 10px;
@@ -604,7 +604,7 @@
 .transaction-data-header p {
     display: flex;
     align-items: center;
-    color: black;
+    color: rgb(33, 62, 120);
     width: 100%;
     height: 40px;
     margin: 0px;
@@ -613,7 +613,7 @@
 }
 
 .transaction-data-block {
-    height: 32%;
+    height: 30%;
     border-radius: 20px;
     overflow:hidden;
     background-color: white;

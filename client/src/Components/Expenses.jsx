@@ -410,7 +410,7 @@ const Expenses = () => {
                     <div className="right-add">
                         <form onSubmit={addExpense} style={{display:"flex", flexDirection:"column", justifyContent:"center"}}>
                             <div className="expense-amount">
-                                <h3 style={{fontSize:"20px"}}>Amount to add:</h3>
+                                <h3 style={{fontSize:"20px"}}>Amount:</h3>
                                 <div className="amount-box">
                                     <input 
                                         type="text" 
@@ -459,18 +459,18 @@ const Expenses = () => {
                         <span style={{borderTop:"1px solid gray"}}/>
                         <div style={{display:"flex", flexDirection:"column", justifyContent:"center"}}>
                             <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", margin:"5px", padding:"15px 20px 15px 20px",  backgroundColor: "rgb(55, 92, 167)", borderRadius:"20px", filter: "drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.10))"}}>
-                                <h4 style={{margin:"0px", color:"white", fontSize:"22px"}}>Balance</h4>
-                                <p style={{margin:"0px", color:"white", fontSize: "28px"}}>${totalBalance ? totalBalance.toFixed(2) : "0.00"}</p>
+                                <h4 style={{margin:"0px", color:"white", fontSize:"18px"}}>Balance</h4>
+                                <p style={{margin:"0px", color:"white", fontSize: "26px"}}>${totalBalance ? totalBalance.toFixed(2) : "0.00"}</p>
                             </div>  
                             
                             <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", margin:"5px", padding:"15px 20px 15px 20px",  backgroundColor: "rgb(96 176 96)", borderRadius:"20px", filter: "drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.10))"}}>
-                                <h4 style={{margin:"0px", color:"white", fontSize:"20px"}}>Income</h4>
-                                <p style={{margin:"0px", color:"white", fontSize: "28px"}}>${netGain ? netGain.toFixed(2) : "0.00"}</p>
+                                <h4 style={{margin:"0px", color:"white", fontSize:"18px"}}>Income</h4>
+                                <p style={{margin:"0px", color:"white", fontSize: "26px"}}>${netGain ? netGain.toFixed(2) : "0.00"}</p>
                             </div>
 
                             <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", margin:"5px", padding:"15px 20px 15px 20px",  backgroundColor: "rgb(205 73 78)", borderRadius:"20px", filter: "drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.10))"}}>
-                                <h4 style={{margin:"0px", color:"white", fontSize:"20px"}}>Expenses</h4>
-                                <p style={{ margin:"0px", color:"white", fontSize: "28px"}}>${netLoss ? netLoss.toFixed(2) : "0.00"}</p>
+                                <h4 style={{margin:"0px", color:"white", fontSize:"18px"}}>Expenses</h4>
+                                <p style={{ margin:"0px", color:"white", fontSize: "26px"}}>${netLoss ? netLoss.toFixed(2) : "0.00"}</p>
                             </div>  
                         </div>
                     </div>
@@ -595,6 +595,7 @@ const Expenses = () => {
             </div>
             {showModal === "delete" && 
             <Modal 
+                status={showModal}
                 header={"Confirm deletion?"}
                 content={"Deleting this content is permanent and cannot be recovered."} 
                 type={"YesNo"}
@@ -610,21 +611,23 @@ const Expenses = () => {
 
             {showModal === "create" && 
             <Modal 
+                status={showModal}
                 header={"Create a Collection Name"}
                 content={"This can always be changed later."} 
                 type={"Create"}
                 onClose={() => setShowModal("none")}
-                onAnswer={(collectionName) =>  submitCollection(collectionName)}
+                onAnswer={(collectionName) =>  {submitCollection(collectionName) ; setShowModal("none")}}
             />
             }
 
             {showModal === "error" && 
             <Modal 
+                status={showModal}
                 header={"An Expense needs to have..."}
                 content={errors} 
                 type={"Okay"}
-                onClose={() => {setShowModal("none"); setErrors([])}}
-                onAnswer={(collectionName) =>  submitCollection(collectionName)}
+                onClose={() => {setShowModal("none"); setErrors([]);}}
+                onAnswer={(collectionName) =>  {submitCollection(collectionName); setShowModal("none")}}
             />
             }
         </div>
