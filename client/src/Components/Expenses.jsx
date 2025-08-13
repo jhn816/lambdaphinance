@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./css/Expenses.css"
 import { Link, useNavigate } from "react-router-dom";
+import Modal from "./Modal.jsx";
 
 import HelloChart from "./ExpenseCharts.jsx";
 
@@ -21,7 +22,8 @@ const Expenses = () => {
     const [dropCategory, setDropCategory] = useState(false);
     const [expenseSheet, setExpenseSheet] = useState("Choose Expenses ▼");
     const [editingExpense, setEditingExpense] = useState(null);
-
+    
+    const [deletedItem, setDeletedItem] = useState(null);
     const [sortExpense, setSortExpense] = useState("Sort By:");
     const [dropSort, setDropSort] = useState(false);
 
@@ -32,13 +34,15 @@ const Expenses = () => {
     const [allExpenses, setAllExpenses] = useState([]);
 
     const [allCollections, setAllCollections] = useState([]);
-    const [collectionName, setCollectionName] = useState("");
 
 
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
     const [email,setEmail] = useState("");
     const [username,setUsername] = useState("");
+
+    const [showModal, setShowModal] = useState("none");
+    const [errors ,setErrors] = useState([]);
 
     useEffect( () => {
         if (!token) {
@@ -125,13 +129,16 @@ const Expenses = () => {
         event.preventDefault();
 
         if (expenseSheet === "Create New +") {
-            alert("Please select a collection");
-            return;
-        } else if (category === "Category↴") {
-            alert("Please select a category");
-            return;
-        }else if (value === "0" || value === "") {
-            alert("Please enter a valid amount");
+            errors.push("a collection");
+        }
+        if (category === "Category↴") {
+            errors.push("a category");
+        }
+        if (value === "0" || value === "") {
+            errors.push("a valid amount");
+        }
+        if (errors.length > 0) {
+            setShowModal("error");
             return;
         }
 
@@ -190,6 +197,7 @@ const Expenses = () => {
             setSavedValue(0);
             setSavedPerson("");
         } else {
+            console.log(item);
             setEditingExpense(item._id);
             setSavedCategory(item.category);
             setSavedValue(item.value);
@@ -259,30 +267,27 @@ const Expenses = () => {
         setPerson("");
     }
 
-    const handleChange = (e) => {
-        let rawValue = e.target.value.replace(/[^0-9.]/g, "");
+    const handleMoneyChange = (setter) => (e) => {
+        const raw = String(e.target.value).replace(/[^0-9.]/g, "");   // strip anything not 0-9 or .
+        if ((raw.match(/\./g) || []).length > 1) return;              // only one dot
+        if (/^\d*\.?\d{0,2}$/.test(raw)) setter(raw);                 // max 2 decimals
+    };
+
+    const handleSavedChange = (e) => {
+        const raw = String(e.target.value);
       
-        if (/^\d*\.?\d{0,2}$/.test(rawValue)) {
-          setValue(rawValue);
+        if (raw === "-") { setSavedValue(raw); return; }
+      
+        if (/^-?\d*\.?\d{0,2}$/.test(raw)) {
+          setSavedValue(raw);
         }
       };
-
-    const handleDecimalChange = (e) => {
-        let value = e.target.value;
-    
-        if (!isNaN(value) && value.match(/^\d*\.?\d{0,2}$/)) {
-            setSavedValue(value);
-        }
-    };
-    
-    
 
     const selectCollection = (e) => {
         setExpenseSheet(e.target.value);
     }
 
-    const submitCollection = (event) => {
-        event.preventDefault();
+    const submitCollection = (collectionName) => {
         if (collectionName === "") {
             alert("Please enter a collection name");
             return;
@@ -355,11 +360,11 @@ const Expenses = () => {
             const arr = [...prev];
         
             if (sort === "Category (A to Z)") {
-              arr.sort((a,b) => (a.category || "").localeCompare(b.category || ""));
-            } else if (sort === "Value (L to H)") {
+              arr.sort((a,b) => (b.category || "").localeCompare(a.category || ""));
+            } else if (sort === "Value (H to L)") {
               arr.sort((a,b) => Number(a.value) - Number(b.value));
             } else if (sort === "From/To (A to Z)") {
-              arr.sort((a,b) => (a.person || "").localeCompare(b.person || ""));
+              arr.sort((a,b) => (b.person || "").localeCompare(a.person || ""));
             } else if (sort === "Time (Latest)") {
               arr.sort((a,b) => new Date(b.date || b.formattedTimestamp) - new Date(a.date || a.formattedTimestamp));
             } else if (sort === "Time (Oldest)") {
@@ -377,13 +382,6 @@ const Expenses = () => {
             <div className="add-container">
                 <div className="tracker-headers">
                     {(expenseSheet === "Choose Expenses ▼" || expenseSheet === "Create New +") ? ( <h4> Finance Book</h4>) : (<h4> {expenseSheet} Finance Book</h4>)}
-                    <div className="dropdownmenu" style={{width:"55%"}}>
-                        {expenseSheet === "Create New +" && <div className="collection-sheets"> 
-                            <input placeholder="Enter Collection Name..." onChange={(e) => (setCollectionName(e.target.value))} maxLength={20}/>
-                            <button type="button" onClick={submitCollection}>Create</button>
-                            <button type="button" onClick={selectCollection} value="Choose Expenses ▼">Cancel</button>
-                        </div>}
-                    </div>
                 </div>
                 <div className="tracker-content">
                     <div className="left-add">
@@ -391,7 +389,7 @@ const Expenses = () => {
                         <div className="your-collection">
                             <div className="expense-sheets">
                                 <div className="scroll-collection">
-                                    <button type="button" value="Create New +"onClick={selectCollection}>Create New +</button>
+                                    <button type="button" value="Create New +" onClick={() => setShowModal("create")}>Create New +</button>
                                     {allCollections.map((item ,index) => (
                                         <button key={index} type="button" value={item.collectionName} onClick={selectCollection}>{item.collectionName}</button>
                                     ))}
@@ -410,7 +408,7 @@ const Expenses = () => {
                     </div>
 
                     <div className="right-add">
-                        <form onSubmit={addExpense}>
+                        <form onSubmit={addExpense} style={{display:"flex", flexDirection:"column", justifyContent:"center"}}>
                             <div className="expense-amount">
                                 <h3 style={{fontSize:"20px"}}>Amount to add:</h3>
                                 <div className="amount-box">
@@ -418,17 +416,13 @@ const Expenses = () => {
                                         type="text" 
                                         placeholder="Enter amount..." 
                                         value={value ? `$${value}` : ""} 
-                                        onChange={handleChange} 
+                                        onChange={handleMoneyChange(setValue)} 
                                         maxLength={9} 
                                         style={{color: gain ? "green" : "red"}}
                                         onKeyDown={(e) => {
-                                            if (["e", "E", "+", "-"].includes(e.key)) {
-                                            e.preventDefault(); 
-                                            }
-                                            if (e.key === "." && value.includes(".")) {
-                                            e.preventDefault();
-                                            }
-                                        }}
+                                            if (["e","E","+","-"].includes(e.key)) e.preventDefault();
+                                            if (e.key === "." && e.currentTarget.value.includes(".")) e.preventDefault();
+                                          }}
                                     />
                                 </div>
                                 </div>
@@ -451,8 +445,8 @@ const Expenses = () => {
                                 <button type="button" value="true" className="customize-expense" onClick={() => setGain(!gain)} style={{width:"45%"}}> + / -</button>
                             </div>
                             
-                            <div className="expense-inputs">
-                                <input type="text" placeholder="From/to who (optional)" value={person} onChange={(e) => (setPerson(e.target.value))} />
+                            <div className="expense-inputs" style={{marginTop:"0px"}}>
+                                <input type="text" placeholder="From/to who (optional)" value={person} onChange={(e) => (setPerson(e.target.value))} maxLength={15} />
                             </div>
                             
                             <div className="form-buttons">
@@ -461,20 +455,22 @@ const Expenses = () => {
                             </div>
                         
                         </form>
-                        <div className="expense-information">
-                            <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", margin:"5px", padding:"15px 20px 15px 20px",  backgroundColor: "rgb(190 255 190)", borderRadius:"20px", filter: "drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.10))"}}>
-                                <h4 style={{margin:"0px", fontSize:"20px"}}>Income</h4>
-                                <p style={{margin:"0px", fontSize: "28px"}}>${netGain ? netGain.toFixed(2) : "0.00"}</p>
+
+                        <span style={{borderTop:"1px solid gray"}}/>
+                        <div style={{display:"flex", flexDirection:"column", justifyContent:"center"}}>
+                            <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", margin:"5px", padding:"15px 20px 15px 20px",  backgroundColor: "rgb(55, 92, 167)", borderRadius:"20px", filter: "drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.10))"}}>
+                                <h4 style={{margin:"0px", color:"white", fontSize:"22px"}}>Balance</h4>
+                                <p style={{margin:"0px", color:"white", fontSize: "28px"}}>${totalBalance ? totalBalance.toFixed(2) : "0.00"}</p>
+                            </div>  
+                            
+                            <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", margin:"5px", padding:"15px 20px 15px 20px",  backgroundColor: "rgb(96 176 96)", borderRadius:"20px", filter: "drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.10))"}}>
+                                <h4 style={{margin:"0px", color:"white", fontSize:"20px"}}>Income</h4>
+                                <p style={{margin:"0px", color:"white", fontSize: "28px"}}>${netGain ? netGain.toFixed(2) : "0.00"}</p>
                             </div>
 
-                            <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", margin:"5px", padding:"15px 20px 15px 20px",  backgroundColor: "rgb(255 190 192)", borderRadius:"20px", filter: "drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.10))"}}>
-                                <h4 style={{margin:"0px", fontSize:"20px"}}>Expenses</h4>
-                                <p style={{ margin:"0px", fontSize: "28px"}}>${netLoss ? netLoss.toFixed(2) : "0.00"}</p>
-                            </div>  
-
-                            <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", margin:"5px", padding:"15px 20px 15px 20px",  backgroundColor: "rgb(200 218 255)", borderRadius:"20px", filter: "drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.10))"}}>
-                                <h4 style={{margin:"0px", fontSize:"22px"}}>Balance</h4>
-                                <p style={{margin:"0px", fontSize: "28px"}}>${totalBalance ? totalBalance.toFixed(2) : "0.00"}</p>
+                            <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", margin:"5px", padding:"15px 20px 15px 20px",  backgroundColor: "rgb(205 73 78)", borderRadius:"20px", filter: "drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.10))"}}>
+                                <h4 style={{margin:"0px", color:"white", fontSize:"20px"}}>Expenses</h4>
+                                <p style={{ margin:"0px", color:"white", fontSize: "28px"}}>${netLoss ? netLoss.toFixed(2) : "0.00"}</p>
                             </div>  
                         </div>
                     </div>
@@ -482,6 +478,94 @@ const Expenses = () => {
             </div>
             
             <div className="transaction-information">
+            <div className="expense-sheet">
+                    <div className="transaction-chart">
+                        <div className="sheet-headers">
+                            <p className="date-expense">All Transactions</p>
+                            <p className="sort-dropdown">
+                                <button className="sort-expense" onClick={selectSort} value="Sort By:"> {sortExpense}</button>
+                                {dropSort && <span className="sort-dropmenu">
+                                    <button type="button" onClick={selectSort} value="Time (Latest)"> Time (Oldest)</button>
+                                    <button type="button" onClick={selectSort} value="Time (Oldest)"> Time (Latest)</button>
+                                    <button type="button" onClick={selectSort} value="Category (A to Z)"> Category (A to Z)</button>
+                                    <button type="button" onClick={selectSort} value="Value (H to L)"> Value (High to Low)</button>
+                                    <button type="button" onClick={selectSort} value="From/To (A to Z)"> From/To (A to Z)</button>
+                                </span>
+                                }
+                            </p>
+                        </div>
+                        <div className="scroll-chart">
+                            {expenseSheet === "Choose Expenses ▼" ? 
+                                (<h3> Select a Collection of Expenses</h3>) :
+                            (<>
+                                {allExpenses.length === 0 && <p>No Expenses Found</p>}
+                            </>) }
+                            
+                            {allExpenses.slice().reverse().map((item, index) => (
+                                <div key={index} className="expense-row" style={{ display:"flex", justifyContent:"space-between", borderBottom: index !== allExpenses.length - 1 ? "1px solid gray" : "0px", margin:"0px 15px 0px 15px"}}>
+                                    { (editingExpense !== item._id) ? (
+                                        <>
+                                        <div className="transaction-category-time-stamp" style={{display:"flex", flexDirection:"column", width:"70%", textAlign:"left", margin:"15px"}}>
+                                            {item.value < 0? (<p style={{margin:"0px", fontSize:"18px", fontWeight:"1000"}}>Payment to {item.person}</p>) : (<p style={{margin:"0px", fontSize:"18px", fontWeight:"1000"}}> Payment from {item.person}</p>) }
+                                            <p style={{margin:"0px", fontSize:"14px"}}className="date-expense">{item.date || "none"}</p>
+                                            <p style={{margin:"0px", fontSize:"14px"}}className="date-expense">{item.category}</p>
+                                        </div>
+                                        {item.value < 0 ? (<p style={{color:"rgb(205 73 78)", margin:"0px 35px 0px 35px", display:"flex", alignItems:"center", fontSize:"22px", width:"25%", justifyContent:"flex-end"}}>{String(item.value).replace('-', '-$')}</p>) : (
+                                            <p style={{color:"rgb(96 176 96)", margin:"0px 35px 0px 35px", display:"flex", alignItems:"center", fontSize:"22px", width:"25%", justifyContent:"flex-end"}}>+${item.value}</p>
+                                        ) }
+
+                                        <button onClick={(e) => {editExpense(item); setDropCategory(false); setDropSort(false); setSavedDropCategory(false);}} style={{fontSize:"16px", border:"1px solid gray", width:"125px", borderRadius:"10px", padding:"5px 10px 5px 10px", transition:".3s", margin:"15px"}} className="transaction-edit">Edit</button>
+
+                                        </>
+                                    ):(
+                                        <>  
+                                            <div className="transaction-category-time-stamp" style={{display:"flex", flexDirection:"column", gap:"5px", textAlign:"left", margin:"15px 0px 15px 15px"}}>
+                                                <input value={savedPerson} onChange={(e) => setSavedPerson(e.target.value)} maxLength={15}/>
+                                                <p style={{margin:"0px", fontSize:"14px"}}className="date-expense">{item.date || "none"}</p>
+                                            </div>
+                                            <div className="dropdown-menu" style={{fontSize:"0px"}}>
+                                                <button type="button" onClick={dropdownSavedCategory} className="customize-expense" style={{width:"100px"}}>{savedCategory}</button>
+                                                {dropSavedCategory && <span className="categories" style={{width:"100px"}}>
+                                                    <button type="button" onClick={dropdownSavedCategory} value="Groceries">Groceries</button>
+                                                    <button type="button" onClick={dropdownSavedCategory} value="Alcohol">Alcohol</button>
+                                                    <button type="button" onClick={dropdownSavedCategory} value="Brotherhood">Brotherhood</button>
+                                                    <button type="button" onClick={dropdownSavedCategory} value="Fundraisers">Fundraisers</button>
+                                                    <button type="button" onClick={dropdownSavedCategory} value="Dues">Dues</button>
+                                                    <button type="button" onClick={dropdownSavedCategory} value="Open">Open</button>
+                                                    <button type="button" onClick={dropdownSavedCategory} value="Misc.">Misc.</button>
+                                                </span>}
+                                            </div>
+                                            <input 
+                                                style={{width:"70px"}}
+                                                type="text" 
+                                                value={savedValue} 
+                                                onChange={handleSavedChange}
+                                                onKeyDown={(e) => {
+                                                    if (["e","E","+"].includes(e.key)) e.preventDefault();
+                                                    if (e.key === "." && e.currentTarget.value.includes(".")) e.preventDefault();
+                                                  }}
+                                                maxLength={9}
+                                                step="0.01" 
+                                                min="0" 
+                                                placeholder="Enter amount..."
+                                            />
+                                            
+                                            <div className="edit-dropdown">
+                                                {editingExpense === item._id && 
+                                                    <div className="edit-menu">  
+                                                        <button className="edit-cancel" type="button" onClick={() => setEditingExpense(null)}>Cancel</button>
+                                                        <button className="edit-save" type="button" onClick={() => (saveExpense(item))}>Save</button>
+                                                        <button className="edit-delete" onClick={() => {setShowModal("delete"); setDeletedItem(item)}}>Delete </button>
+                                                    </div>}
+                                            </div>
+                                        </> 
+                                    )}             
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
                 <div className="transaction-sheet">
                     <div className="transaction-data-block">
                             <div className="transaction-data-header" style={{height:"25%"}}>
@@ -508,95 +592,41 @@ const Expenses = () => {
                             </div>
                     </div>
                 </div>
-
-                <div className="expense-sheet">
-                    <div className="transaction-chart">
-                        <div className="sheet-headers">
-                            <p className="date-expense">All Transactions</p>
-                            <p className="sort-dropdown">
-                                <button className="sort-expense" onClick={selectSort} value="Sort By:"> {sortExpense}</button>
-                                {dropSort && <span className="sort-dropmenu">
-                                    <button type="button" onClick={selectSort} value="Time (Latest)"> Time (Oldest)</button>
-                                    <button type="button" onClick={selectSort} value="Time (Oldest)"> Time (Latest)</button>
-                                    <button type="button" onClick={selectSort} value="Category (A to Z)"> Category (A to Z)</button>
-                                    <button type="button" onClick={selectSort} value="Value (L to H)"> Value (Low to High)</button>
-                                    <button type="button" onClick={selectSort} value="From/To (A to Z)"> From/To (A to Z)</button>
-                                </span>
-                                }
-                            </p>
-                        </div>
-                        <div className="scroll-chart">
-                            {expenseSheet === "Choose Expenses ▼" ? 
-                                (<h3> Select a Collection of Expenses</h3>) :
-                            (<>
-                                {allExpenses.length === 0 && <p>No Expenses Found</p>}
-                            </>) }
-                            
-                            {allExpenses.slice().reverse().map((item, index) => (
-                                <div key={index} className="expense-row" style={{ borderBottom: index !== allExpenses.length - 1 ? "1px solid gray" : "0px", margin:"0px 15px 0px 15px"}}>
-                                    { (editingExpense !== item._id) ? (
-                                        <>
-                                        <div className="transaction-category-time-stamp" style={{display:"flex", flexDirection:"column", width:"70%", textAlign:"left", margin:"15px"}}>
-                                            {item.value < 0? (<p style={{margin:"0px", fontSize:"18px", fontWeight:"1000"}}>Payment to {item.person}</p>) : (<p style={{margin:"0px", fontSize:"18px", fontWeight:"1000"}}> Payment from {item.person}</p>) }
-                                            <p style={{margin:"0px", fontSize:"14px"}}className="date-expense">{item.date || "none"}</p>
-                                            <p style={{margin:"0px", fontSize:"14px"}}className="date-expense">{item.category}</p>
-                                        </div>
-                                        {item.value < 0 ? (<p style={{color:"#f35858", margin:"0px 35px 0px 35px", display:"flex", alignItems:"center", fontSize:"22px", width:"25%", justifyContent:"flex-end"}}>{String(item.value).replace('-', '-$')}</p>) : (
-                                            <p style={{color:"#12b412", margin:"0px 35px 0px 35px", display:"flex", alignItems:"center", fontSize:"22px", width:"25%", justifyContent:"flex-end"}}>+${item.value}</p>
-                                        ) }
-
-                                        <button onClick={(e) => {editExpense(item); setDropCategory(false); setDropSort(false); setSavedDropCategory(false);}} style={{fontSize:"16px", border:"1px solid black", width:"125px", borderRadius:"10px", padding:"5px 10px 5px 10px", transition:".3s", margin:"15px"}} className="transaction-edit">Edit</button>
-                                            {editingExpense === item._id && (
-                                                <div className="edit-menu">  
-                                                    <button className="edit-delete" onClick={() => deleteExpense(item)}>Delete </button>
-                                                    <button className="edit-save" type="button" onClick={() => (saveExpense(item))}>Save</button>
-                                                    <button className="edit-cancel" type="button" onClick={() => setEditingExpense(null)}>Cancel</button>
-                                                </div>
-                                            )}
-                                        </>
-                                    ):(
-                                        <>
-                                            <p className="date-expense">{item.date || "none"}</p>
-                                            <div className="save-category-dropdown">
-                                                <button type="button" onClick={dropdownSavedCategory} className="saved-category">{savedCategory}</button>
-                                                {dropSavedCategory && <span className="save-category-menu">
-                                                    <button type="button" onClick={dropdownSavedCategory} value="Groceries">Groceries</button>
-                                                    <button type="button" onClick={dropdownSavedCategory} value="Alcohol">Alcohol</button>
-                                                    <button type="button" onClick={dropdownSavedCategory} value="Brotherhood">Brotherhood</button>
-                                                    <button type="button" onClick={dropdownSavedCategory} value="Fundraisers">Fundraisers</button>
-                                                    <button type="button" onClick={dropdownSavedCategory} value="Dues">Dues</button>
-                                                    <button type="button" onClick={dropdownSavedCategory} value="Open">Open</button>
-                                                    <button type="button" onClick={dropdownSavedCategory} value="Misc.">Misc.</button>
-                                                </span>}
-                                            </div>
-                                            <input 
-                                                type="number" 
-                                                value={savedValue} 
-                                                onChange={(e) => handleDecimalChange(e)} 
-                                                step="0.01" 
-                                                min="0" 
-                                                placeholder="Enter amount..."
-                                            />
-                                            <input value={savedPerson} onChange={(e) => setSavedPerson(e.target.value)}/>
-
-                                            <button onClick={(e) => {editExpense(item); setDropCategory(false); setDropSort(false); setSavedDropCategory(false);}} style={{fontSize:"16px", border:"1px solid black", width:"125px", borderRadius:"10px", padding:"5px 10px 5px 10px", transition:".3s"}} className="transaction-edit">Edit</button>
-                                            {editingExpense === item._id && (
-                                                <div className="edit-menu">  
-                                                    <button className="edit-delete" onClick={() => deleteExpense(item)}>Delete </button>
-                                                    <button className="edit-save" type="button" onClick={() => (saveExpense(item))}>Save</button>
-                                                    <button className="edit-cancel" type="button" onClick={() => setEditingExpense(null)}>Cancel</button>
-                                                </div>
-                                            )}
-                                        </> 
-                                    )}             
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-
             </div>
+            {showModal === "delete" && 
+            <Modal 
+                header={"Confirm deletion?"}
+                content={"Deleting this content is permanent and cannot be recovered."} 
+                type={"YesNo"}
+                onClose={() => setShowModal("none")}
+                onAnswer={(confirm) =>  {
+                    if (confirm) {
+                        deleteExpense(deletedItem);
+                    } 
+                    setShowModal("none")
+                }}
+            />
+            }
 
+            {showModal === "create" && 
+            <Modal 
+                header={"Create a Collection Name"}
+                content={"This can always be changed later."} 
+                type={"Create"}
+                onClose={() => setShowModal("none")}
+                onAnswer={(collectionName) =>  submitCollection(collectionName)}
+            />
+            }
+
+            {showModal === "error" && 
+            <Modal 
+                header={"An Expense needs to have..."}
+                content={errors} 
+                type={"Okay"}
+                onClose={() => {setShowModal("none"); setErrors([])}}
+                onAnswer={(collectionName) =>  submitCollection(collectionName)}
+            />
+            }
         </div>
     );
 };

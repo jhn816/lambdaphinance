@@ -129,8 +129,8 @@ export default function ExpenseChart({expenses, type}) {
                         left: 0,
                         bottom: 5,
                     }}>
-                    <Bar dataKey="gain" fill="#12b412" />
-                    <Bar dataKey="loss" fill="#f35858" />
+                    <Bar dataKey="gain" fill="rgb(96 176 96)" />
+                    <Bar dataKey="loss" fill="rgb(205 73 78)" />
                     <XAxis dataKey="month" />
                     <YAxis />
                     <Tooltip content={<Tip />} cursor={{ fill: "rgba(0,0,0,0.05)"}}/>

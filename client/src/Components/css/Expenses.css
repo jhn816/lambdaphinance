@@ -28,15 +28,18 @@
 }
 
 .right-add {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     width: calc(72% - 100px);
-    height: calc(100% - 100px);
-    border-left: 1px solid black;
+    height: calc(90% - 100px);
     padding: 50px;
 }
 
 .left-add {
     background-color: white;    ;
     width: 28%;
+    border-right: 1px solid gray;
 }
 .expense-sheet {
     display: flex;
@@ -85,7 +88,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin: 10px;
+    margin: 5px 10px 5px 10px;
 }
 
 .customize-expense {
@@ -119,7 +122,7 @@
     border: 1px solid black;
 }
 
-.recharts-surface:focus, .expense-inputs input:focus , .expense-amount input:focus {
+.recharts-surface:focus, .recharts-sector:focus, .expense-inputs input:focus , .expense-amount input:focus {
     outline: none;
   }
 
@@ -132,10 +135,6 @@
     width: 55%;
     text-align: left;
     margin: 0px;
-}
-
-.add-container form {
-    height: 50%;
 }
 
 .class-submit {
@@ -177,7 +176,7 @@
 }
 
 .form-buttons{
-    margin-top: 30px;
+    margin-top: 15px;
     margin-right: 10px;
     margin-left: 10px;
     display: flex;
@@ -191,7 +190,7 @@
     display:flex;
     justify-content: center;
     align-items: center;
-    margin: 10px 10px 0px 10px;
+    margin: 0px 10px 0px 10px;
 }
 
 .amount-box {
@@ -231,14 +230,15 @@
     flex-direction: column;
     z-index: 10;
     width: 150px;
-    top: 115%;
     position: absolute;
     overflow: hidden;
     border: 1px solid black;
+    filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.102));
 }
 
 .categories button {
-    width: 150px;
+    width: 100%;
+    font-size: 12px;
     height: 40px;
     background-color: white;
     border: 0px;
@@ -464,22 +464,10 @@
 }
 
 .expense-row input {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 100;
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    color: black;
-    width: 20%;
-    max-width: 25%;
-    height: 30px;
-    margin: 0px;
-    border: 1px solid rgb(0, 136, 255);
-    background-color: #faf5ef;
-    padding: 5px;
-    padding-bottom: 10px;
-    padding-top: 10px;
-    font-size: 15px;
+    width: 60%;
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid gray;
 }
 
 .save-category-dropdown {
@@ -556,24 +544,20 @@
     max-width: 25%;
     height: 30px;
     margin: 0px;
-    border: .1px solid black;
-    padding: 5px;
-    padding-bottom: 10px;
-    padding-top: 10px;
+    padding: 10px 5px 10px 5px;
 }
+
 
 .edit-menu {
     display: flex;
     flex-direction: column;
     position:absolute;
     z-index: 11;
-    width: 90%;
-    top: 85%;
+    width: 100%;
+    top: -25%;
     border-radius: 10px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
     overflow: hidden;
-    border: .1px solid black;
+    border: .1px solid gray;
 }
 
 .edit-menu p, .edit-menu button{
@@ -581,7 +565,6 @@
     align-items: center;
     justify-content: center;
     font-weight: 100;
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     background-color: #ebeaea;
     color: black;
     width: 100%;
@@ -598,12 +581,12 @@
 }
 
 .edit-delete:hover {
-    background-color: rgb(255, 121, 121);
+    background-color: rgb(255, 190, 192);
     cursor: pointer;
 }
 
 .edit-save:hover {
-    background-color: rgb(117, 255, 117);
+    background-color: rgb(190, 255, 190);
     cursor: pointer;
 }
 
