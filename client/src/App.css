@@ -10,7 +10,7 @@
 @font-face {
   font-family: 'MontserratBold';
   src: url('./assets/fonts/Montserrat-Bold.otf') format('opentype');
-  font-weight: 700;
+  font-weight: 100;
   font-style: normal;
 }
 
@@ -29,7 +29,7 @@
 }
 
 h1,h2,h3,h4,h5,h6 {
-  font-family: 'MontserratReg', sans-serif;
+  font-family: 'MontserratBold', sans-serif;
 }
 body {
   font-family: 'MontserratReg', sans-serif;

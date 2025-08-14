@@ -13,6 +13,8 @@ const Home = ({loggedIn}) => {
     const [allCollections, setAllCollections] = useState([]);
     const [listFriends, setListFriends] = useState([]);
 
+    const [viewAllCards, setViewAllCards] = useState(false);
+
     useEffect( () => {
         if (!token) {
             navigate("/");
@@ -113,9 +115,33 @@ const Home = ({loggedIn}) => {
 
                 <div className="home-content">
                     <div className="home-collections">
-                        <h4> Your Collections</h4>
-                        <div className="home-collections-container">
-                            { allCollections.map((item, index) => (
+
+                        <div className="home-debts-header">
+                            <h4> Collection Cards </h4>
+                            <div className="home-debts-category">
+                                <button onClick={() => setViewAllCards(!viewAllCards)}> View All </button>
+                            </div>
+                        </div>
+
+                        <div className= { viewAllCards ? "home-collections-container-view-all" : "home-collections-container"}>
+                            { viewAllCards && allCollections.map((item, index) => (
+                                    <div key={index} className="home-collections-box">
+
+                                        <div className="home-collections-top"> 
+                                            <p> {item.collectionName} </p>
+                                            <button> Manage </button>
+                                        </div>
+
+                                        <div className="home-collections-down"> 
+                                            {item.totalBalance < 0 ? (<p style={{fontSize:"34px", color:"#b4ffab"}}> {String(item.totalBalance).replace('-', '-$')} </p>) :(
+                                                <p style={{fontSize:"34px", color:"#b4ffab"}}> ${item.totalBalance} </p>
+                                            )}
+                                            <p style={{fontSize:"22px", fontWeight:"1000"}}> Balance </p>
+                                            
+                                        </div>
+                                    </div>
+                                ))}
+                            { !viewAllCards && allCollections.slice(0,3).map((item, index) => (
                                 <div key={index} className="home-collections-box">
 
                                     <div className="home-collections-top"> 
@@ -124,13 +150,13 @@ const Home = ({loggedIn}) => {
                                     </div>
 
                                     <div className="home-collections-down"> 
-                                        <p style={{fontSize:"34px"}}> {item.totalBalance} </p>
+                                        {item.totalBalance < 0 ? (<p style={{fontSize:"34px", color:"#b4ffab"}}> {String(item.totalBalance).replace('-', '-$')} </p>) :(
+                                            <p style={{fontSize:"34px", color:"#b4ffab"}}> ${item.totalBalance} </p>
+                                        )}
                                         <p style={{fontSize:"22px", fontWeight:"1000"}}> Balance </p>
                                         
                                     </div>
-
                                 </div>
-
                             ))}
                         
                         </div>
@@ -168,7 +194,7 @@ const Home = ({loggedIn}) => {
 
                     <div className="home-debts">
                         <div className="home-debts-header">
-                            <h6 style={{padding:"5px 0px 5px 0px"}}> Your Debts </h6>
+                            <h6> Your Debts </h6>
                             <div className="home-debts-category">
                                 <button> To You </button>
                                 <button> From You </button>
