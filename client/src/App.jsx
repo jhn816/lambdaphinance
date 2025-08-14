@@ -13,27 +13,6 @@ import About from "./Components/About.jsx"
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
   const token = localStorage.getItem("token");
-  
-  useEffect( () => {
-    try {
-      fetch(`${process.env.REACT_APP_API_BASE_URL}/api/profile`, {
-          method:"GET",
-          headers: {
-              "Authorization": `Bearer ${localStorage.getItem("token")}`,
-              "Content-Type":"application/json"
-          }
-      }) .then( (res) => res.json() )
-      .then( (result) => {
-          if (result.error === "jwt verify" || !result.user) {
-              console.log("Profile not found");
-              localStorage.removeItem("token");
-              return;
-          }
-      })
-    } catch (error) {
-      console.log ("Error:", error);
-    }
-}, [token]);;
 
   return (
     <Router>

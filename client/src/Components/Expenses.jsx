@@ -442,7 +442,7 @@ const Expenses = () => {
                                     </span>}
                                 </div>
 
-                                <button type="button" value="true" className="customize-expense" onClick={() => setGain(!gain)} style={{width:"45%"}}> + / -</button>
+                                <button type="button" value="true" className="customize-expense" onClick={() => setGain(!gain)} style={{width:"50%"}}> + / -</button>
                             </div>
                             
                             <div className="expense-inputs" style={{marginTop:"0px"}}>
@@ -459,18 +459,18 @@ const Expenses = () => {
                         <span style={{borderTop:"1px solid gray"}}/>
                         <div style={{display:"flex", flexDirection:"column", justifyContent:"center"}}>
                             <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", margin:"5px", padding:"15px 20px 15px 20px",  backgroundColor: "rgb(55, 92, 167)", borderRadius:"20px", filter: "drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.10))"}}>
-                                <h4 style={{margin:"0px", color:"white", fontSize:"18px"}}>Balance</h4>
-                                <p style={{margin:"0px", color:"white", fontSize: "26px"}}>${totalBalance ? totalBalance.toFixed(2) : "0.00"}</p>
+                                <h4 style={{margin:"0px", color:"white", fontSize:"15px"}}>Balance</h4>
+                                <p style={{margin:"0px", color:"white", fontSize: "22px"}}>${totalBalance ? totalBalance.toFixed(2) : "0.00"}</p>
                             </div>  
                             
                             <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", margin:"5px", padding:"15px 20px 15px 20px",  backgroundColor: "rgb(96 176 96)", borderRadius:"20px", filter: "drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.10))"}}>
-                                <h4 style={{margin:"0px", color:"white", fontSize:"18px"}}>Income</h4>
-                                <p style={{margin:"0px", color:"white", fontSize: "26px"}}>${netGain ? netGain.toFixed(2) : "0.00"}</p>
+                                <h4 style={{margin:"0px", color:"white", fontSize:"15px"}}>Income</h4>
+                                <p style={{margin:"0px", color:"white", fontSize: "22px"}}>${netGain ? netGain.toFixed(2) : "0.00"}</p>
                             </div>
 
                             <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", margin:"5px", padding:"15px 20px 15px 20px",  backgroundColor: "rgb(205 73 78)", borderRadius:"20px", filter: "drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.10))"}}>
-                                <h4 style={{margin:"0px", color:"white", fontSize:"18px"}}>Expenses</h4>
-                                <p style={{ margin:"0px", color:"white", fontSize: "26px"}}>${netLoss ? netLoss.toFixed(2) : "0.00"}</p>
+                                <h4 style={{margin:"0px", color:"white", fontSize:"15px"}}>Expenses</h4>
+                                <p style={{ margin:"0px", color:"white", fontSize: "22px"}}>${netLoss ? netLoss.toFixed(2) : "0.00"}</p>
                             </div>  
                         </div>
                     </div>
@@ -506,15 +506,15 @@ const Expenses = () => {
                                     { (editingExpense !== item._id) ? (
                                         <>
                                         <div className="transaction-category-time-stamp" style={{display:"flex", flexDirection:"column", width:"70%", textAlign:"left", margin:"15px"}}>
-                                            {item.value < 0? (<p style={{margin:"0px", fontSize:"18px", fontWeight:"1000"}}>Payment to {item.person}</p>) : (<p style={{margin:"0px", fontSize:"18px", fontWeight:"1000"}}> Payment from {item.person}</p>) }
+                                            {item.value < 0? (<p style={{margin:"0px", fontSize:"15px", fontWeight:"1000"}}>Payment to {item.person}</p>) : (<p style={{margin:"0px", fontSize:"15px", fontWeight:"1000"}}> Payment from {item.person}</p>) }
                                             <p style={{margin:"0px", fontSize:"14px"}}className="date-expense">{item.date || "none"}</p>
                                             <p style={{margin:"0px", fontSize:"14px"}}className="date-expense">{item.category}</p>
                                         </div>
-                                        {item.value < 0 ? (<p style={{color:"rgb(205 73 78)", margin:"0px 35px 0px 35px", display:"flex", alignItems:"center", fontSize:"22px", width:"25%", justifyContent:"flex-end"}}>{String(item.value).replace('-', '-$')}</p>) : (
-                                            <p style={{color:"rgb(96 176 96)", margin:"0px 35px 0px 35px", display:"flex", alignItems:"center", fontSize:"22px", width:"25%", justifyContent:"flex-end"}}>+${item.value}</p>
+                                        {item.value < 0 ? (<p style={{color:"rgb(205 73 78)", margin:"0px 5px 0px 5px", display:"flex", fontWeight:"1000",fontSize:"18px", width:"25%", justifyContent:"flex-end"}}>{String(item.value).replace('-', '-$')}</p>) : (
+                                            <p style={{color:"rgb(96 176 96)", margin:"0px 5px 0px 5px", display:"flex", alignItems:"center", fontWeight:"1000", fontSize:"18px", width:"25%", justifyContent:"flex-end"}}>+${item.value}</p>
                                         ) }
 
-                                        <button onClick={(e) => {editExpense(item); setDropCategory(false); setDropSort(false); setSavedDropCategory(false);}} style={{fontSize:"16px", border:"1px solid gray", width:"125px", borderRadius:"10px", padding:"5px 10px 5px 10px", transition:".3s", margin:"15px"}} className="transaction-edit">Edit</button>
+                                        <button onClick={(e) => {editExpense(item); setDropCategory(false); setDropSort(false); setSavedDropCategory(false);}} style={{width:"10%",fontSize:"16px", border:"1px solid gray", width:"125px", borderRadius:"10px", padding:"5px 10px 5px 10px", transition:".3s", margin:"5px"}} className="transaction-edit">Edit</button>
 
                                         </>
                                     ):(

@@ -18,10 +18,10 @@ export default function Modal({status, header, content, type, onClose, onAnswer}
             setVisible(false)
 
             if (action === "true") {
-                const j = setTimeout( () => {onAnswer(true)}, 800);
+                const j = setTimeout( () => {onAnswer(true)}, 300);
                 return () => clearTimeout(j);
             } else if (action === "collection") {
-                const j = setTimeout( () => {onAnswer(collectionName)}, 800);
+                const j = setTimeout( () => {onAnswer(collectionName)}, 300);
                 return () => clearTimeout(j);
             } else {
                 const j = setTimeout( () => {onClose()}, 800);

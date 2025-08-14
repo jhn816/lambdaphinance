@@ -144,7 +144,7 @@
     border-radius: 50px;
 }
 
-h1 {
+.profile-section h1 {
     color: #213e78;
     font-family: UnageoReg, sans-serif;
     font-weight: 1000;
@@ -154,7 +154,7 @@ h1 {
     position: relative;
     text-align: left;
 }
-h1::after {
+.profile-section h1::after {
     content: "";
     display: block;
     position: absolute;

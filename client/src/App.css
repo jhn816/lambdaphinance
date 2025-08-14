@@ -1,14 +1,43 @@
 @import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@400;600;700&display=swap');
 
+@font-face {
+  font-family: 'MontserratBlack';
+  src: url('./assets/fonts/Montserrat-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+}
 
+@font-face {
+  font-family: 'MontserratBold';
+  src: url('./assets/fonts/Montserrat-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
 
+@font-face {
+  font-family: 'MontserratLight';
+  src: url('./assets/fonts/Montserrat-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MontserratReg';
+  src: url('./assets/fonts/Montserrat-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-family: 'MontserratReg', sans-serif;
+}
 body {
-  font-family: 'UnageoReg', sans-serif;
+  font-family: 'MontserratReg', sans-serif;
 
 }
 
 button {
-  font-family: 'UnageoReg', sans-serif;
+  font-family: 'MontserratReg', sans-serif;
 }
 
 .App {
