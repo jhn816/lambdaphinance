@@ -3,6 +3,7 @@ import Login from "./Login.jsx";
 import userEvent from "@testing-library/user-event";
 import "./css/Home.css";
 import { useNavigate } from "react-router-dom";
+import Modal from "./Modal.jsx";
 
 
 const Home = ({loggedIn}) => {
@@ -14,6 +15,9 @@ const Home = ({loggedIn}) => {
     const [listFriends, setListFriends] = useState([]);
 
     const [viewAllCards, setViewAllCards] = useState(false);
+
+    const [showModal, setShowModal] = useState("none");
+    const [collectionCollapse, setCollectionCollapse] = useState(true);
 
     useEffect( () => {
         if (!token) {
@@ -104,13 +108,27 @@ const Home = ({loggedIn}) => {
         })
     }
 
+    const checkCollections = () => {
+        if (allCollections.length < 4) {
+            setShowModal("no-collections");
+        } else {
+            if (!collectionCollapse) {
+                setCollectionCollapse(!collectionCollapse);
+                const t = setTimeout( ()=> setViewAllCards(!viewAllCards), 600);
+            } else {
+                setCollectionCollapse(!collectionCollapse);
+                setViewAllCards(!viewAllCards);
+            }
+        }
+    }
+
     return (
-    (!token ? (<Login /> ) : (
+    (!token ? (<Login /> ) : ( <>
         <div className="home-page">
             <div className="left-home">
                 <div className="landing-page">
                     <h1 style={{fontSize:"42px"}}> Good Afternoon, {username}</h1>
-                    <p style={{fontSize:"26px"}}> What are we doing today?</p>
+                    <p style={{fontSize:"26px"}}> Anything NU?</p>
                 </div>
 
                 <div className="home-content">
@@ -119,29 +137,12 @@ const Home = ({loggedIn}) => {
                         <div className="home-debts-header">
                             <h4> Collection Cards </h4>
                             <div className="home-debts-category">
-                                <button onClick={() => setViewAllCards(!viewAllCards)}> View All </button>
+                                <button onClick={checkCollections}> View All </button>
                             </div>
                         </div>
 
-                        <div className= { viewAllCards ? "home-collections-container-view-all" : "home-collections-container"}>
-                            { viewAllCards && allCollections.map((item, index) => (
-                                    <div key={index} className="home-collections-box">
-
-                                        <div className="home-collections-top"> 
-                                            <p> {item.collectionName} </p>
-                                            <button> Manage </button>
-                                        </div>
-
-                                        <div className="home-collections-down"> 
-                                            {item.totalBalance < 0 ? (<p style={{fontSize:"34px", color:"#b4ffab"}}> {String(item.totalBalance).replace('-', '-$')} </p>) :(
-                                                <p style={{fontSize:"34px", color:"#b4ffab"}}> ${item.totalBalance} </p>
-                                            )}
-                                            <p style={{fontSize:"22px", fontWeight:"1000"}}> Balance </p>
-                                            
-                                        </div>
-                                    </div>
-                                ))}
-                            { !viewAllCards && allCollections.slice(0,3).map((item, index) => (
+                        <div className= "home-collections-container">
+                            {allCollections.slice(0,3).map((item, index) => (<>
                                 <div key={index} className="home-collections-box">
 
                                     <div className="home-collections-top"> 
@@ -157,8 +158,33 @@ const Home = ({loggedIn}) => {
                                         
                                     </div>
                                 </div>
+                                </>
                             ))}
-                        
+                            {(allCollections.length > 3 && viewAllCards) && allCollections.slice(3, allCollections.length).map((item,index) => (
+                                <>
+                                <div key={index} className={`home-collections-box ${collectionCollapse ? "collection-slide-up" : "collection-slide-down" }`}>
+
+                                    <div className="home-collections-top"> 
+                                        <p> {item.collectionName} </p>
+                                        <button> Manage </button>
+                                    </div>
+
+                                    <div className="home-collections-down"> 
+                                        {item.totalBalance < 0 ? (<p style={{fontSize:"34px", color:"#b4ffab"}}> {String(item.totalBalance).replace('-', '-$')} </p>) :(
+                                            <p style={{fontSize:"34px", color:"#b4ffab"}}> ${item.totalBalance} </p>
+                                        )}
+                                        <p style={{fontSize:"22px", fontWeight:"1000"}}> Balance </p>
+                                        
+                                    </div>
+                                </div>
+                                </>
+                            ))}
+                            {allCollections.length < 3 && 
+                                [...Array(3 - allCollections.length)].map((_, index) => (
+                                    <div key={index} className="home-collections-box-empty" style={{opacity:"50%", filter:"drop-shadow(0px 0px 0px black)"}}>
+
+                                    </div>
+                                ))}
                         </div>
                     </div>
 
@@ -168,7 +194,7 @@ const Home = ({loggedIn}) => {
                         <div className="home-quick-access-buttons">
                             <button>
                                 <div className="quick-button">
-                                    <p> Make An Expense </p>
+                                    <p> Make A Transaction </p>
                                 </div>
                             </button>
 
@@ -180,7 +206,7 @@ const Home = ({loggedIn}) => {
 
                             <button>
                                 <div className="quick-button">
-                                    <p> Share A Collection </p>
+                                    <p> View Groups </p>
                                 </div>
                             </button>
 
@@ -218,6 +244,17 @@ const Home = ({loggedIn}) => {
                 </div>
             </div>
         </div>
+        {showModal === "no-collections" && 
+            <Modal 
+                status={showModal}
+                header={"Not Enough!"}
+                content={"We couldn't find anymore collections from you in our database."} 
+                type={"Okay"}
+                onClose={() => {setShowModal("none")}}
+                // onAnswer={() =>  {submitCollection(collectionName); setShowModal("none")}}
+            />
+            }
+            </>
         
         )
     )

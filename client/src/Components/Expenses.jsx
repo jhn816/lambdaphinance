@@ -627,7 +627,7 @@ const Expenses = () => {
                 content={errors} 
                 type={"Okay"}
                 onClose={() => {setShowModal("none"); setErrors([]);}}
-                onAnswer={(collectionName) =>  {submitCollection(collectionName); setShowModal("none")}}
+                onAnswer={() =>  {setShowModal("none")}}
             />
             }
         </div>

@@ -8,7 +8,7 @@ export default function Modal({status, header, content, type, onClose, onAnswer}
 
     // animation 
     const [animate, setAnimate] = useState(status); // not none
-    const [visible, setVisible] = useState(false);
+    const [visible, setVisible] = useState(true);
     const [action, setAction] = useState("");
 
     useEffect( ()=> {
@@ -24,7 +24,7 @@ export default function Modal({status, header, content, type, onClose, onAnswer}
                 const j = setTimeout( () => {onAnswer(collectionName)}, 300);
                 return () => clearTimeout(j);
             } else {
-                const j = setTimeout( () => {onClose()}, 800);
+                const j = setTimeout( () => {onClose()}, 300);
                 return () => clearTimeout(j);
             }
         }
