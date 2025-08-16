@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import Login from "./Login.jsx";
 import userEvent from "@testing-library/user-event";
 import "./css/Home.css";
@@ -10,6 +10,7 @@ const Home = ({loggedIn}) => {
     const navigate = useNavigate();
     const token = localStorage.getItem("token")
     const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
 
     const [allCollections, setAllCollections] = useState([]);
     const [listFriends, setListFriends] = useState([]);
@@ -17,7 +18,9 @@ const Home = ({loggedIn}) => {
     const [viewAllCards, setViewAllCards] = useState(false);
 
     const [showModal, setShowModal] = useState("none");
+    const [newCollectionName, setNewCollectionName] = useState("none");
     const [collectionCollapse, setCollectionCollapse] = useState(true);
+    const [collectionIdle, setCollectionIdle] = useState(true);
 
     useEffect( () => {
         if (!token) {
@@ -39,6 +42,7 @@ const Home = ({loggedIn}) => {
                 return;
             }
             setUsername(result.user.username);
+            setEmail(result.user.email);
             getUserCollections(result.user.email);
         })
     }, [token, navigate]);
@@ -112,14 +116,47 @@ const Home = ({loggedIn}) => {
         if (allCollections.length < 4) {
             setShowModal("no-collections");
         } else {
+            setCollectionIdle(true);
             if (!collectionCollapse) {
-                setCollectionCollapse(!collectionCollapse);
-                const t = setTimeout( ()=> setViewAllCards(!viewAllCards), 600);
+                setCollectionCollapse(true);
+                const t = setTimeout( ()=> {setViewAllCards(false)}, 700);
             } else {
-                setCollectionCollapse(!collectionCollapse);
-                setViewAllCards(!viewAllCards);
+                setCollectionCollapse(false);
+                setViewAllCards(true);
+                const t = setTimeout( ()=> {setCollectionIdle(false);}, 700);
             }
         }
+    }
+
+
+    const submitCollection = (newCollectionName) => {
+        if (newCollectionName === "") {
+            alert("Please enter a collection name");
+            return;
+        }
+
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/addcollection`, {
+            method:"POST",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                collectionName : newCollectionName,
+                email
+            })
+        }).then((res) => res.json() )
+        .then( (result) => {
+            if (result.error) {
+                console.log(result.error);
+                return;
+            } else if (result.message === "Collection with that name already exists") {
+                alert("Collection with that name already exists");
+                return;
+            }
+            console.log("Collection saved successfully", result.collection);
+            setAllCollections(prevCollections => [...prevCollections, result.collection]);
+        })
+        .catch(error => console.error("Error:", error));
     }
 
     return (
@@ -137,6 +174,7 @@ const Home = ({loggedIn}) => {
                         <div className="home-debts-header">
                             <h4> Collection Cards </h4>
                             <div className="home-debts-category">
+                                <button onClick={() => setShowModal("collection-create")}>  Create + </button>
                                 <button onClick={checkCollections}> View All </button>
                             </div>
                         </div>
@@ -162,7 +200,7 @@ const Home = ({loggedIn}) => {
                             ))}
                             {(allCollections.length > 3 && viewAllCards) && allCollections.slice(3, allCollections.length).map((item,index) => (
                                 <>
-                                <div key={index} className={`home-collections-box ${collectionCollapse ? "collection-slide-up" : "collection-slide-down" }`}>
+                                <div key={index} className={`home-collections-box ${ collectionIdle && (collectionCollapse ? "collection-slide-up" : "collection-slide-down")}`}>
 
                                     <div className="home-collections-top"> 
                                         <p> {item.collectionName} </p>
@@ -222,6 +260,7 @@ const Home = ({loggedIn}) => {
                         <div className="home-debts-header">
                             <h6> Your Debts </h6>
                             <div className="home-debts-category">
+                                <button> Create + </button>
                                 <button> To You </button>
                                 <button> From You </button>
                             </div>
@@ -244,14 +283,24 @@ const Home = ({loggedIn}) => {
                 </div>
             </div>
         </div>
-        {showModal === "no-collections" && 
+            {showModal === "no-collections" && 
+                <Modal 
+                    status={showModal}
+                    header={"Not Enough!"}
+                    content={"We couldn't find anymore collections from you in our database."} 
+                    type={"Okay"}
+                    onClose={() => {setShowModal("none")}}
+                    // onAnswer={() =>  {submitCollection(collectionName); setShowModal("none")}}
+                />
+            }
+            {showModal === "collection-create" && 
             <Modal 
                 status={showModal}
-                header={"Not Enough!"}
-                content={"We couldn't find anymore collections from you in our database."} 
-                type={"Okay"}
-                onClose={() => {setShowModal("none")}}
-                // onAnswer={() =>  {submitCollection(collectionName); setShowModal("none")}}
+                header={"Create a Collection Name"}
+                content={"This can always be changed later."} 
+                type={"Create"}
+                onClose={() => setShowModal("none")}
+                onAnswer={(collectionName) =>  {submitCollection(newCollectionName) ; setShowModal("none")}}
             />
             }
             </>
