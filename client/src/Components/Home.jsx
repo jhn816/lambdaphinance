@@ -278,8 +278,23 @@ const Home = ({loggedIn}) => {
                     <h3> Recent Transactions</h3>
                 </div>
 
-                <div> 
+                <div style={{width:"100%", display:"flex", flexDirection:"column", alignItems:"center"}}> 
                     <h3> Friends Lists</h3>
+                    <div className="home-friend">
+                        {listFriends.map((item, index) => (
+                            <div key={index} className="home-friend-box">
+                                <div className="home-friend-left">
+                                    <img src={item.profileImage} alt="Profile" height={60} style={{borderRadius:"50px"}}/>
+                                    <p> {item.username} </p>
+                                </div>
+                                <div className="home-friend-right">
+                                    <button> Message </button>
+                                    <button> Alert </button>
+                                </div>
+                            </div>
+
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
@@ -296,11 +311,11 @@ const Home = ({loggedIn}) => {
             {showModal === "collection-create" && 
             <Modal 
                 status={showModal}
-                header={"Create a Collection Name"}
+                header={"Create a Coll  ection Name"}
                 content={"This can always be changed later."} 
                 type={"Create"}
                 onClose={() => setShowModal("none")}
-                onAnswer={(collectionName) =>  {submitCollection(newCollectionName) ; setShowModal("none")}}
+                onAnswer={(newCollectionName) =>  {submitCollection(newCollectionName) ; setShowModal("none")}}
             />
             }
             </>

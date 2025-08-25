@@ -217,7 +217,15 @@
 .your-collection {
     height: 50%;
     overflow: scroll;
+    overflow: auto;              /* or overflow-x / overflow-y */
+    -ms-overflow-style: none;    /* IE 10+ / Edge (Legacy) */
+    scrollbar-width: none;       /* Firefox */
 }
+
+.your-collection::-webkit-scrollbar {
+    width: 0;      /* vertical scrollbar */
+    height: 0;     /* horizontal scrollbar */
+  }
 
 .your-collection p {
     font-size: 20px;
@@ -291,8 +299,15 @@
 .scroll-collection {
     display: flex;
     flex-direction: column;
-    overflow: scroll
+    overflow: scroll;
+    -ms-overflow-style: none;    /* IE 10+ / Edge (Legacy) */
+    scrollbar-width: none;       /* Firefox */
 }
+
+.scroll-collection::-webkit-scrollbar {
+    width: 0;      /* vertical scrollbar */
+    height: 0;     /* horizontal scrollbar */
+  }
 
 .expense-sheets .scroll-collection button {
     background-color: transparent;
@@ -407,7 +422,14 @@
 .scroll-chart {
     overflow: scroll;
     height: 92%;
+    -ms-overflow-style: none;    /* IE 10+ / Edge (Legacy) */
+    scrollbar-width: none;       /* Firefox */
 }
+
+.scroll-chart::-webkit-scrollbar {
+    width: 0;      /* vertical scrollbar */
+    height: 0;     /* horizontal scrollbar */
+  }
 
 .sort-expense {
     background-color: #f6f6f6;
