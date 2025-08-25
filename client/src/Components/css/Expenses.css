@@ -363,7 +363,7 @@
     background-color: #474a53;
     padding: 0px 10px 0px 10px;
     font-weight: 1000;
-    height: 8%;
+    height: 10%;
 }
 
 .sheet-headers p{
@@ -661,6 +661,19 @@
     border-radius: 10px;
     padding: 10px;
     border: 1px solid gray;
+}
+
+@media (max-width: 1440px) {
+    .right-add {
+        width: calc(72% - 50px);
+        height: calc(90% - 50px);
+        padding: 25px;
+    }
+
+    .expense-sheets .scroll-collection button {
+        font-size: 14px;
+    }
+
 }
 
 @media (max-width:768px) {
