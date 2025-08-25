@@ -190,7 +190,7 @@ const Home = ({loggedIn}) => {
 
                                     <div className="home-collections-down"> 
                                         {item.totalBalance < 0 ? (<p style={{fontSize:"34px", color:"#b4ffab"}}> {String(item.totalBalance).replace('-', '-$')} </p>) :(
-                                            <p style={{fontSize:"34px", color:"#b4ffab"}}> ${item.totalBalance} </p>
+                                            <p className="home-collection-balance"> ${item.totalBalance} </p>
                                         )}
                                         <p style={{fontSize:"22px", fontWeight:"1000"}}> Balance </p>
                                         
@@ -209,7 +209,7 @@ const Home = ({loggedIn}) => {
 
                                     <div className="home-collections-down"> 
                                         {item.totalBalance < 0 ? (<p style={{fontSize:"34px", color:"#b4ffab"}}> {String(item.totalBalance).replace('-', '-$')} </p>) :(
-                                            <p style={{fontSize:"34px", color:"#b4ffab"}}> ${item.totalBalance} </p>
+                                            <p className="home-collection-balance"> ${item.totalBalance} </p>
                                         )}
                                         <p style={{fontSize:"22px", fontWeight:"1000"}}> Balance </p>
                                         
