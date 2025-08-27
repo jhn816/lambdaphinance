@@ -44,6 +44,8 @@ const Expenses = () => {
     const [showModal, setShowModal] = useState("none");
     const [errors ,setErrors] = useState([]);
 
+    const categories = ["Groceries", "Fundraiser", "Shopping", "Dining", "Travel", "Utilities", "Rent", "Custom..."]
+
     useEffect( () => {
         if (!token) {
             navigate("/");
@@ -325,11 +327,14 @@ const Expenses = () => {
         } else {
             if (e.target.value) {
                 let category = e.target.value;
+                if (category === "Custom...") {
+                    setShowModal("Custom");
+                    setDropCategory(false);
+                    return;
+                }
                 setCategory(category);
-
             }
-            let dropCategory = false;
-            setDropCategory(dropCategory);
+            setDropCategory(false);
         }
         setEditingExpense(null);
         setDropSort(false);
@@ -432,13 +437,9 @@ const Expenses = () => {
                                     <button type="button" onClick={dropdownCategory} className="customize-expense">{category}</button>
 
                                     {dropCategory && <span className="categories">
-                                        <button type="button" onClick={dropdownCategory} value="Groceries">Groceries</button>
-                                        <button type="button" onClick={dropdownCategory} value="Alcohol">Alcohol</button>
-                                        <button type="button" onClick={dropdownCategory} value="Brotherhood">Brotherhood</button>
-                                        <button type="button" onClick={dropdownCategory} value="Fundraiser">Fundraiser</button>
-                                        <button type="button" onClick={dropdownCategory} value="Dues">Dues</button>
-                                        <button type="button" onClick={dropdownCategory} value="Open">Open</button>
-                                        <button type="button" onClick={dropdownCategory} value="Misc.">Misc.</button>
+                                        {categories.map((value, index) => (
+                                            <button type="button" key={index} onClick={dropdownCategory} value={value}>{value}</button>
+                                        ))}
                                     </span>}
                                 </div>
 
@@ -628,6 +629,16 @@ const Expenses = () => {
                 type={"Okay"}
                 onClose={() => {setShowModal("none"); setErrors([]);}}
                 onAnswer={() =>  {setShowModal("none")}}
+            />
+            }
+            {showModal === "Custom" &&
+            <Modal 
+                status={showModal}
+                header={"Enter a Category Name"}
+                content={"This can always be changed later."} 
+                type={"Create"}
+                onClose={() => setShowModal("none")}
+                onAnswer={(collectionName) =>  {setCategory(collectionName) ; setShowModal("none")}}
             />
             }
         </div>

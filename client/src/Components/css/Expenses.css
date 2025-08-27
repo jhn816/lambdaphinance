@@ -692,4 +692,8 @@
     .transaction-data-header p {
         font-size: 16px;
     }
+
+    .class-clear, .class-submit {
+        font-size:10px;
+    }
 }

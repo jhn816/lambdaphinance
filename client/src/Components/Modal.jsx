@@ -16,6 +16,7 @@ export default function Modal({status, header, content, type, onClose, onAnswer}
             setVisible(true);
         } else {
             setVisible(false)
+            console.log(status);
 
             if (action === "true") {
                 const j = setTimeout( () => {onAnswer(true)}, 300);
@@ -40,7 +41,10 @@ export default function Modal({status, header, content, type, onClose, onAnswer}
                         <p>{temp} </p> : 
                         <p> {content} </p>
                     }
-                    {type === "Create" &&
+                    {status === "Custom" &&                         
+                        <input placeholder="Enter Category Name..." onChange={(e) => (setCollectionName(e.target.value))} maxLength={10}/>
+                    }   
+                    {status === "create" &&
                         <input placeholder="Enter Collection Name..." onChange={(e) => (setCollectionName(e.target.value))} maxLength={20}/>
                     }
                 </div>
