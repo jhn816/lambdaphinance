@@ -78,21 +78,22 @@ export default function ExpenseChart({expenses, type}) {
   for (const expense of expenses) {
     const month = monthKey(expense.date);
     const data = dataByMonth.get(month);
-
-    if (expense.value < 0) {
-        data.loss -= expense.value;
-        const added = expense.value * -1;
-        if (!dataByCategory.has(expense.category)){
-            dataByCategory.set(expense.category, {loss: added});
-        } else {
-            const categoryData = dataByCategory.get(expense.category);
-            categoryData.loss -= expense.value;
-        }
-    } else {
-        data.gain += expense.value;
+    console.log(expense);
+    if (data != null) {
+      if (expense.value < 0) {
+          data.loss -= expense.value;
+          const added = expense.value * -1;
+          if (!dataByCategory.has(expense.category)){
+              dataByCategory.set(expense.category, {loss: added});
+          } else {
+              const categoryData = dataByCategory.get(expense.category);
+              categoryData.loss -= expense.value;
+          }
+      } else {
+          data.gain += expense.value;
+      }
+      data.total += expense.value;
     }
-
-    data.total += expense.value;
   }
 
     const dataArray = Array.from(dataByMonth, ([month, stats]) => ({
