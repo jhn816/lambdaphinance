@@ -14,7 +14,7 @@ const About = () => {
     }, [token, navigate]);
 
     return (
-        <div style={{color:"black"}}> 
+        <div> 
             <p>Made by Justin "M.E.T.A." Nguyen of the D.O.G. Family</p>
             <p>Crossed in Fall 2022 with the Beta Theta Battalion</p>
         </div>

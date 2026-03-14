@@ -1,226 +1,277 @@
-.login-page {
+/* ── Login Page ─────────────────────────────────────────────── */
+@font-face {
+    font-family: 'UnageoBold';
+    src: url('../../assets/fonts/Unageo-ExtraBold.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'UnageoReg';
+    src: url('../../assets/fonts/Unageo-Regular.ttf') format('truetype');
+  }
+  
+  :root {
+    --bg:            #0b0f1a;
+    --bg-mid:        #111827;
+    --surface:       rgba(255,255,255,0.05);
+    --surface-hover: rgba(255,255,255,0.09);
+    --border:        rgba(255,255,255,0.08);
+    --accent:        #b4ffab;
+    --accent-dim:    rgba(180,255,171,0.15);
+    --blue:          #3b82f6;
+    --blue-dim:      rgba(59,130,246,0.18);
+    --text-1:        #f1f5f9;
+    --text-2:        #94a3b8;
+    --text-3:        #475569;
+    --radius-sm:     8px;
+    --radius-md:     16px;
+    --radius-lg:     24px;
+    --shadow-card:   0 4px 24px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.06) inset;
+    --transition:    0.22s cubic-bezier(0.4,0,0.2,1);
+  }
+  
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(20px); }
+    to   { opacity:1; transform:translateY(0);    }
+  }
+  
+  @keyframes modalFadeIn {
+    from { opacity:0; transform:translate(-50%, calc(-50% + 20px)); }
+    to   { opacity:1; transform:translate(-50%, -50%); }
+  }
+  
+  .login-page {
     width: 100%;
     height: 100vh;
-}
-.login-containers {
+  }
+  
+  .login-containers {
     z-index: 1;
     position: relative;
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: row;
-    background-color: #494646;
-}
-
-.login-information {
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse 70% 60% at 15% 50%, rgba(59,130,246,0.12) 0%, transparent 65%),
+      radial-gradient(ellipse 50% 40% at 85% 80%, rgba(180,255,171,0.07) 0%, transparent 60%);
+  }
+  
+  /* ── Login Information (form side) ─────────────────────────── */
+  .login-information {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     width: 50%;
     height: 80%;
-    gap: 45px
-}
-
-.login-containers form {
-    filter: drop-shadow(0px 2px 40px black);
+    gap: 32px;
+    animation: fadeUp 0.6s ease both;
+  }
+  
+  .login-containers form {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background-color: rgb(255, 255, 255);
+    background: transparent;
     width: 100%;
     gap: 15px;
     z-index: 2;
-}
-
-@font-face {
-    font-family: 'UnageoBold';
-    src: url('../../assets/fonts/Unageo-ExtraBold.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
   }
-  @font-face {
-    font-family: 'UnageoReg';
-    src: url('../../assets/fonts/Unageo-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  
+  .login-information h2 {
+    font-family: 'MontserratBold', sans-serif;
+    font-size: 32px;
+    margin-bottom: 0;
+    color: var(--text-1);
+    letter-spacing: -0.5px;
   }
-
-.login-information h2 {
-    font-family: 'UnageoReg', sans-serif;
-    font-size: 34px;
-    margin-bottom: 0px;
-    color: rgb(33, 62, 120);
-    text-shadow: 1px 3px 4px rgba(0, 0, 0, 0.437);
-    border-radius: 30px;
-}
-
-.login-box {
+  
+  /* ── Login Box ──────────────────────────────────────────────── */
+  .login-box {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-radius: 10px;
+    border-radius: var(--radius-lg);
     width: 70%;
-    padding: 35px;
-    background-color: rgba(255, 255, 255, 0.91);
-    border: 1px solid rgb(146, 146, 146);
-    color: black;
-}
-
-.login-input {
+    padding: 36px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(20px);
+    box-shadow: var(--shadow-card);
+    color: var(--text-1);
+  }
+  
+  .login-input {
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding: 25px 0px 25px 0px;
+    padding: 18px 0;
     position: relative;
-}
-
-input[type="email"] , input[type="password"] {
-    margin-top: 0px;
-    height: 25px;
-    background-color:#f5f4f4;
-    border: 1px solid transparent;
-    border-radius: 5px;
-    padding: 8px;
-    font-size: 16px;
-    border: 1px solid black;
-    font-family: 'UnageoReg', sans-serif;
-}
-
-input[type="email"]:focus, input[type="password"]:focus {
+  }
+  
+  input[type="email"],
+  input[type="password"] {
+    margin-top: 0;
+    height: 28px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 15px;
+    font-family: 'MontserratReg', sans-serif;
+    color: var(--text-1);
+    transition: var(--transition);
+  }
+  
+  input[type="email"]:focus,
+  input[type="password"]:focus {
     outline: none;
-}
-
-.login-input h4 {
-    margin-top: 0px;
-    margin-bottom: 5px;
-    font-size: 18px;
+    border-color: rgba(180,255,171,0.4);
+    background: rgba(180,255,171,0.04);
+  }
+  
+  input[type="email"]::placeholder,
+  input[type="password"]::placeholder {
+    color: var(--text-3);
+  }
+  
+  .login-input h4 {
+    margin-top: 0;
+    margin-bottom: 7px;
+    font-size: 13px;
+    font-family: 'MontserratBold', sans-serif;
+    color: var(--text-2);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
     align-self: flex-start;
-}
-
-.login-titles {
+  }
+  
+  /* ── Buttons ────────────────────────────────────────────────── */
+  .login-information button {
+    width: 100%;
+    height: 42px;
+    border: 1px solid rgba(59,130,246,0.35);
+    color: var(--text-1);
+    font-size: 14px;
+    font-family: 'MontserratReg', sans-serif;
+    background: var(--blue-dim);
+    border-radius: 50px;
+    transition: var(--transition);
+    cursor: pointer;
+  }
+  
+  .login-information button:hover {
+    background: rgba(59,130,246,0.28);
+    border-color: rgba(59,130,246,0.55);
+    box-shadow: 0 0 20px rgba(59,130,246,0.2);
+    transform: translateY(-2px);
+  }
+  
+  .login-information button:active { transform: scale(0.99); }
+  
+  .login-information a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 42px;
+    border: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--text-2);
+    background: var(--surface);
+    text-decoration: none;
+    font-family: 'MontserratReg', sans-serif;
+    border-radius: 50px;
+    transition: var(--transition);
+    backdrop-filter: blur(8px);
+  }
+  
+  .login-information a:hover {
+    background: var(--surface-hover);
+    color: var(--text-1);
+    border-color: rgba(255,255,255,0.15);
+    transform: translateY(-2px);
+  }
+  
+  .login-information a:active { transform: scale(0.99); }
+  
+  form h6 {
+    color: var(--text-3);
+    margin-top: 0;
+    margin-bottom: 0;
+    font-family: 'MontserratReg', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+  }
+  
+  form h6 a {
+    color: var(--accent);
+    transition: var(--transition);
+    text-decoration: none;
+  }
+  
+  form h6 a:hover {
+    color: rgba(180,255,171,0.75);
+    text-decoration: underline;
+  }
+  
+  .login-input p {
+    color: #fca5a5;
+    font-family: 'MontserratReg', sans-serif;
+    font-size: 12px;
+    margin: 5px 0 0;
+    align-self: center;
+  }
+  
+  /* ── Titles Side ────────────────────────────────────────────── */
+  .login-titles {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 50%;
     height: 100vh;
-    filter: drop-shadow(0 0 0.25rem black);
     font-size: 35px;
-    line-height: .1;
-}
-
-.login-information button {
-    width: 100%;
-    height: 40px;
-    border: 1px solid rgb(68, 71, 78);
-    color: white;
-    font-size: 15px;
-    font-weight: 100;
-    background-color: rgb(33, 62, 120);
-    border-radius: 20px;
-    transition: .3s;
-    font-family: 'UnageoReg', sans-serif;
-}
-
-.login-information button:hover{
-    border: 1px solid rgb(21, 50, 106);
-    filter: drop-shadow(0 0 2px rgba(41, 42, 43, 0.956));
-    transform: translateY(-2px);
-    cursor: pointer;
-}
-
-.login-information button:active{
-    transform: scale(.99);
-}
-
-.login-information a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 40px;
-    border: 1px solid rgb(68, 71, 78);
-    font-size: 15px;
-    /* color: rgb(33, 62, 120); */
-    color: black;
-    background-color: white;
-    text-decoration: none;
-    font-weight: 100;
-    border-radius: 20px;
-    transition: .3s;
-    font-family: 'UnageoReg', sans-serif;
-}
-
-.login-information a:hover{
-    filter: drop-shadow(0 0 2px rgba(41, 42, 43, 0.956));
-    transform: translateY(-2px);
-    cursor: pointer;
-}
-
-.login-information a:active{
-    transform: scale(.99);
-}
-
-form h6 {
-    text-shadow: 1px 3px 6px rgba(0, 0, 0, 0.237);
-    color: black;
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
-
-form h6 a{
-    color: #007c1d;
-    transition: .3s;
-    text-decoration: none;
-}
-
-form h6 a:hover{
-    color: #039926;
-    text-decoration: underline;
-}
-
-.login-input p {
-    color: rgb(255, 20, 20);
-    font-weight: 1000;
-    margin: 0px;
-    margin-top: 5px;
-    font-size: 15px;
-    align-self: center;
-}
-
-.money {
+    line-height: 0.1;
+    border-left: 1px solid var(--border);
+  }
+  
+  .login-titles h1 {
+    font-family: 'MontserratBlack', sans-serif;
+    position: absolute;
+    top: 40%;
+    color: var(--text-1);
+    letter-spacing: -1px;
+    font-size: 48px;
+  }
+  
+  .login-titles h3 {
+    font-family: 'MontserratLight', sans-serif;
+    font-weight: 300;
+    position: absolute;
+    top: 50%;
+    color: var(--text-2);
+    font-size: 20px;
+  }
+  
+  .money {
     max-height: 100vh;
     width: 1500px;
-    opacity: 20%;
+    opacity: 8%;
     z-index: 0;
-}
-
-.login-titles h1 {
-    position:absolute;
-    top: 40%;
-}
-
-.login-titles h3 {
-    font-weight: 100;
-    position:absolute;
-    top: 50%;
-}
-
-@keyframes modalFadeIn {
-    from {
-        opacity: 0;
-        transform: translate(-50%, calc(-50% + 20px));
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
-}   
-
-#modal-container {
+    filter: grayscale(1);
+  }
+  
+  .login-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+  
+  /* ── Modal ──────────────────────────────────────────────────── */
+  #modal-container {
     position: fixed;
     display: flex;
     flex-direction: column;
@@ -229,118 +280,79 @@ form h6 a:hover{
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1000;
-    filter: drop-shadow(0px 0px 150px rgba(0, 0, 0, 0.744));
-    border-radius: 20px;
-    background-color: #ffffff;
-    width: 350px;
+    border-radius: var(--radius-lg);
+    background: var(--bg-mid);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(24px);
+    box-shadow: 0 0 80px rgba(0,0,0,0.6), var(--shadow-card);
+    width: 360px;
     overflow: hidden;
-    animation: modalFadeIn .6s ease-out;
-    height: 170px;
-    transition: .3s;
-}
-
-#modal-container:hover {
-    filter: drop-shadow(0px 0px 125px rgba(0, 0, 0, 0.944));
-}
-
-.modal-header {
-    background-color: rgb(33, 62, 120);
+    animation: modalFadeIn 0.5s cubic-bezier(0.4,0,0.2,1);
+    height: 180px;
+    transition: var(--transition);
+  }
+  
+  .modal-header {
+    background: var(--blue-dim);
+    border-bottom: 1px solid var(--border);
     width: 100%;
-}
-
-#modal-container p {
-    color: black;
-    font-size: 18px;
+    padding: 4px 0;
+  }
+  
+  #modal-container p {
+    color: var(--text-2);
+    font-family: 'MontserratReg', sans-serif;
+    font-size: 15px;
     height: 30px;
-}
-
-#modal-container h3 {
-    margin: 10px;
-    font-size: 26px;
-    font-weight: 1000;
-}
-
-#modal-container button {
-    background-color: #ffffff;
-    padding: 5px;
-    border: 1px solid black;
-    border-radius: 20px;
-    width: 100px;
-    transition: .3s;
-}
-
-#modal-container button:hover {
+  }
+  
+  #modal-container h3 {
+    font-family: 'MontserratBold', sans-serif;
+    margin: 12px;
+    font-size: 22px;
+    color: var(--text-1);
+  }
+  
+  #modal-container button {
+    background: var(--surface);
+    padding: 6px 16px;
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    color: var(--text-2);
+    font-family: 'MontserratReg', sans-serif;
+    font-size: 13px;
+    width: 110px;
+    transition: var(--transition);
+  }
+  
+  #modal-container button:hover {
     cursor: pointer;
-    transform: scale(1.04);
-    background-color: rgb(68, 66, 66);
-    color: white;
-}
-
-#modal-container button:active {
-    transform: scale(.98);
-}
-
-.login-buttons {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-}
-
-@media (max-width: 1439px) {
-    .login-titles {
-        display: none;
-    }
-
-    .login-box {
-        width: 80%;
-    }
-
-    .login-containers form {
-        width: 100%;
-    }
-}
-
-@media (max-width: 860px) {
-    .login-information {
-        width: 90%;
-    }
-
-    .login-box {
-        height: 70%;
-    }
-
-    .login-information h2 {
-        margin-top: 0px;
-    }
-}
-
-@media (max-width: 1024px) {
-    .login-buttons {
-        flex-direction: column;
-        gap: 0px;
-    }
-
-    .login-information a:hover{
-        filter: drop-shadow(0 0 .4rem rgba(41, 42, 43, 0.456));
-        transform: scale(1.005);
-        cursor: pointer;
-    }
-
-    .login-information button:hover{
-        border: 1px solid rgb(21, 50, 106);
-        filter: drop-shadow(0 0 5px rgba(41, 42, 43, 0.856));
-        transform: scale(1.005);
-        cursor: pointer;
-    }
-}
-
-@media (max-width:450px) {
-    .login-input {
-        padding: 20px 0px 20px 0px;
-    }
-    input[type="email"], input[type="password"] {
-        font-size: 12px;
-        height: 20px;
-    }
-}
-
+    background: var(--surface-hover);
+    color: var(--text-1);
+    transform: scale(1.03);
+  }
+  
+  #modal-container button:active { transform: scale(0.98); }
+  
+  /* ── Responsive ─────────────────────────────────────────────── */
+  @media (max-width: 1439px) {
+    .login-titles { display: none; }
+    .login-box { width: 80%; }
+    .login-containers form { width: 100%; }
+  }
+  
+  @media (max-width: 860px) {
+    .login-information { width: 90%; }
+    .login-information h2 { margin-top: 0; }
+  }
+  
+  @media (max-width: 1024px) {
+    .login-buttons { flex-direction: column; gap: 0; }
+    .login-information a:hover,
+    .login-information button:hover { transform: scale(1.005); }
+  }
+  
+  @media (max-width: 450px) {
+    .login-input { padding: 16px 0; }
+    input[type="email"], input[type="password"] { font-size: 13px; }
+  }

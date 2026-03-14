@@ -1,572 +1,665 @@
-.wholerecords {
-    width: 97vw;
-    height: 85vh;
-    margin-right: 1.5vw;
-    margin-left: 1.5vw;
-    margin-top: 2.5vh;
-    margin-bottom: 2.5vh;
-}
-.records-page {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    color: black;
-    height: 100%;
-    width: 100%;
+/* ── Records Page ───────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(14px); }
+  to   { opacity:1; transform:translateY(0);    }
 }
 
+/* ── Root wrapper — explicit height so % children can resolve ── */
+.wholerecords {
+  width: 97vw;
+  height: 85vh;
+  min-height: 600px;
+  margin: 2.5vh 1.5vw;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(ellipse 60% 50% at 10% 20%, rgba(59,130,246,0.1) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 90% 80%, rgba(180,255,171,0.06) 0%, transparent 60%);
+  animation: fadeUp 0.5s ease both;
+  font-family: 'MontserratReg', sans-serif;
+  box-sizing: border-box;
+}
+
+/* ── Two-column row, columns stretch to full height ─────────── */
+.records-page {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  color: var(--text-1);
+  height: 100%;
+  width: 100%;
+  gap: 16px;
+}
+
+/* ── Left column ────────────────────────────────────────────── */
+.record-container {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: 100%;
+  gap: 14px;
+  min-height: 0;
+}
+
+/* ── Add-friend bar — fixed height, never grows ─────────────── */
+.makefriend {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-card);
+  padding: 20px 24px;
+  width: 100%;
+  box-sizing: border-box;
+  height: 125px;
+}
+
+/* h2 inside the makefriend addinfo form */
+.makefriend .addinfo form h2 {
+  font-family: 'MontserratBold', sans-serif;
+  color: var(--text-1);
+  margin: 0 0 12px;
+  font-size: 16px;
+  letter-spacing: -0.3px;
+}
+
+/* ── Collections + debts — takes all remaining height ───────── */
+.collections-and-debts {
+  flex: 1 1 0;
+  min-height: 0;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow: hidden;
+}
+
+/* ── Records section ────────────────────────────────────────── */
 .records {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-    height: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .records-debts {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-    height: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  flex: 0 0 130px;
+  min-height: 0;
+  overflow: hidden;
 }
 
-.record-container {
-    display: flex;
-    flex-direction: column;
-    width: 50%;
-    height: 100%;
-    gap:20px;
-}
-
-.collections-and-debts {
-    height: 85%;
-    padding: 25px;
-    width: calc(95% - 50px);
-    border: 1px solid #929292;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.records h2 {
-    filter: drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.462));
-    margin-bottom: 15px;
-    border-bottom: 1px solid black;
-    margin-top: 0px;
-}
-
+.records h2,
 .records-debts h2 {
-    filter: drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.462));
-    margin-bottom: 15px;
-    border-bottom: 1px solid black;
-    margin-top: 0px;
-}
-.friends-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap:20px; 
-    width: 50%;
-    height: 100%;
+  font-family: 'MontserratBold', sans-serif;
+  color: var(--text-1);
+  margin: 0 0 12px;
+  font-size: 17px;
+  letter-spacing: -0.3px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+  width: 100%;
+  flex-shrink: 0;
 }
 
-.friendslist {
-    padding: 25px;
-    background-color: rgb(57, 57, 57);
-    border: 1px solid #929292;
-    color:white;
-    height: 80%;
-    width: calc(100% - 50px);
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-
-}
-.friendslist h3 {
-    margin-bottom: 2%;
-    height: 8%;
-    margin-top: 0px;
-}
-
-.friends {
-    background-color: white;
-    display: flex;
-    flex-direction: row;
-    border-radius: 5px;
-    padding: 3%;
-    gap: 4%;
-    row-gap: 15px;
-    width: 94%;
-    height: 85%;
-    flex-wrap: wrap;
-    overflow: scroll;
-    /* box-shadow: inset 0px 0px 10px #000000; */
-}
-
-.friend-box {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    padding: 3%;
-    background-color: rgb(55, 92, 167);
-    box-shadow: 0px 0px 10px #00000063;
-    width: 42%;
-    height: 80px;
-    border-radius: 30px;
-    gap:5%;
-    transition: .3s;
-}
-
-.friend-box:hover {
-    transform: scale(1.01);
-}
-
-.friend-box img {
-    clip-path: circle(45px at 50% 50%);
-    height: 90px;
-}
-
-.friend-box p {
-    color: rgb(255, 255, 255);
-    font-size: 18px;
-    font-weight: 100;
-    margin: 0px;
-}
-
-.friend-information {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    width: 65%;
-    gap: 5px;
-}
-
-.friend-buttons {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    gap: 6%;
-    position: relative;
-    z-index: 3;
-}
-
-.friend-information button {
-    background-color: #e8e9e8;
-    width: 47%;
-    height: 30px;
-    border-radius: 5px;
-    transition: .3s;
-    border: 0px;
-    filter: drop-shadow(0px 0px 3px rgba(0, 0, 10, 0.262));
-}
-
-.friend-information button:hover {
-    cursor: pointer;
-    transform: scale(1.01);
-}
-
-.friend-information button:active {
-    transform: scale(.98);
-}
-
-.friend-dropmenu {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: #ffffff;
-    border-radius: 5px;
-    border: 1px solid black;
-    width: 55%;
-    left: 53%;
-    top: 110%;
-    z-index: 5;
-}
-
-.friend-dropmenu button {
-    border: 0px;
-    width: 100%;
-    background-color: transparent;
-    font-size: 12px;
-}
-
-#delete-friend:hover {
-    background-color: rgb(255, 140, 140);
-    transform: scale(1);
-}
-
-#favorite-friend:hover {
-    background-color: rgb(255, 236, 140);
-    transform: scale(1);
-}
-
-#share-friend:hover {
-    background-color: rgb(140, 211, 255);
-    transform: scale(1);
-}
-
-
-.request-tabs {
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-}
-
-.addinfo h5 {
-    padding: 10px;
-    padding-top: 15px;
-    padding-bottom: 5px;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    font-size: 15px;
-    background-color: #e1e1e1;
-    margin: 0px;
-    transition: .3s;
-
-}
-
-#received-request:hover, #sent-request:hover {
-    background-color: #d1d1d1;
-    cursor: pointer;
-    transform: scale(1.005);
-}
-
-#received-request:active, #sent-request:active {
-    transform: scale(.995);
-}
-
-.addinfo {
-    width: 100%;
-    height: auto;
-}
-
-.makefriend {
-    display: flex;  
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    border: 1px solid #929292;
-    padding: 25px;
-    width: calc(95% - 50px);
-    height: 15%;
-}
-
-.request-container {
-    background-color: rgb(57, 57, 57);
-    border-radius: 10px;
-    border: 1px solid #929292;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: calc(100% - 50px);
-    height: 20%;
-    padding: 25px;
-}
-.addinfo form h2 {
-    margin-bottom: 0px;
-    margin-top: 0px;
-    font-size: 30px;
-    font-weight: 1000;
-}
-.addinfo form {
-    display: flex;
-    
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    width: 100%;
-    height: auto;
-}
-
-.request-box {
-    height: 60%;
-    width: 96%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    overflow: scroll;
-    row-gap: 10px;
-    background-color: white;
-    /* box-shadow: inset 0px 0px 5px #000000; */
-    padding: 2%;
-    border-radius: 5px;
-    border-top-left-radius: 0px;
-}
-
-.accept-info {
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    justify-content: flex-end;
-    gap: 3px;
-;}
-
-.accept-info p {
-    font-size: 18px;
-    align-self: flex-start;
-    margin-bottom: 3px;
-    margin-top: 0px;
-}
-
-.accept-friend {
-    display: flex;
-    flex-direction: row;
-    width: 46%;
-    gap: 10px;
-    border: 1px solid black;
-    background-color: white;
-    padding: 10px;
-    border-radius: 10px;
-    height: 60px;
-}
-
-.accept-friend img {
-    max-width: 60px;
-    max-height: 60px;
-}
-
-.accept-buttons {
-    display: flex;
-    justify-content: space-between;
-    height: 50%;
-}
-
-.friend-accept {
-    background-color: #02cd0266;
-    width: 47%;
-    height: 100%;
-    border-radius: 50px;
-    border: 0px;
-    transition: .3s;
-}
-
-.friend-reject {
-    background-color: #ff00006b;
-    width: 47%;
-    height: 100%;
-    border-radius: 50px;
-    border: 0px;
-    transition: .3s;
-}
-
-.friend-cancel {
-    background-color: #9393936b;
-    width: 47%;
-    height: 100%;
-    border-radius: 50px;
-    border: 0px;
-    transition: .3s;
-}
-
-.friend-reject:hover{
-    background-color: #ff00008d;
-    cursor: pointer;
-    transform: scale(1.02);
-}
-
-.friend-accept:hover{
-    background-color: #02cd028a;
-    cursor: pointer;
-    transform: scale(1.02);
-}
-
-.friend-cancel:hover{
-    background-color: #93939398;
-    cursor: pointer;
-    transform: scale(1.02);
-}
-
-.friend-reject:active, .friend-accept:active .friend-cancel:active {
-    transform: scale(.98);
-}
-
-.addfriend {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    gap:10px;
-}
-
-.addfriend input {
-    border-radius: 10px;
-    border: 1px solid black;
-    padding: 10px;
-    font-size: 22px;
-    width: 80%;
-}
-
-.addfriend button {
-    border-radius: 10px;
-    border: 1px solid black;
-    background-color: #e9e9e9;
-    width: 20%;
-    transition: .3s;
-}
-
-.addfriend button:hover {
-    background-color: rgb(177, 247, 199);
-    transform: scale(1.02);
-    cursor: pointer;
-}
-
-.addfriend button:active {
-    transform: scale(.98);
-}
-
+/* ── Scrollable collections list ────────────────────────────── */
 .collections {
-    width: 100%;
-    height: 100%;
-    overflow: scroll;
-    display: flex;
-    flex-direction: column;
-    gap:10px;    
-    background-color: white;
-}   
-
-.collection-box {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    border: 1px solid #929292;
-    background-color: rgb(55, 92, 167);
-    padding-left: 20px;
-    border-radius: 40px;
-    width: 95%;
-    height: 50px;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+
+.collections::-webkit-scrollbar { display: none; }
+
+.debts {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.debts::-webkit-scrollbar { display: none; }
+
+/* ── Collection row ─────────────────────────────────────────── */
+.collection-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  border: 1px solid rgba(59,130,246,0.2);
+  background: var(--blue-dim);
+  backdrop-filter: blur(8px);
+  padding-left: 20px;
+  border-radius: 50px;
+  width: 100%;
+  height: 50px;
+  box-sizing: border-box;
+  transition: var(--transition);
+}
+
+.collection-box:hover { border-color: rgba(59,130,246,0.4); }
 
 .collection-name {
-    margin: 0px;
-    font-size:20px;
-    color: white;
-    padding-left: 20px;
+  margin: 0;
+  font-family: 'MontserratBold', sans-serif;
+  font-size: 14px;
+  color: var(--text-1);
+  padding-left: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Used in JSX: <p className="collection-balance" style={{color:"green"}}> */
+.collection-balance {
+  margin: 0;
+  font-family: 'MontserratBold', sans-serif;
+  font-size: 13px;
+  color: var(--accent); /* inline style overrides this to green, kept as fallback */
+  white-space: nowrap;
 }
 
 .collection-details {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding-right: 25px;
-    padding-left: 20px;
-    background-color: white;
-    
-    justify-content: space-between;
-    width: 50%;
-    font-size: 15px;
-    height: 50px;
-    border-top-right-radius: 40px;
-    border-bottom-right-radius: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-right: 18px;
+  padding-left: 14px;
+  background: rgba(0,0,0,0.25);
+  border-left: 1px solid var(--border);
+  justify-content: space-between;
+  width: 55%;
+  flex-shrink: 0;
+  font-family: 'MontserratReg', sans-serif;
+  font-size: 12px;
+  color: var(--text-2);
+  height: 50px;
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
 }
 
 .collection-details button {
-    width: 150px;
-    height: 30px;
-    border-radius: 10px;
-    border: 1px solid black;
-    background-color:#e1e1e1;
-    transition: .3s;
+  width: 100%;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-2);
+  font-family: 'MontserratReg', sans-serif;
+  font-size: 11px;
+  transition: var(--transition);
+  cursor: pointer;
 }
 
 .collection-details button:hover {
-    background-color:#f1f1f1;
-    filter: drop-shadow(0px 0px 3px rgba(0, 0, 10, 0.262));
-    cursor: pointer;
+  background: var(--surface-hover);
+  color: var(--text-1);
 }
 
-.debts {
-    height: 30%;
-    overflow: scroll;
-}
-
-.div-balance {
-    width: 40%;
-    display:flex;
-    flex-direction:column;
-    align-items: flex-start;
-}
-
-.div-indices {
-    width: 25%;
-    display:flex;
-    flex-direction:column;
-    align-items: flex-end;
-}
-
-.div-manage {
-    width: 35%;
-    display:flex;
-    flex-direction:column;
-    align-items: flex-end;
-}
+.div-balance { width: 50%; display:flex; flex-direction:column; align-items:flex-start; }
+.div-indices { width: 25%; display:flex; flex-direction:column; align-items:flex-end; }
+.div-manage  { width: 40%; display:flex; flex-direction:column; align-items:flex-end; }
 
 .collection-box input {
-    border-radius: 5px;
-    border: 1px solid black;
-    padding: 5px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.08);
+  color: var(--text-1);
+  font-family: 'MontserratReg', sans-serif;
+  padding: 5px 10px;
+  margin-left: 10px;
+  height: 28px;
+  font-size: 13px;
 }
 
 .edit-details {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
-    padding-right: 20px;
-    padding-left: 20px;
-    background-color: white;
-    border-top-right-radius: 40px;
-    border-bottom-right-radius: 40px;
-    width: 60%;
-    height: 50px;
-    gap: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 14px;
+  background: rgba(0,0,0,0.2);
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+  border-left: 1px solid var(--border);
+  width: 60%;
+  flex-shrink: 0;
+  height: 50px;
+  gap: 6px;
 }
 
 .edit-details button {
-    width: 80px;
-    height: 30px;
-    font-size: 12px;
-    border-radius: 10px;
-    border: 1px solid black;
-    background-color:#915e2b79;
-    transition: .3s;
+  height: 26px;
+  padding: 0 10px;
+  font-size: 11px;
+  font-family: 'MontserratReg', sans-serif;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(180,255,171,0.2);
+  background: var(--accent-dim);
+  color: var(--accent);
+  white-space: nowrap;
+  transition: var(--transition);
+  cursor: pointer;
 }
 
-.edit-details button:hover{
-    cursor: pointer;
-    background-color:#915e2ba9;
+.edit-details button:hover {
+  background: rgba(180,255,171,0.22);
+  box-shadow: 0 0 10px rgba(180,255,171,0.12);
 }
 
-@media (max-width:1439px) {
-    .friend-box {
-        width: calc(100% - 6%);
-    }
-
-    .friends {
-        flex-direction: column;
-        flex-wrap: nowrap;
-        gap: 10px;
-    }
+/* ── Right column ───────────────────────────────────────────── */
+.friends-container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+  width: 50%;
+  height: 100%;
+  min-height: 0;
 }
 
-@media (max-width:1230px) {
+/* ── Requests card — size to content ───────────────────────── */
+.request-container {
+  flex: 0 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  padding: 20px 24px;
+  box-sizing: border-box;
+  height: 125px;
+}
 
-    .wholerecords {
-        height: auto;
-    }
+.addinfo { width: 100%; height: 100%;}
 
-    .records-page {
-        flex-direction: column;
-    }
+/* h2 only appears in the makefriend form, handled above */
 
-    .record-container, .friends-container {
-        width: 100%;
-    }
+.addinfo form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+}
+
+.request-tabs {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+}
+
+.addinfo h5 {
+  padding: 8px 14px;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  font-family: 'MontserratBold', sans-serif;
+  font-size: 11px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-bottom: 0;
+  color: var(--text-2);
+  margin: 0;
+  transition: var(--transition);
+  cursor: pointer;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+#received-request:hover,
+#sent-request:hover {
+  background: var(--surface-hover);
+  color: var(--text-1);
+}
+
+/* ── Scrollable requests ────────────────────────────────────── */
+.request-box {
+  width: 100%;
+  max-height: 150px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  overflow-y: auto;
+  gap: 8px;
+  background: rgba(0,0,0,0.2);
+  padding: 10px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) var(--radius-sm);
+  border: 1px solid var(--border);
+  box-sizing: border-box;
+  scrollbar-width: none;
+  height: 100%;
+}
+
+.request-box::-webkit-scrollbar { display: none; }
+
+.request-box > p {
+  color: var(--text-3);
+  font-size: 12px;
+  font-family: 'MontserratReg', sans-serif;
+  margin: 0;
+}
+
+.accept-friend {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  backdrop-filter: blur(8px);
+  padding: 8px;
+  border-radius: var(--radius-md);
+  height: 60px;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+.accept-friend img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.accept-info {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+.accept-info p {
+  font-size: 11px;
+  color: var(--text-1);
+  font-family: 'MontserratBold', sans-serif;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.accept-buttons {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+}
+
+.friend-accept,
+.friend-reject,
+.friend-cancel {
+  flex: 1;
+  height: 20px;
+  border-radius: 50px;
+  border: 0;
+  font-family: 'MontserratReg', sans-serif;
+  font-size: 10px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.friend-accept { background: rgba(34,197,94,0.15);  border: 1px solid rgba(34,197,94,0.25);  color: #86efac; }
+.friend-reject { background: rgba(239,68,68,0.12);  border: 1px solid rgba(239,68,68,0.22);  color: #fca5a5; }
+.friend-cancel { background: var(--surface);         border: 1px solid var(--border);          color: var(--text-2); }
+
+.friend-accept:hover { background: rgba(34,197,94,0.25);  transform: scale(1.02); }
+.friend-reject:hover { background: rgba(239,68,68,0.22);  transform: scale(1.02); }
+.friend-cancel:hover { background: var(--surface-hover);  transform: scale(1.02); }
+.friend-accept:active,
+.friend-reject:active,
+.friend-cancel:active { transform: scale(0.98); }
+
+/* ── Friends list — fills remaining column height ───────────── */
+.friendslist {
+  flex: 1 1 0;
+  min-height: 0;
+  padding: 20px 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-card);
+  color: var(--text-1);
+  width: 100%;
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.friendslist h3 {
+  font-family: 'MontserratBold', sans-serif;
+  font-size: 16px;
+  margin: 0 0 12px;
+  flex-shrink: 0;
+  letter-spacing: -0.3px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+}
+
+/* ── Scrollable friends grid ────────────────────────────────── */
+.friends {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 2px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  align-content: flex-start;
+}
+
+.friends::-webkit-scrollbar { display: none; }
+
+/* ── Friend card ────────────────────────────────────────────── */
+.friend-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 12px;
+  background: var(--blue-dim);
+  border: 1px solid rgba(59,130,246,0.2);
+  box-shadow: var(--shadow-card);
+  width: calc(50% - 5px);
+  height: 78px;
+  border-radius: var(--radius-lg);
+  gap: 10px;
+  transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+  backdrop-filter: blur(8px);
+  box-sizing: border-box;
+  flex-shrink: 0;
+  position: relative;
+  overflow: visible; /* allow dropdown to escape card bounds */
+}
+
+.friend-box:hover {
+  transform: translateY(-2px);
+  border-color: rgba(59,130,246,0.4);
+  box-shadow: var(--shadow-card), 0 0 20px rgba(59,130,246,0.12);
+}
+
+.friend-box img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  /* override any clip-path from global styles */
+  clip-path: none;
+}
+
+.friend-information {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  flex: 1;
+  min-width: 0;
+  gap: 5px;
+}
+
+.friend-information > p {
+  font-family: 'MontserratBold', sans-serif;
+  font-size: 12px;
+  color: var(--text-1);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.friend-buttons {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 5px;
+  position: relative;
+  z-index: 3;
+}
+
+.friend-information button {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  flex: 1;
+  height: 24px;
+  border-radius: var(--radius-sm);
+  font-family: 'MontserratReg', sans-serif;
+  font-size: 10px;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.friend-information button:hover {
+  background: var(--surface-hover);
+  color: var(--text-1);
+}
+
+/* ── Friend manage dropdown ─────────────────────────────────── */
+.friend-dropmenu {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-mid);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(16px);
+  border-radius: var(--radius-sm);
+  width: 110px;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 20;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.friend-dropmenu button {
+  border: 0;
+  width: 100%;
+  background: transparent;
+  color: var(--text-2);
+  font-family: 'MontserratReg', sans-serif;
+  font-size: 12px;
+  height: 34px;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+#delete-friend:hover   { background: rgba(255,100,100,0.15); color: #fca5a5; }
+#favorite-friend:hover { background: rgba(255,210,100,0.12); color: #fde68a; }
+#share-friend:hover    { background: var(--blue-dim);        color: #93c5fd; }
+
+/* ── Add friend input row ───────────────────────────────────── */
+.addfriend {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 10px;
+}
+
+.addfriend input {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.06);
+  color: var(--text-1);
+  font-family: 'MontserratReg', sans-serif;
+  padding: 10px 16px;
+  font-size: 15px;
+  width: 80%;
+  transition: var(--transition);
+}
+
+.addfriend input:focus {
+  outline: none;
+  border-color: rgba(180,255,171,0.4);
+  background: rgba(180,255,171,0.04);
+}
+
+.addfriend input::placeholder { color: var(--text-3); }
+
+.addfriend button {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-2);
+  font-family: 'MontserratReg', sans-serif;
+  width: 20%;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.addfriend button:hover {
+  background: var(--accent-dim);
+  border-color: rgba(180,255,171,0.3);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.addfriend button:active { transform: scale(0.98); }
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 1439px) {
+  .friend-box { width: 100%; }
+  .friends { flex-direction: column; flex-wrap: nowrap; }
+}
+
+@media (max-width: 1230px) {
+  .wholerecords    { height: auto; min-height: unset; }
+  .records-page    { flex-direction: column; align-items: stretch; height: auto; }
+  .record-container,
+  .friends-container { width: 100%; height: auto; }
+  .collections-and-debts { flex: none; height: auto; max-height: 500px; }
+  .friendslist     { flex: none; height: 400px; }
+  .request-container { height: auto; }
 }

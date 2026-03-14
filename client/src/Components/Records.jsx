@@ -348,7 +348,7 @@ const Records = () => {
                                             : (<input type="text" maxLength={20} onChange={(e) => setEditCollectionName(e.target.value)} value={editCollectionName}/>)}
                                         {(manageCollection !== item.collectionName) ? ( <div className="collection-details">
                                             <div className="div-balance">
-                                                <p className="collection-balance" style={{"color":"green"}}> Balance ${item.totalBalance}</p>
+                                                <p className="collection-balance"> Balance ${item.totalBalance}</p>
                                             </div>
                                             <div className="div-manage">
                                                 <button className="collection-manage" onClick={(e) => { openCollection(item); setEditCollectionName(item.collectionName); }}> Manage {item.collectionName}</button>
